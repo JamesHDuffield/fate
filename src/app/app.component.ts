@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
-import { environment } from '../environments/environment';
+import { StoryService } from 'src/service/story';
 
 
 @Component({
@@ -9,9 +8,16 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'fate';
+  title = 'Loading';
+
+  constructor(private story: StoryService) {
+  }
 
   ngOnInit() {
-    firebase.initializeApp(environment.firebase);
+    this.next();
+  }
+
+  async next() {
+    this.title = await this.story.fetchStory();
   }
 }
