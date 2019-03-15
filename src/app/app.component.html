@@ -8,15 +8,22 @@
     </div>
     <p>{{ moment.text }}</p>
     <ng-container *ngIf='moment === current'>
-      <div class='tab tab-right'>
-        <button mat-icon-button class='button-right' (click)='add(moment)'>
-          <mat-icon small>add</mat-icon>
-        </button>
-      </div>
-      <button (click)='next(option.id)' mat-button *ngFor='let option of moment.options'>{{ option.text }}</button>
-      <span class='spacer'></span>
+      <form class="option-form" *ngIf='customOption'>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="" [formControl]="optionFormControl">
+        </mat-form-field>
+      </form>
+      <ng-container *ngIf='!customOption'>
+        <div class='tab tab-right'>
+          <button mat-icon-button class='button-right' (click)='add(moment)'>
+            <mat-icon small>add</mat-icon>
+          </button>
+        </div>
+        <button (click)='next(option.id)' mat-button *ngFor='let option of moment.options'>{{ option.text }}</button>
+      </ng-container>
     </ng-container>
   </div>
+  
 
 </mat-card>
 

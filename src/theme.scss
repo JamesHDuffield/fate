@@ -10,7 +10,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 
-$fate-app-primary: mat-palette($mat-deep-purple);
+$fate-app-primary: mat-palette($mat-deep-purple, A100);
 $fate-app-accent: mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).

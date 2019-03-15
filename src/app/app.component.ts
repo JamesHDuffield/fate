@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoryService } from 'src/service/story';
-import { Moment } from 'src/models/moment';
+import { Moment, Option } from 'src/models/moment';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -10,6 +11,9 @@ import { Moment } from 'src/models/moment';
 })
 export class AppComponent implements OnInit {
   moments: Moment[] = [];
+  customOption: Option = null;
+
+  optionFormControl = new FormControl('', []);
 
   get current(): Moment {
     return this.moments[this.moments.length - 1];
@@ -33,5 +37,13 @@ export class AppComponent implements OnInit {
 
   edit(moment: Moment) {
     console.log('Editing not implemented');
+  }
+
+  add() {
+    this.customOption = {
+      id: null,
+      text: 'Continue',
+      editing: true,
+    };
   }
 }
