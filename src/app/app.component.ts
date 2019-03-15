@@ -30,4 +30,8 @@ export class AppComponent implements OnInit {
     this.moments.push(moment);
     console.log(this.current);
   }
+
+  edit(moment: Moment) {
+    console.log('Editing not implemented');
+  }
 }

@@ -6,3 +6,15 @@ mat-card.reader {
     max-width: 500px;
     height: 90vh;
 }
+
+.tab {
+    position: absolute;
+
+    &.tab-right {
+        left: 100%;
+    }
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

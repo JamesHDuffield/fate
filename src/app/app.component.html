@@ -1,9 +1,20 @@
 <router-outlet></router-outlet>
 <mat-card class='reader'>
   <div *ngFor='let moment of moments'>
+    <div class='tab tab-right' *ngIf='moment === current'>
+      <button mat-icon-button class='button-right' (click)='edit(moment)'>
+        <mat-icon small>edit</mat-icon>
+      </button>
+    </div>
     <p>{{ moment.text }}</p>
     <ng-container *ngIf='moment === current'>
-        <button (click)='next(option.id)' mat-button *ngFor='let option of moment.options'>{{ option.text }}</button>
+      <div class='tab tab-right'>
+        <button mat-icon-button class='button-right' (click)='add(moment)'>
+          <mat-icon small>add</mat-icon>
+        </button>
+      </div>
+      <button (click)='next(option.id)' mat-button *ngFor='let option of moment.options'>{{ option.text }}</button>
+      <span class='spacer'></span>
     </ng-container>
   </div>
 
