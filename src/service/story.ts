@@ -15,5 +15,20 @@ export class StoryService {
         return this.cursor;
     }
 
+    async createMoment(optionText: string, previousMoment: Moment): Promise<Moment> {
+        const moment = {
+            text: 'And then...'
+        };
+        const ref = await this.db.collection('moment').add(moment);
+        const newMoment = await ref.get();
+
+        const option = {
+            text: optionText,
+            id: newMoment.id,
+        };
+        previousMoment.options.push(option);
+        // this.db.collection('moment').doc()
+        return newMoment.data() as Moment;
+    }
 
 }

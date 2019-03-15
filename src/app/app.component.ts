@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoryService } from 'src/service/story';
-import { Moment, Option } from 'src/models/moment';
+import { Moment } from 'src/models/moment';
 import { FormControl } from '@angular/forms';
 
 
@@ -11,9 +11,9 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   moments: Moment[] = [];
-  customOption: Option = null;
+  customOption = false;
 
-  optionFormControl = new FormControl('', []);
+  optionText = new FormControl('', []);
 
   get current(): Moment {
     return this.moments[this.moments.length - 1];
@@ -40,10 +40,10 @@ export class AppComponent implements OnInit {
   }
 
   add() {
-    this.customOption = {
-      id: null,
-      text: 'Continue',
-      editing: true,
-    };
+    this.customOption = true;
+  }
+
+  save() {
+    console.log(this.optionText);
   }
 }
