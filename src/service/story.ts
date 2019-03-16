@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Moment } from 'src/models/moment';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class StoryService {
@@ -25,7 +26,7 @@ export class StoryService {
             id: ref.id,
         };
         await this.cursor.update({
-            options: [ option ]
+            options: firebase.firestore.FieldValue.arrayUnion(option),
         });
         this.cursor = ref;
         return (await this.cursor.get()).data() as Moment;

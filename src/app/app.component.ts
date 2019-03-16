@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
       return console.log('This is the end of the story');
     }
     this.moments.push(moment);
-    console.log(this.current);
   }
 
   edit(moment: Moment) {
@@ -43,7 +42,16 @@ export class AppComponent implements OnInit {
     this.customOption = true;
   }
 
-  save() {
+  async save() {
     console.log(this.optionText);
+    if (!this.optionText.value) {
+      return;
+    }
+    const moment = await this.story.createMoment(this.optionText.value);
+    if (!moment) {
+      return console.log('Failure to create');
+    }
+    this.customOption = false;
+    this.moments.push(moment);
   }
 }

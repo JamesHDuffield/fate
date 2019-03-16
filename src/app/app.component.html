@@ -12,7 +12,7 @@
       </form>
       <ng-container *ngIf='!customOption'>
         <app-tab-button icon='add' (clicked)='add(moment)'></app-tab-button>
-        <button (click)='next(option.id)' mat-button *ngFor='let option of moment.options'>{{ option.text }}</button>
+        <button (click)='next(option.id)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
       </ng-container>
     </ng-container>
   </div>
