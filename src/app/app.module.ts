@@ -1,7 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+  MatListModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatGridListModule
+} from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -27,9 +35,10 @@ import { TabButtonComponent } from './tab-button/tab-button.component';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatToolbarModule,
+    MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatGridListModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],

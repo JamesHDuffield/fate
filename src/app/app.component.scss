@@ -1,10 +1,35 @@
-mat-card.reader {
+mat-card {
     margin-top: 3vh;
     margin-bottom: 3vh;
     margin-left: auto;
     margin-right: auto;
-    max-width: 500px;
+    width: calc(50vw);
     height: 90vh;
+}
+
+
+.reader {
+    height: 100%;
+    width: calc(100% + 55px);
+
+    overflow-y: scroll;
+    overflow-x: visible;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+    &::-webkit-scrollbar { /* WebKit */
+        width: 0;
+        height: 0;
+    }
+
+    p, mat-form-field, button {
+        max-width: calc(100% - 55px);
+    }
+
+    .tab-buttons {
+        position: absolute;
+        right: 0px;
+    }
 }
 
 .spacer {
@@ -17,4 +42,12 @@ mat-card.reader {
 
 .button-option {
     display: block;
+}
+
+.mat-list-item {
+    height: auto !important;
+}
+
+.mat-list-base .mat-list-item button {
+    font-size: 14px !important;
 }
