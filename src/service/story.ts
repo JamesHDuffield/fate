@@ -32,4 +32,9 @@ export class StoryService {
         return (await this.cursor.get()).data() as Moment;
     }
 
+    async updateMomentText(text: string): Promise<Moment> {
+        await this.cursor.set({ text }, { merge: true });
+        return (await this.cursor.get()).data() as Moment;
+    }
+
 }

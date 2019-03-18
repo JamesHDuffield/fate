@@ -12,11 +12,17 @@ import { FormControl } from '@angular/forms';
 export class AppComponent implements OnInit {
   moments: Moment[] = [];
   customOption = false;
+  customText = false;
 
+  text = new FormControl('', []);
   optionText = new FormControl('', []);
 
   get current(): Moment {
     return this.moments[this.moments.length - 1];
+  }
+
+  set current(moment: Moment) {
+    this.moments[this.moments.length - 1] = moment;
   }
 
   constructor(public story: StoryService) {
@@ -27,6 +33,8 @@ export class AppComponent implements OnInit {
   }
 
   async next(id: string) {
+    this.customText = false;
+    this.customOption = false;
     const moment = await this.story.fetchMoment(id);
     if (!moment) {
       return console.log('This is the end of the story');
@@ -34,16 +42,16 @@ export class AppComponent implements OnInit {
     this.moments.push(moment);
   }
 
-  edit(moment: Moment) {
-    console.log('Editing not implemented');
+  edit() {
+    this.text.setValue(this.current.text);
+    this.customText = true;
   }
 
   add() {
     this.customOption = true;
   }
 
-  async save() {
-    console.log(this.optionText);
+  async saveOption() {
     if (!this.optionText.value) {
       return;
     }
@@ -53,5 +61,14 @@ export class AppComponent implements OnInit {
     }
     this.customOption = false;
     this.moments.push(moment);
+    this.customText = true;
+  }
+
+  async saveText() {
+    if (!this.text.value) {
+      return;
+    }
+    this.current = await this.story.updateMomentText(this.text.value);
+    this.customText = false;
   }
 }

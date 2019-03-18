@@ -1,13 +1,17 @@
 <router-outlet></router-outlet>
 <mat-card class='reader'>
   <div *ngFor='let moment of moments'>
-    <app-tab-button *ngIf='moment === current' icon='edit' (clicked)='edit(moment)'></app-tab-button>
-    <p>{{ moment.text }}</p>
+    <app-tab-button *ngIf='moment === current && !customText' icon='edit' (clicked)='edit()'></app-tab-button>
+    <app-tab-button *ngIf='moment === current && customText' icon='save' (clicked)='saveText()'></app-tab-button>
+    <p *ngIf='moment !== current || !customText'>{{ moment.text }}</p>
+    <mat-form-field *ngIf='moment === current && customText' class="full-width">
+      <textarea matInput matTextareaAutosize placeholder="What happens?" [formControl]="text"></textarea>
+    </mat-form-field>
     <ng-container *ngIf='moment === current'>
       <form class="option-form" *ngIf='customOption'>
-        <app-tab-button icon='save' (clicked)='save(moment)' *ngIf='optionText.value'></app-tab-button>
+        <app-tab-button icon='save' (clicked)='saveOption()' *ngIf='optionText.value'></app-tab-button>
         <mat-form-field class="full-width">
-          <input matInput placeholder="" [formControl]="optionText">
+          <input matInput placeholder="Describe the choice" [formControl]="optionText">
         </mat-form-field>
       </form>
       <ng-container *ngIf='!customOption'>
