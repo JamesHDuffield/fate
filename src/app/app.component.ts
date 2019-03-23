@@ -2,12 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { StoryService } from 'src/service/story';
 import { Moment } from 'src/models/moment';
 import { FormControl } from '@angular/forms';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('triggerName', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [
+        style({opacity: 0}),
+        animate('600ms 300ms')
+      ]),
+      transition(':leave', animate(300, style({opacity: 0})))
+    ]),
+  ],
 })
 export class AppComponent implements OnInit {
   moments: Moment[] = [];
