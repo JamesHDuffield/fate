@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as firebaseui from 'firebaseui';
 import * as firebase from 'firebase';
 
 @Injectable({
