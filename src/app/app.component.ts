@@ -3,7 +3,7 @@ import { StoryService } from 'src/service/story';
 import { Moment } from 'src/models/moment';
 import { FormControl } from '@angular/forms';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { AuthService } from './auth.service';
+import { AuthService } from '../service/auth';
 
 
 @Component({
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   moments: Moment[] = [];
   customOption = false;
   customText = false;
+  user$ = this.auth.user$;
 
   text = new FormControl('', []);
   optionText = new FormControl('', []);
