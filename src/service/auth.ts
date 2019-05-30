@@ -13,7 +13,6 @@ export class AuthService {
   firebaseUser$ = new BehaviorSubject<firebase.User>(null);
   user$: Observable<User> = this.firebaseUser$
     .pipe(
-      tap((v) => console.log(v)),
       filter((firebaseUser) => !!firebaseUser && !!firebaseUser.uid),
       switchMap((firebaseUser) => this.db.collection('users').doc<User>(firebaseUser.uid).valueChanges()),
     );
