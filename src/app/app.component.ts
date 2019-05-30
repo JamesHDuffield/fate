@@ -3,6 +3,7 @@ import { StoryService } from 'src/service/story';
 import { Moment } from 'src/models/moment';
 import { FormControl } from '@angular/forms';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { AuthService } from './auth.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
     this.moments[this.moments.length - 1] = moment;
   }
 
-  constructor(public story: StoryService) {
+  constructor(public story: StoryService, private auth: AuthService) {
   }
 
   ngOnInit() {

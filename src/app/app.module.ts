@@ -20,6 +20,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { TabButtonComponent } from './tab-button/tab-button.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],
-  providers: [AngularFirestore, StoryService],
+  providers: [AngularFirestore, StoryService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
