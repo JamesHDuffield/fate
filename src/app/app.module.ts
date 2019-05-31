@@ -8,7 +8,7 @@ import {
   MatListModule,
   MatFormFieldModule,
   MatInputModule,
-  MatGridListModule
+  MatGridListModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
+import { LocationService } from '../service/location';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { AuthService } from '../service/auth';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],
-  providers: [AngularFirestore, StoryService, AuthService],
-  bootstrap: [AppComponent]
+  providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

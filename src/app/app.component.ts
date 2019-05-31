@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { StoryService } from 'src/service/story';
-import { Moment } from 'src/models/moment';
+import { StoryService } from '../service/story';
+import { Moment } from '../models/moment';
 import { FormControl } from '@angular/forms';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from '../service/auth';
-
+import { LocationService } from '../service/location';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   customOption = false;
   customText = false;
   user$ = this.auth.user$;
+  zone$ = this.location.zone$;
+  locations$ = this.location.locations$;
 
   text = new FormControl('', []);
   optionText = new FormControl('', []);
@@ -38,7 +40,7 @@ export class AppComponent implements OnInit {
     this.moments[this.moments.length - 1] = moment;
   }
 
-  constructor(public story: StoryService, private auth: AuthService) {
+  constructor(public story: StoryService, private auth: AuthService, private location: LocationService) {
   }
 
   ngOnInit() {

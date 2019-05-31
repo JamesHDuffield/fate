@@ -14,7 +14,9 @@ export class AuthService {
   user$: Observable<User> = this.firebaseUser$
     .pipe(
       filter((firebaseUser) => !!firebaseUser && !!firebaseUser.uid),
-      switchMap((firebaseUser) => this.db.collection('users').doc<User>(firebaseUser.uid).valueChanges()),
+      switchMap((firebaseUser) => this.db.collection('users')
+        .doc<User>(firebaseUser.uid)
+        .valueChanges()),
     );
 
   constructor(private db: AngularFirestore) {
