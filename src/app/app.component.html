@@ -1,7 +1,18 @@
+<mat-toolbar>
+  <span *ngIf='user$ | async; let user'>
+      {{ user.username }}
+  </span>
+  <span class="fill-remaining-space"></span>
+
+  <span *ngIf='zone$ | async; let zone'>
+    {{ zone.name }}
+  </span>
+</mat-toolbar>
+
 <router-outlet></router-outlet>
-{{ user$ | async | json }}
-{{ zone$ | async | json }}
-{{ locations$ | async | json }}
+
+<app-map></app-map>
+
 <mat-card>
   <div class="reader">
     <mat-list>

@@ -1,0 +1,20 @@
+.boundary {
+  border: 1px solid lightgrey;
+  width: 200px;
+  height: 200px;
+}
+
+.center-location {
+  position: relative;
+  left: 100px;
+  top: 100px;
+  height: 0px;
+  width: 0px;
+}
+
+.location {
+  border: double 2px darkgrey;
+  width: 2px;
+  height: 2px;
+  position: relative;
+}

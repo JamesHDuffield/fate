@@ -9,6 +9,7 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatGridListModule,
+  MatToolbarModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -22,11 +23,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
 import { LocationService } from '../service/location';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TabButtonComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { LocationService } from '../service/location';
     MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
+    MatToolbarModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],

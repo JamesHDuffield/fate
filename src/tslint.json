@@ -1,5 +1,10 @@
 {
   "extends": "../tslint.json",
+  "linterOptions": {
+    "exclude": [
+        "**/*.spec.ts"
+      ]
+  },
   "rules": {
     "directive-selector": [
       true,
