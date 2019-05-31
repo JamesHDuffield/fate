@@ -17,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoryService } from '../service/story';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
@@ -45,6 +45,6 @@ import { LocationService } from '../service/location';
     AngularFirestoreModule,
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
 })
 export class AppModule { }

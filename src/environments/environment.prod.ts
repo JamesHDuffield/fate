@@ -6,6 +6,6 @@ export const environment = {
     databaseURL: 'https://fate-read.firebaseio.com',
     projectId: 'fate-read',
     storageBucket: 'fate-read.appspot.com',
-    messagingSenderId: '844222987550'
-  }
+    messagingSenderId: '844222987550',
+  },
 };

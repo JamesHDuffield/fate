@@ -7,10 +7,11 @@ describe('TabButtonComponent', () => {
   let fixture: ComponentFixture<TabButtonComponent>;
 
   beforeEach(async(() => {
+    // tslint:disable-next-line: no-floating-promises
     TestBed.configureTestingModule({
-      declarations: [ TabButtonComponent ]
+      declarations: [ TabButtonComponent ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,6 +21,8 @@ describe('TabButtonComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    // tslint:disable-next-line: no-floating-promises
+    expect(component)
+      .toBeTruthy();
   });
 });

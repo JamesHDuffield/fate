@@ -1,10 +1,10 @@
 export interface Option {
-    text: string;
-    id: string;
-    editing?: boolean;
+  text: string;
+  id: string;
+  editing?: boolean;
 }
 
 export interface Moment {
-    text: string;
-    options: Option[];
+  text: string;
+  options: Option[];
 }

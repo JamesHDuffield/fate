@@ -9,15 +9,15 @@ import { LocationService } from '../service/location';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: [ './app.component.scss' ],
   animations: [
     trigger('triggerName', [
       state('in', style({ opacity: 1 })),
       transition(':enter', [
-        style({opacity: 0}),
-        animate('600ms 300ms')
+        style({ opacity: 0 }),
+        animate('600ms 300ms'),
       ]),
-      transition(':leave', animate(300, style({opacity: 0})))
+      transition(':leave', animate(300, style({ opacity: 0 }))),
     ]),
   ],
 })
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.next('28XpmJyD2JUkNr9eNyKA');
+    return this.next('28XpmJyD2JUkNr9eNyKA');
   }
 
   async next(id: string) {

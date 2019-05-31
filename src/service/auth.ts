@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
@@ -21,28 +21,32 @@ export class AuthService {
 
   constructor(private db: AngularFirestore) {
     (<any>window).logout = this.logout;
+    // tslint:disable-next-line: no-floating-promises
     this.setup();
   }
 
   async setup() {
     firebase.auth()
-      .onAuthStateChanged((user) => {
-        if (user) {
-          console.log('User', user);
-          this.firebaseUser$.next(user);
-        } else {
-          this.login();
-        }
-      },
-      (error) => console.error(error));
+      .onAuthStateChanged(
+        (user) => {
+          if (user) {
+            this.firebaseUser$.next(user);
+          } else {
+            return this.login();
+          }
+        },
+        (error) => console.error(error),
+      );
   }
 
   async login() {
-    firebase.auth().signInWithRedirect(this.provider);
+    return firebase.auth()
+      .signInWithRedirect(this.provider);
   }
 
   async logout() {
-    return firebase.auth().signOut();
+    return firebase.auth()
+      .signOut();
   }
 
 }
