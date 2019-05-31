@@ -1,7 +1,7 @@
+<div *ngIf='!(locations$ | async)'>Loading...</div>
 <div class="boundary">
-  <div class="center-location" *ngFor='let location of locations$ | async'>
-    <div class="location" [style.top.px]='yPxRelativeToCurrent(location)' [style.left.px]='xPxRelativeToCurrent(location)'>
-    </div>
-  </div>
+  <canvas #mapCanvas></canvas>
 </div>
+
+
 
