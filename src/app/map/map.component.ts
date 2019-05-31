@@ -1,7 +1,8 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { LocationService } from '../../service/location';
 import { Location } from '../../models/location';
-import { filter, tap } from 'rxjs/operators';
+import { filter, tap, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -13,14 +14,10 @@ export class MapComponent implements AfterViewInit {
   HEIGHT = 200;
   WIDTH = 200;
 
-  currentLocation = { x: 0, y: 0 };
-  currentLocation$ = this.location.currentLocation$
-    .subscribe((cl: Location) => this.currentLocation = cl);
-
-  locations$ = this.location.locations$
+  locations$ = combineLatest(this.location.currentLocation$, this.location.locations$)
     .pipe(
-      filter((locations) => !!locations),
-      tap((locations) => this.redraw(locations)),
+      distinctUntilChanged(),
+      tap((results) => this.redraw(results[0], results[1])),
     );
 
   @ViewChild('mapCanvas') myCanvas: ElementRef;
@@ -32,13 +29,13 @@ export class MapComponent implements AfterViewInit {
     this.ctx = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
   }
 
-  yPxRelativeToCurrent(location: Location): number {
-    const lat = this.currentLocation.y - location.y;
+  yPxRelativeToCurrent(current: Location, location: Location): number {
+    const lat = current.y - location.y;
     return (lat * this.SCALE) + (this.WIDTH / 2);
   }
 
-  xPxRelativeToCurrent(location: Location): number {
-    const long = this.currentLocation.x - location.x;
+  xPxRelativeToCurrent(current: Location, location: Location): number {
+    const long = current.x - location.x;
     return (-long * this.SCALE) + (this.HEIGHT / 2);
   }
 
@@ -46,24 +43,21 @@ export class MapComponent implements AfterViewInit {
 
   triangle(x: number, y: number) {
     this.ctx.beginPath();
-    this.ctx.moveTo(x, y - 2);
+    this.ctx.moveTo(x, y - 3);
     this.ctx.lineTo(x + 3, y + 3);
     this.ctx.lineTo(x - 3, y + 3);
     this.ctx.closePath();
-
     // the outline
-    this.ctx.lineWidth = 3;
-    this.ctx.strokeStyle = '#666666';
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = '#000000';
     this.ctx.stroke();
- 
     // the fill color
     this.ctx.fillStyle = '#FFCC00';
     this.ctx.fill();
   }
 
-  async redraw (locations: Location[]) {
+  async redraw (current:Location, locations: Location[]) {
 
-    
     this.ctx.canvas.height = this.HEIGHT;
     this.ctx.canvas.width = this.WIDTH;
 
@@ -72,8 +66,8 @@ export class MapComponent implements AfterViewInit {
 
     locations.forEach(async (location) => {
       // Draw directions
-      const x = this.xPxRelativeToCurrent(location);
-      const y = this.yPxRelativeToCurrent(location);
+      const x = this.xPxRelativeToCurrent(current, location);
+      const y = this.yPxRelativeToCurrent(current, location);
       this.ctx.fillStyle = '#494949';
       if (location.N) {
         this.ctx.fillRect(x - 2, y - 15, 4, 17);

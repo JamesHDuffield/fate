@@ -28,7 +28,7 @@ export class LocationService {
   currentLocation$ = this.auth.user$
     .pipe(
       filter((user) => !!user && !!user.location),
-      switchMap((user) => this.db.doc(user.location)
+      switchMap((user) => this.db.doc<Location>(user.location)
         .valueChanges()),
     );
 
