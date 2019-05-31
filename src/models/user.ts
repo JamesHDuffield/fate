@@ -1,5 +1,8 @@
-interface User {
+import { DocumentReference } from '@angular/fire/firestore';
+
+export interface User {
   admin?: boolean;
   username: string;
-  zone?: string;
+  zone?: DocumentReference;
+  location?: DocumentReference;
 }

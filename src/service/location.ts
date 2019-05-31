@@ -13,17 +13,22 @@ export class LocationService {
   zone$ = this.auth.user$
     .pipe(
       filter((user) => !!user && !!user.zone),
-      switchMap((user) => this.db.collection('zones')
-        .doc<Zone>(user.zone)
+      switchMap((user) => this.db.doc(user.zone.path)
         .valueChanges()),
     );
 
   locations$ = this.auth.user$
     .pipe(
       filter((user) => !!user && !!user.zone),
-      switchMap((user) => this.db.collection('zones')
-        .doc<Zone>(user.zone)
+      switchMap((user) => this.db.doc(user.zone.path)
         .collection<Location>('locations')
+        .valueChanges()),
+    );
+
+  currentLocation$ = this.auth.user$
+    .pipe(
+      filter((user) => !!user && !!user.location),
+      switchMap((user) => this.db.doc(user.location)
         .valueChanges()),
     );
 

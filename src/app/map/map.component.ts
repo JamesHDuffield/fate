@@ -14,6 +14,9 @@ export class MapComponent implements AfterViewInit {
   WIDTH = 200;
 
   currentLocation = { x: 0, y: 0 };
+  currentLocation$ = this.location.currentLocation$
+    .subscribe((cl: Location) => this.currentLocation = cl);
+
   locations$ = this.location.locations$
     .pipe(
       filter((locations) => !!locations),
@@ -39,9 +42,28 @@ export class MapComponent implements AfterViewInit {
     return (-long * this.SCALE) + (this.HEIGHT / 2);
   }
 
+  // tslint:disable: no-magic-numbers
+
+  triangle(x: number, y: number) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y - 2);
+    this.ctx.lineTo(x + 3, y + 3);
+    this.ctx.lineTo(x - 3, y + 3);
+    this.ctx.closePath();
+
+    // the outline
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeStyle = '#666666';
+    this.ctx.stroke();
+ 
+    // the fill color
+    this.ctx.fillStyle = '#FFCC00';
+    this.ctx.fill();
+  }
+
   async redraw (locations: Location[]) {
 
-    // tslint:disable: no-magic-numbers
+    
     this.ctx.canvas.height = this.HEIGHT;
     this.ctx.canvas.width = this.WIDTH;
 
@@ -71,7 +93,10 @@ export class MapComponent implements AfterViewInit {
       }
     });
 
-    // tslint:enable: no-magic-numbers
+    this.triangle(this.WIDTH / 2, this.HEIGHT / 2);
+
   }
+
+  // tslint:enable: no-magic-numbers
 
 }

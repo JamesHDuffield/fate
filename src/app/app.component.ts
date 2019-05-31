@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
   customText = false;
   user$ = this.auth.user$;
   zone$ = this.location.zone$;
-  locations$ = this.location.locations$;
 
   text = new FormControl('', []);
   optionText = new FormControl('', []);

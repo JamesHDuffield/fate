@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
