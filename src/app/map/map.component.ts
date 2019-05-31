@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { LocationService } from '../../service/location';
-import { firestore } from 'firebase';
 import { Location } from '../../models/location';
 import { filter, tap } from 'rxjs/operators';
 
