@@ -22,7 +22,6 @@ export class StoryService {
       filter((user) => !!user),
       switchMap((user) => this.db.doc<Moment>(user.moment)
         .valueChanges()),
-      tap((current) => console.log(current)),
     );
 
   cursor: DocumentReference;
@@ -51,13 +50,7 @@ export class StoryService {
       .toPromise();
   }
 
-  async fetchMoment(id: string): Promise<Moment> {
-    this.cursor = this.db.collection('moment')
-      .doc(id).ref;
-    return (await this.cursor.get()).data() as Moment;
-  }
-
-  async createMoment(optionText: string): Promise<Moment> {
+  async createMoment(optionText: string): Promise<void> {
     const moment = {
       text: 'And then...',
     };
@@ -68,16 +61,29 @@ export class StoryService {
       text: optionText,
       id: ref.id,
     };
-    await this.cursor.update({
-      options: firebase.firestore.FieldValue.arrayUnion(option),
-    });
-    this.cursor = ref;
-    return (await this.cursor.get()).data() as Moment;
+    await this.auth.user$
+      .pipe(
+        map((user) => this.db.doc<Moment>(user.moment)),
+        first(),
+        map((momentDoc) => momentDoc.set(<any>{ options: firebase.firestore.FieldValue.arrayUnion(option) }, { merge: true })),
+      )
+      .toPromise();
+
+    await this.auth.userDoc$
+      .pipe(
+        map((momentDoc) => momentDoc.set({ moment: ref }, { merge: true })),
+      )
+      .toPromise();
   }
 
-  async updateMomentText(text: string): Promise<Moment> {
-    await this.cursor.set({ text }, { merge: true });
-    return (await this.cursor.get()).data() as Moment;
+  async updateMomentText(text: string): Promise<void> {
+    return this.auth.user$
+      .pipe(
+        map((user) => this.db.doc<Moment>(user.moment)),
+        first(),
+        switchMap((momentDoc) => momentDoc.set(<any>{ text }, { merge: true })),
+      )
+      .toPromise();
   }
 
 }

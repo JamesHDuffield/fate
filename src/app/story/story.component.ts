@@ -47,10 +47,7 @@ export class StoryComponent {
     if (!this.optionText.value) {
       return;
     }
-    const moment = await this.story.createMoment(this.optionText.value);
-    if (!moment) {
-      return console.log('Failure to create');
-    }
+    await this.story.createMoment(this.optionText.value);
     this.customOption = false;
     this.customText = true;
   }
