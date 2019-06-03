@@ -40,6 +40,16 @@ mat-card {
     width: 100%;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+  
+.container > * {
+   width: 100%;
+}
+
 .button-option {
     display: block;
 }

@@ -10,6 +10,8 @@ import {
   MatInputModule,
   MatGridListModule,
   MatToolbarModule,
+  MatOptionModule,
+  MatSelectModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -47,6 +49,8 @@ import { StoryComponent } from './story/story.component';
     MatInputModule,
     MatGridListModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatOptionModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],

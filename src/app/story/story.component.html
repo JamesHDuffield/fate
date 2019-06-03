@@ -13,9 +13,16 @@
           </div>
         </mat-list-item>
         <mat-list-item [@triggerName]="'in'" *ngIf='customOption'>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Describe the choice" [formControl]="optionText">
-          </mat-form-field>
+          <div class='container'>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Describe the choice" [formControl]="optionText">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Select">
+                <mat-option value="option">Option</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <div class='tab-buttons'>
             <app-tab-button icon='save' (clicked)='saveOption()' *ngIf='customOption && optionText.value'></app-tab-button>
           </div>
