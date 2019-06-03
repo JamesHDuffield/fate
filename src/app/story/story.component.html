@@ -1,0 +1,34 @@
+<mat-card>
+  <div class="reader">
+    <mat-list>
+      <ng-container *ngIf='current$ | async; let moment'>
+        <mat-list-item [@triggerName]="'in'">
+          <p *ngIf='!customText'>{{ moment.text }}</p>
+          <mat-form-field *ngIf='customText' class="full-width">
+            <textarea matInput matTextareaAutosize placeholder="What happens?" [formControl]="text"></textarea>
+          </mat-form-field>
+          <div class='tab-buttons'>
+            <app-tab-button *ngIf='!customText' icon='edit' (clicked)='edit(moment.text)'></app-tab-button>
+            <app-tab-button *ngIf='customText' icon='save' (clicked)='saveText()'></app-tab-button>
+          </div>
+        </mat-list-item>
+        <mat-list-item [@triggerName]="'in'" *ngIf='customOption'>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Describe the choice" [formControl]="optionText">
+          </mat-form-field>
+          <div class='tab-buttons'>
+            <app-tab-button icon='save' (clicked)='saveOption()' *ngIf='customOption && optionText.value'></app-tab-button>
+          </div>
+        </mat-list-item>
+        <ng-container *ngIf='!customOption'>
+          <mat-list-item [@triggerName]="'in'"> 
+            <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
+            <div class='tab-buttons'>
+              <app-tab-button icon='add' (clicked)='add(moment)' *ngIf='!customOption'></app-tab-button>
+            </div>
+          </mat-list-item>
+          </ng-container>
+      </ng-container>
+    </mat-list>
+  </div>
+</mat-card>

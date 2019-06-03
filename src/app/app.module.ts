@@ -24,12 +24,14 @@ import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
 import { LocationService } from '../service/location';
 import { MapComponent } from './map/map.component';
+import { StoryComponent } from './story/story.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TabButtonComponent,
     MapComponent,
+    StoryComponent,
   ],
   imports: [
     BrowserModule,

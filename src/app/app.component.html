@@ -4,7 +4,7 @@
   </span>
   <span class="fill-remaining-space"></span>
 
-  <span *ngIf='zone$ | async; let zone'>
+  <span *ngIf='zone$ | async; let zone' (click)='storyService.progressToLocation()'>
     {{ zone.name }}
   </span>
 </mat-toolbar>
@@ -13,39 +13,4 @@
 
 <app-map></app-map>
 
-<mat-card>
-  <div class="reader">
-    <mat-list>
-      <ng-container *ngFor='let moment of moments'>
-        <mat-list-item [@triggerName]="'in'">
-          <p *ngIf='moment !== current || !customText'>{{ moment.text }}</p>
-          <mat-form-field *ngIf='moment === current && customText' class="full-width">
-            <textarea matInput matTextareaAutosize placeholder="What happens?" [formControl]="text"></textarea>
-          </mat-form-field>
-          <div class='tab-buttons'>
-            <app-tab-button *ngIf='moment === current && !customText' icon='edit' (clicked)='edit()'></app-tab-button>
-            <app-tab-button *ngIf='moment === current && customText' icon='save' (clicked)='saveText()'></app-tab-button>
-          </div>
-        </mat-list-item>
-        <ng-container *ngIf='moment === current'>
-          <mat-list-item [@triggerName]="'in'" *ngIf='customOption'>
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Describe the choice" [formControl]="optionText">
-            </mat-form-field>
-            <div class='tab-buttons'>
-              <app-tab-button icon='save' (clicked)='saveOption()' *ngIf='customOption && optionText.value'></app-tab-button>
-            </div>
-          </mat-list-item>
-          <ng-container *ngIf='!customOption'>
-            <mat-list-item [@triggerName]="'in'"> 
-              <button mat-line (click)='next(option.id)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
-              <div class='tab-buttons'>
-                <app-tab-button icon='add' (clicked)='add(moment)' *ngIf='!customOption'></app-tab-button>
-              </div>
-            </mat-list-item>
-          </ng-container>
-        </ng-container>
-      </ng-container>
-    </mat-list>
-  </div>
-</mat-card>
+<app-story></app-story>

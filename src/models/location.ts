@@ -7,4 +7,5 @@ export interface Location {
   E?: boolean;
   W?: boolean;
   road?: boolean;
+  moment?: firebase.firestore.DocumentReference;
 }
