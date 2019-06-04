@@ -27,6 +27,7 @@ import { AuthService } from '../service/auth';
 import { LocationService } from '../service/location';
 import { MapComponent } from './map/map.component';
 import { StoryComponent } from './story/story.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { StoryComponent } from './story/story.component';
     MatOptionModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    HttpClientModule,
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
   bootstrap: [ AppComponent ],

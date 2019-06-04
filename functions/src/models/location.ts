@@ -1,12 +1,13 @@
+import { DocumentReference } from "@google-cloud/firestore";
 
 export interface Location {
   x: number;
   y: number;
-  connections?: firebase.firestore.DocumentReference[];
+  connections?: DocumentReference[];
   N?: boolean;
   S?: boolean;
   E?: boolean;
   W?: boolean;
   road?: boolean;
-  moment?:  firebase.firestore.DocumentReference;
+  moment?: DocumentReference;
 }

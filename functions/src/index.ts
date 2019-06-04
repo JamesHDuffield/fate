@@ -11,6 +11,9 @@ import * as express from 'express';
 import { json } from 'body-parser';
 import * as cors from 'cors';
 import * as bearerToken from 'express-bearer-token';
+import { DatabaseService } from './services/db';
+import { choose } from './operations/choose';
+import { create } from './operations/create';
 
 // Setup
 admin.initializeApp();
@@ -21,6 +24,9 @@ app.use(cors());
 app.use(bearerToken({ headerKey: 'Bearer', queryKey: 'token', bodyKey: 'token' }));
 app.use(auth);
 
-app.post('/choose/:momentId');
+app.locals.db = new DatabaseService(admin.firestore());
+
+app.post('/choose/:momentId', choose);
+app.post('/create', create);
 
 export const api = functions.https.onRequest(app);

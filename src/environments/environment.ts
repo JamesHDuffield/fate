@@ -12,6 +12,7 @@ export const environment = {
     storageBucket: 'fate-read.appspot.com',
     messagingSenderId: '844222987550',
   },
+  url: 'http://localhost:5000/fate-read/us-central1/api',
 };
 
 /*
