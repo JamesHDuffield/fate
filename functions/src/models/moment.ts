@@ -2,9 +2,9 @@ import { DocumentReference } from '@google-cloud/firestore';
 
 export interface Option {
   text: string;
-  id: string;
-  moment: DocumentReference
-  editing?: boolean;
+  id: number;
+  moment?: DocumentReference;
+  location?: DocumentReference;
 }
 
 export interface Moment {

@@ -5,7 +5,7 @@ import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import { LocationService } from './location';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, switchMap, map, first } from 'rxjs/operators';
+import { filter, switchMap, map, first, take, tap } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 
@@ -29,9 +29,11 @@ export class StoryService {
 
   constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient) {}
 
-  async request<T>(path: string, body: Object | boolean = true): Promise<T> {
+  async request<T>(path: string, body: Object = null): Promise<T> {
+    console.log(path);
     const token = await firebase.auth().currentUser
       .getIdToken();
+    console.log(token);
     return this.http.post<T>(`${environment.url}${path}`, body, { headers: { Authorization: `Bearer ${token}` } })
       .toPromise();
   }
@@ -52,8 +54,8 @@ export class StoryService {
       .toPromise();
   }
 
-  async createMoment(text: string): Promise<void> {
-    return this.request('/create', { text });
+  async createMoment(body: any): Promise<void> {
+    return this.request('/create', body);
   }
 
   async updateMomentText(text: string): Promise<void> {

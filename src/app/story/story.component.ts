@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StoryService } from '../../service/story';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Option } from '../../models/moment';
 
 @Component({
@@ -22,8 +22,11 @@ import { Option } from '../../models/moment';
 export class StoryComponent {
   customOption = false;
   customText = false;
-  text = new FormControl('', []);
-  optionText = new FormControl('', []);
+  text = new FormControl('');
+  optionForm = new FormGroup({
+    text: new FormControl(''),
+    type: new FormControl('moment'),
+  });
   current$ = this.story.current$;
 
   constructor(private story: StoryService) { }
@@ -44,10 +47,10 @@ export class StoryComponent {
   }
 
   async saveOption() {
-    if (!this.optionText.value) {
+    if (this.optionForm.invalid) {
       return;
     }
-    await this.story.createMoment(this.optionText.value);
+    await this.story.createMoment(this.optionForm.value);
     this.customOption = false;
     this.customText = true;
   }

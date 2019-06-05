@@ -10,6 +10,9 @@ export class TabButtonComponent {
   @Input()
   icon: string;
 
+  @Input()
+  disabled: boolean;
+
   @Output()
   clicked: EventEmitter<void> = new EventEmitter<void>();
 

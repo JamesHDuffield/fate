@@ -1,7 +1,7 @@
 import { User } from '../models/user';
 import { Moment, Option } from '../models/moment';
+import { Location } from '../models/location';
 import { DocumentReference } from '@google-cloud/firestore';
-import * as admin from 'firebase-admin';
 
 export class DatabaseService {
 
@@ -21,6 +21,15 @@ export class DatabaseService {
       }, { merge: true });
   }
 
+  async userToLocation(uid: string, locationRef: DocumentReference): Promise<void> {
+    const location = await locationRef.get();
+    await this.firestore.doc(`/users/${uid}`)
+      .set({
+        location: locationRef,
+        moment: location.data().moment,
+      }, { merge: true })
+  }
+
   async getRef<T>(docRef: DocumentReference): Promise<T> {
     const ref = await docRef.get();
     return ref.data() as T;
@@ -38,13 +47,29 @@ export class DatabaseService {
     return this.firestore.collection('moment').add(moment);
   }
 
+  async createLocation(zone: DocumentReference, location: Location): Promise<DocumentReference> {
+    return zone.collection('locations').add(location);
+  }
+
   async addOption(originRef: DocumentReference, moment: Moment, momentRef: DocumentReference, text: string): Promise<void> {
+    const maxId = Math.max(-1, ...moment.options.map((opt)=> opt.id)) + 1;
     const option: Option = {
       text,
       moment: momentRef,
-      id: momentRef.id,
+      id: maxId,
     }
     moment.options.push(option);
     await originRef.set(<any>{ options: moment.options }, { merge: true })
   }
+
+  async getLocationByXY(x: number, y: number): Promise<DocumentReference> {
+    const found = await this.firestore.collection('location')
+      .where('x', '==', x)
+      .where('y', '==', y)
+      .limit(1)
+      .get();
+    return found.empty ? null : found.docs[0].ref;
+  }
+
 }
+

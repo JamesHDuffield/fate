@@ -1,7 +1,10 @@
+import { DocumentReference } from '@angular/fire/firestore';
+
 export interface Option {
   text: string;
-  id: string;
-  editing?: boolean;
+  id: number;
+  moment?: DocumentReference;
+  location?: DocumentReference;
 }
 
 export interface Moment {
