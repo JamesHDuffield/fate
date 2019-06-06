@@ -5,7 +5,11 @@ import { DocumentReference } from '@google-cloud/firestore';
 
 export class DatabaseService {
 
-  constructor(private firestore: FirebaseFirestore.Firestore) { }
+  respawnPoint: DocumentReference;
+
+  constructor(private firestore: FirebaseFirestore.Firestore) {
+    this.respawnPoint = this.firestore.doc('/zones/lPtHuBdQJZ1DRONwtBIH/locations/QpxWih4cW4w3fSHDl3k0'); // TODO make configurable
+  }
 
   async user(uid: string): Promise<User> {
     console.log(uid);

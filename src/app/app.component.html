@@ -4,7 +4,7 @@
   </span>
   <span class="fill-remaining-space"></span>
 
-  <span *ngIf='zone$ | async; let zone' (click)='storyService.progressToLocation()'>
+  <span *ngIf='zone$ | async; let zone' (click)='storyService.respawn()'>
     {{ zone.name }}
   </span>
 </mat-toolbar>

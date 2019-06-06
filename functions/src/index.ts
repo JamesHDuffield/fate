@@ -14,6 +14,7 @@ import * as bearerToken from 'express-bearer-token';
 import { DatabaseService } from './services/db';
 import { choose } from './operations/choose';
 import { create } from './operations/create';
+import { respawn } from './operations/respawn';
 
 // Setup
 admin.initializeApp();
@@ -28,5 +29,6 @@ app.locals.db = new DatabaseService(admin.firestore());
 
 app.post('/choose/:momentId', choose);
 app.post('/create', create);
+app.post('/respawn', respawn)
 
 export const api = functions.https.onRequest(app);

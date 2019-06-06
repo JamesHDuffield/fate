@@ -39,7 +39,7 @@ export class StoryService {
   }
 
   async progressToOption(option: Option): Promise<void> {
-    if (!option || !option.id) {
+    if (!option || isNaN(option.id)) {
       return;
     }
     await this.request(`/choose/${option.id}`);
@@ -56,6 +56,10 @@ export class StoryService {
 
   async createMoment(body: any): Promise<void> {
     return this.request('/create', body);
+  }
+
+  async respawn(): Promise<void> {
+    return this.request('/respawn');
   }
 
   async updateMomentText(text: string): Promise<void> {
