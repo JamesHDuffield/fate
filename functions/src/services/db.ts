@@ -12,9 +12,7 @@ export class DatabaseService {
   }
 
   async user(uid: string): Promise<User> {
-    console.log(uid);
     const ref = await this.firestore.doc(`/users/${uid}`).get();
-    console.log(ref);
     return ref.data() as User;
   }
 
@@ -55,15 +53,11 @@ export class DatabaseService {
     return zone.collection('locations').add(location);
   }
 
-  async addOption(originRef: DocumentReference, moment: Moment, momentRef: DocumentReference, text: string): Promise<void> {
-    const maxId = Math.max(-1, ...moment.options.map((opt)=> opt.id)) + 1;
-    const option: Option = {
-      text,
-      moment: momentRef,
-      id: maxId,
-    }
-    moment.options.push(option);
-    await originRef.set(<any>{ options: moment.options }, { merge: true })
+  async addOption(currentRef: DocumentReference, option: Partial<Option>): Promise<void> {
+    const current = await this.getRef<Moment>(currentRef);
+    option.id = Math.max(-1, ...current.options.map((opt)=> opt.id)) + 1;
+    current.options.push(option as Option);
+    await currentRef.set(<any>{ options: current.options }, { merge: true })
   }
 
   async getLocationByXY(x: number, y: number): Promise<DocumentReference> {
