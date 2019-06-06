@@ -12,6 +12,7 @@ import {
   MatToolbarModule,
   MatOptionModule,
   MatSelectModule,
+  MatSnackBarModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -52,6 +53,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatToolbarModule,
     MatSelectModule,
     MatOptionModule,
+    MatSnackBarModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,

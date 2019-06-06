@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
@@ -8,6 +8,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { filter, switchMap, map, first, take, tap } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class StoryService {
@@ -27,14 +28,18 @@ export class StoryService {
 
   cursor: DocumentReference;
 
-  constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient) {}
+  constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) {}
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
     const token = await firebase.auth().currentUser
       .getIdToken();
     return this.http.post<T>(`${environment.url}${path}`, body, { headers: { Authorization: `Bearer ${token}` } })
-      .toPromise();
+      .toPromise()
+      .catch((e: HttpErrorResponse) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        throw e;
+      });
   }
 
   async progressToOption(option: Option): Promise<void> {
