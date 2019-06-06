@@ -33,7 +33,6 @@ export class StoryService {
     console.log(path);
     const token = await firebase.auth().currentUser
       .getIdToken();
-    console.log(token);
     return this.http.post<T>(`${environment.url}${path}`, body, { headers: { Authorization: `Bearer ${token}` } })
       .toPromise();
   }
