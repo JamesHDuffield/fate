@@ -6,9 +6,11 @@
 // Be sure that you only ever include this mixin once!
 $custom-typography: mat-typography-config(
   $font-family: "Lucida Grande, Lucida Sans Unicode, GNU Unifont, Verdana, Helvetica, sans-serif",
-  $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(16px, 24px, 500)
 );
+
+pre {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "GNU Unifont", Verdana, Helvetica, sans-serif;
+}
 
 @include mat-core($custom-typography);
 
