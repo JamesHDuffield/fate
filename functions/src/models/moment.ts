@@ -1,3 +1,4 @@
+// tslint:disable-next-line: no-implicit-dependencies
 import { DocumentReference } from '@google-cloud/firestore';
 
 export interface Option {
