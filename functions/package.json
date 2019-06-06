@@ -7,7 +7,8 @@
     "shell": "npm run build && firebase experimental:functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "config": "firebase functions:config:set project.environment=\"production\""
   },
   "main": "lib/index.js",
   "dependencies": {
