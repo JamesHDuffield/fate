@@ -2,7 +2,7 @@
   <div class="reader">
     <mat-list>
       <ng-container *ngIf='current$ | async; let moment'>
-        <mat-list-item [@triggerName]="'in'">
+        <mat-list-item [@triggerName]="'in'" *ngIf='!hideForAnimation'>
           <p *ngIf='!customText'>{{ moment.text }}</p>
           <mat-form-field *ngIf='customText' class="full-width">
             <textarea matInput matTextareaAutosize placeholder="What happens?" [formControl]="text"></textarea>
@@ -12,7 +12,7 @@
             <app-tab-button *ngIf='customText' icon='save' (clicked)='saveText()'></app-tab-button>
           </div>
         </mat-list-item>
-        <mat-list-item [@triggerName]="'in'" *ngIf='customOption'>
+        <mat-list-item [@triggerName]="'in'" *ngIf='customOption && !hideForAnimation'>
           <form [formGroup]="optionForm" class='container'>
             <div class='container'>
               <mat-form-field class="full-width">
@@ -35,7 +35,7 @@
             <app-tab-button icon='cancel' (click)='customOption = false;' *ngIf='customOption'></app-tab-button>
           </div>
         </mat-list-item>
-        <ng-container *ngIf='!customOption'>
+        <ng-container *ngIf='!customOption && !hideForAnimation'>
           <mat-list-item [@triggerName]="'in'"> 
             <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
             <div class='tab-buttons'>
