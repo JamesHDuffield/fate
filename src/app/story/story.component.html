@@ -3,7 +3,7 @@
     <mat-list>
       <ng-container *ngIf='current$ | async; let moment'>
         <mat-list-item [@triggerName]="'in'" *ngIf='!hideForAnimation'>
-          <p *ngIf='!customText'>{{ moment.text }}</p>
+          <pre *ngIf='!customText'>{{ moment.text }}</pre>
           <mat-form-field *ngIf='customText' class="full-width">
             <textarea matInput matTextareaAutosize placeholder="What happens?" [formControl]="text"></textarea>
           </mat-form-field>

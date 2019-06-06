@@ -7,6 +7,13 @@ mat-card {
     height: 50vh;
 }
 
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width: calc(100% - 35px);
+}
+
 
 .reader {
     height: 50vh;

@@ -43,7 +43,7 @@ export class DatabaseService {
     const location = await locationRef.get();
     await this.firestore.doc(`/users/${uid}`)
       .set({
-        zone: locationRef.parent.path,
+        zone: locationRef.parent.parent,
         location: locationRef,
         moment: location.data().moment,
       }, { merge: true })
