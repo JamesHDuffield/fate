@@ -17,28 +17,43 @@ export const create = async (request: CreateRequest, response: Response) => {
   const type: string = request.body.type;
   const db: DatabaseService = request.app.locals.db;
 
+  const generateRoads = (xoffset: number, yoffset: number, inverse: boolean = false) => {
+    const mod = inverse ? -1 : 1;
+    if (mod * yoffset === 1) {
+      return { N: true };
+    }
+    if (mod * yoffset === -1) {
+      return { S: true };
+    }
+    if (mod * xoffset === 1) {
+      return { E: true };
+    }
+    if (mod * xoffset === -1) {
+      return { W: true };
+    }
+    console.error('No roads?');
+    return {};
+  }
+
   const createLocation = async (userO: User, xoffset: number, yoffset: number): Promise<void> => {
     const location = await db.getRef<Location>(userO.location);
     // Check if location already exists
     const x = location.x + xoffset;
     const y = location.y + yoffset;
     const existingRef = await db.getLocationByXY(x, y);
+    await userO.location.set(generateRoads(xoffset, yoffset), { merge: true });
     // Move to new
     if (existingRef) {
       await db.addOption(userO.moment, { text, location: existingRef });
       console.log('Location already exists moving user there');
+      await existingRef.set(generateRoads(xoffset, yoffset, true), { merge: true });
       return db.userToLocation(cred.uid, existingRef);
     }
     // Create new
     console.log('Creating moment/location and moving user there');
     const momentRef = await db.createMoment('And then...');
-    await userO.location.set({ N: true }, { merge: true });
-    const newLocationRef = await db.createLocation(userO.zone, {
-      x,
-      y,
-      S: true,
-      moment: momentRef,
-    });
+    const newLoc: Location = Object.assign({ x, y, moment: momentRef }, generateRoads(xoffset, yoffset, true));
+    const newLocationRef = await db.createLocation(userO.zone, newLoc);
     await db.addOption(userO.moment, { text, location: newLocationRef });
     return db.userToLocation(cred.uid, newLocationRef);
   }
