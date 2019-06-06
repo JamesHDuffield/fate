@@ -3,12 +3,28 @@ import { Moment, Option } from '../models/moment';
 import { Location } from '../models/location';
 import { DocumentReference } from '@google-cloud/firestore';
 
+const RESPAWN_ZONE = '/zones/lPtHuBdQJZ1DRONwtBIH'
+const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH/locations/QpxWih4cW4w3fSHDl3k0'
+
 export class DatabaseService {
 
   respawnPoint: DocumentReference;
 
   constructor(private firestore: FirebaseFirestore.Firestore) {
-    this.respawnPoint = this.firestore.doc('/zones/lPtHuBdQJZ1DRONwtBIH/locations/QpxWih4cW4w3fSHDl3k0'); // TODO make configurable
+    this.respawnPoint = this.firestore.doc(RESPAWN_LOCATION);
+  }
+
+  async createUser(uid: string, username: string): Promise<void> {
+    const ref = this.firestore.doc(`/users/${uid}`)
+    const doc = await ref.get();
+    if (doc.exists) {
+      return;
+    }
+    const user: User = {
+      username,
+    };
+    await ref.set(user);
+    await this.userToLocation(uid, this.respawnPoint);
   }
 
   async user(uid: string): Promise<User> {

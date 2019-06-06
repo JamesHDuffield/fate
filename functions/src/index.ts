@@ -15,6 +15,7 @@ import { DatabaseService } from './services/db';
 import { choose } from './operations/choose';
 import { create } from './operations/create';
 import { respawn } from './operations/respawn';
+import { userCreate } from './operations/userCreate';
 
 // Setup
 admin.initializeApp();
@@ -32,3 +33,5 @@ app.post('/create', create);
 app.post('/respawn', respawn)
 
 export const api = functions.https.onRequest(app);
+
+export const newUser = functions.auth.user().onCreate((event) => userCreate(event.data, app.locals.db));
