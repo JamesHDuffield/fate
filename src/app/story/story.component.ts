@@ -25,8 +25,11 @@ const ANIMATION_DELAY = 300;
 export class StoryComponent {
   customOption = false;
   customText = false;
-  text = new FormControl('');
   hideForAnimation = false;
+  momentForm = new FormGroup({
+    text: new FormControl(''),
+    end: new FormControl(false),
+  });
   optionForm = new FormGroup({
     text: new FormControl(''),
     type: new FormControl('moment'),
@@ -38,7 +41,7 @@ export class StoryComponent {
         this.hideForAnimation = true;
         this.customOption = false;
         this.customText = false;
-        this.text.reset();
+        this.momentForm.reset();
         this.optionForm.reset();
       }),
       delay(ANIMATION_DELAY),
@@ -54,7 +57,8 @@ export class StoryComponent {
   }
 
   edit(text: string) {
-    this.text.setValue(text);
+    this.momentForm.get('text')
+      .setValue(text);
     this.customText = true;
   }
 
@@ -72,10 +76,7 @@ export class StoryComponent {
   }
 
   async saveText() {
-    if (!this.text.value) {
-      return;
-    }
-    await this.story.updateMomentText(this.text.value);
+    await this.story.updateMomentText(this.momentForm.value.text);
     this.customText = false;
   }
 }

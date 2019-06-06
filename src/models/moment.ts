@@ -10,4 +10,5 @@ export interface Option {
 export interface Moment {
   text: string;
   options: Option[];
+  end?: boolean;
 }
