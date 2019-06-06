@@ -34,7 +34,13 @@ export class StoryComponent {
   current$ = this.story.current$
     .pipe(
       throttleTime(ANIMATION_DELAY),
-      tap(() => this.hideForAnimation = true),
+      tap(() => {
+        this.hideForAnimation = true;
+        this.customOption = false;
+        this.customText = false;
+        this.text.reset();
+        this.optionForm.reset();
+      }),
       delay(ANIMATION_DELAY),
       tap(() => this.hideForAnimation = false),
     );
