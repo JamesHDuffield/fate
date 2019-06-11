@@ -1,6 +1,10 @@
 {
   "name": "fate",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "engines": {
+    "node": "8.16.0",
+    "npm": "6.2.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -39,6 +43,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
+    "firebase-tools": "^6.8.0",
     "intolerable-style-guide": "^1.2.3",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

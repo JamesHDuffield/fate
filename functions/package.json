@@ -1,8 +1,12 @@
 {
   "name": "functions",
+  "engines": {
+    "node": "8.16.0",
+    "npm": "6.2.0"
+  },
   "scripts": {
-    "lint": "./node_modules/.bin/tslint -p tslint.json",
-    "build": "./node_modules/.bin/tsc",
+    "lint": "tslint -p tslint.json",
+    "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase experimental:functions:shell",
     "start": "npm run shell",
@@ -21,6 +25,7 @@
     "http-status-codes": "^1.3.2"
   },
   "devDependencies": {
+    "firebase-tools": "^6.8.0",
     "tslint": "^5.8.0",
     "typescript": "^2.5.3"
   },
