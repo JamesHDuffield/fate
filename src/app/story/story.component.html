@@ -4,18 +4,16 @@
       <ng-container *ngIf='current$ | async; let moment'>
         <mat-list-item [@triggerName]="'in'" *ngIf='!hideForAnimation'>
           <pre *ngIf='!customText'>{{ moment.text }}</pre>
-          <form [formGroup]="momentForm" class='container'>
-            <mat-form-field *ngIf='customText'>
+          <form [formGroup]="momentForm" class='container' *ngIf='customText'>
+            <mat-form-field>
               <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
             </mat-form-field>
-            <div *ngIf='customText'>
-              <mat-checkbox class="example-margin" formControlName="end">
-                This is the end of the story.
-              </mat-checkbox>
-            </div>
+            <mat-checkbox class="example-margin" formControlName="end">
+              This is the end of the story.
+            </mat-checkbox>
           </form>
           <div class='tab-buttons'>
-            <app-tab-button *ngIf='!customText' icon='edit' (clicked)='edit(moment.text)'></app-tab-button>
+            <app-tab-button *ngIf='!customText' icon='edit' (clicked)='edit(moment)'></app-tab-button>
             <app-tab-button *ngIf='customText' icon='save' (clicked)='saveText()'></app-tab-button>
             <br/>
             <app-tab-button *ngIf='customText' icon='cancel' (clicked)='customText = false;'></app-tab-button>

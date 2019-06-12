@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { StoryService } from '../../service/story';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Option } from '../../models/moment';
+import { Option, Moment } from '../../models/moment';
 import { delay, tap, throttleTime } from 'rxjs/operators';
 
 const ANIMATION_DELAY = 300;
@@ -56,9 +56,11 @@ export class StoryComponent {
     await this.story.progressToOption(option);
   }
 
-  edit(text: string) {
-    this.momentForm.get('text')
-      .setValue(text);
+  edit(moment: Moment) {
+    this.momentForm.setValue({
+      text: moment.text,
+      end: !!moment.end,
+    });
     this.customText = true;
   }
 
@@ -76,7 +78,7 @@ export class StoryComponent {
   }
 
   async saveText() {
-    await this.story.updateMomentText(this.momentForm.value.text);
+    await this.story.updateMomentText(this.momentForm.value);
     this.customText = false;
   }
 }
