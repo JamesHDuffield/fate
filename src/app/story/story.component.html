@@ -5,18 +5,20 @@
         <mat-list-item [@triggerName]="'in'" *ngIf='!hideForAnimation'>
           <pre *ngIf='!customText'>{{ moment.text }}</pre>
           <form [formGroup]="momentForm" class='container'>
-            <mat-form-field class="full-width" *ngIf='customText'>
+            <mat-form-field *ngIf='customText'>
               <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
             </mat-form-field>
-            <mat-form-field class="full-width" *ngIf='customText'>
+            <div *ngIf='customText'>
               <mat-checkbox class="example-margin" formControlName="end">
                 This is the end of the story.
               </mat-checkbox>
-            </mat-form-field>
+            </div>
           </form>
           <div class='tab-buttons'>
             <app-tab-button *ngIf='!customText' icon='edit' (clicked)='edit(moment.text)'></app-tab-button>
             <app-tab-button *ngIf='customText' icon='save' (clicked)='saveText()'></app-tab-button>
+            <br/>
+            <app-tab-button *ngIf='customText' icon='cancel' (clicked)='customText = false;'></app-tab-button>
           </div>
         </mat-list-item>
         <mat-list-item [@triggerName]="'in'" *ngIf='customOption && !hideForAnimation'>
