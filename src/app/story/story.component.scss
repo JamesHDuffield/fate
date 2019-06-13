@@ -8,20 +8,11 @@ mat-card {
     height: 50vh;
 }
 
-pre {
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    width: calc(100% - 55px);
-}
-
-
 .reader {
     height: 50vh;
-    width: calc(100% + 55px);
+    width: 100%;
 
     overflow-y: scroll;
-    overflow-x: visible;
 
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* IE 10+ */
@@ -29,43 +20,12 @@ pre {
         width: 0;
         height: 0;
     }
-
-    p, mat-form-field, button {
-        max-width: calc(100% - 55px);
-    }
-
-    .tab-buttons {
-        position: absolute;
-        right: 0px;
-    }
-}
-
-.spacer {
-    flex: 1 1 auto;
 }
 
 .full-width {
     width: 100%;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-  
-.container > * {
-   width: 100%;
-}
-
-.button-option {
-    display: block;
-}
-
 .mat-list-item {
     height: auto !important;
-}
-
-.mat-list-base .mat-list-item button {
-    font-size: 14px !important;
 }

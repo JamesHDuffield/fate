@@ -1,0 +1,21 @@
+<pre *ngIf='form.disabled'>{{ moment.text }}</pre>
+<form [formGroup]="form" class='container' *ngIf='form.enabled'>
+  <mat-form-field>
+    <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
+  </mat-form-field>
+  <mat-checkbox class="example-margin" formControlName="end">
+    This is the end of the story.
+  </mat-checkbox>
+</form>
+<div class='tab-buttons'>
+  <app-tab-button *ngIf='form.disabled' icon='edit' (clicked)='edit()'></app-tab-button>
+  <app-tab-button *ngIf='form.enabled' icon='save' (clicked)='save()'></app-tab-button>
+  <br/>
+  <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>
+</div>
+<div *ngIf='form.disabled && !moment.end && !moment.options.length'>
+  <pre>The story ends here unless you continue it.</pre>
+</div>
+<div *ngIf='form.disabled && moment.end'>
+  <pre>Your fate is sealed.</pre>
+</div>

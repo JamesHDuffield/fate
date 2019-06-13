@@ -1,0 +1,28 @@
+<form [formGroup]="form" class='container' *ngIf='form.enabled'>
+  <div class='container'>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Describe the choice" formControlName='text'>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-select placeholder="Action" formControlName='type'>
+        <mat-option value="moment">New Moment</mat-option>
+        <mat-option value="north">Go North</mat-option>
+        <mat-option value="east">Go East</mat-option>
+        <mat-option value="south">Go South</mat-option>
+        <mat-option value="west">Go West</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+
+<ng-container *ngIf='form.disabled'>
+  <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
+  <button mat-line (click)='story.respawn()' mat-button color='warn' class='button-option' *ngIf='moment.end || !moment.options.length'>Respawn at the End of Eternity</button>
+</ng-container>
+
+<div class='tab-buttons'>
+  <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='form.disabled && !moment.end'></app-tab-button>
+  <app-tab-button icon='save' (click)='save()' *ngIf='form.enabled' [disabled]='form.invalid'></app-tab-button>
+  <br/>
+  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled'></app-tab-button>
+</div>

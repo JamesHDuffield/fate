@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container > * {
+ width: 100%;
+}
+
+.button-option {
+  margin: auto;
+  min-width: 50vw;
+}
+
+.tab-buttons {
+  position: absolute;
+  height: 0px;
+  top: 10px;
+  right: -18px;
+
+  app-tab-button {
+    position: fixed;
+  }
+}

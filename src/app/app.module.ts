@@ -30,6 +30,8 @@ import { LocationService } from '../service/location';
 import { MapComponent } from './map/map.component';
 import { StoryComponent } from './story/story.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MomentComponent } from './moment/moment.component';
+import { OptionsComponent } from './options/options.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     TabButtonComponent,
     MapComponent,
     StoryComponent,
+    MomentComponent,
+    OptionsComponent,
   ],
   imports: [
     BrowserModule,

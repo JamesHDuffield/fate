@@ -2,61 +2,12 @@
   <div class="reader">
     <mat-list>
       <ng-container *ngIf='current$ | async; let moment'>
-        <mat-list-item [@triggerName]="'in'" *ngIf='!hideForAnimation'>
-          <pre *ngIf='!customText'>{{ moment.text }}</pre>
-          <form [formGroup]="momentForm" class='container' *ngIf='customText'>
-            <mat-form-field>
-              <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
-            </mat-form-field>
-            <mat-checkbox class="example-margin" formControlName="end">
-              This is the end of the story.
-            </mat-checkbox>
-          </form>
-          <div class='tab-buttons'>
-            <app-tab-button *ngIf='!customText' icon='edit' (clicked)='edit(moment)'></app-tab-button>
-            <app-tab-button *ngIf='customText' icon='save' (clicked)='saveText()'></app-tab-button>
-            <br/>
-            <app-tab-button *ngIf='customText' icon='cancel' (clicked)='customText = false;'></app-tab-button>
-          </div>
+        <mat-list-item @fade *ngIf='!hideForAnimation'>
+          <app-moment [moment]='moment' class='full-width'></app-moment>
         </mat-list-item>
-        <mat-list-item [@triggerName]="'in'" *ngIf='customOption && !hideForAnimation'>
-          <form [formGroup]="optionForm" class='container'>
-            <div class='container'>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Describe the choice" formControlName='text'>
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Action" formControlName='type'>
-                  <mat-option value="moment">New Moment</mat-option>
-                  <mat-option value="north">Go North</mat-option>
-                  <mat-option value="east">Go East</mat-option>
-                  <mat-option value="south">Go South</mat-option>
-                  <mat-option value="west">Go West</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </form>
-          <div class='tab-buttons'>
-            <app-tab-button icon='save' (click)='saveOption()' *ngIf='customOption' [disabled]='optionForm.invalid'></app-tab-button>
-            <br/>
-            <app-tab-button icon='cancel' (click)='customOption = false;' *ngIf='customOption'></app-tab-button>
-          </div>
+        <mat-list-item @fade *ngIf='!hideForAnimation'>
+          <app-options [moment]='moment' class='full-width'></app-options>
         </mat-list-item>
-        <mat-list-item [@triggerName]="'in'" *ngIf='moment.end && !hideForAnimation'>
-          <pre>Your fate is sealed</pre>
-        </mat-list-item>
-        <mat-list-item [@triggerName]="'in'" *ngIf='!moment.end && !moment.options.length && !hideForAnimation'>
-          <pre>The story ends here unless you continue it.</pre>
-        </mat-list-item>
-        <ng-container *ngIf='!customOption && !hideForAnimation'>
-          <mat-list-item [@triggerName]="'in'"> 
-            <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
-            <button mat-line (click)='story.respawn()' mat-button color='warn' class='button-option' *ngIf='moment.end || !moment.options.length'>Respawn at the End of Eternity</button>
-            <div class='tab-buttons'>
-              <app-tab-button icon='add' (clicked)='add(moment)' *ngIf='!customOption'></app-tab-button>
-            </div>
-          </mat-list-item>
-        </ng-container>
       </ng-container>
     </mat-list>
   </div>

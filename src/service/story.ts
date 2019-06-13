@@ -66,7 +66,7 @@ export class StoryService {
     return this.request('/respawn');
   }
 
-  async updateMomentText(moment: Partial<Moment>): Promise<void> {
+  async updateMoment(moment: Partial<Moment>): Promise<void> {
     return this.auth.user$
       .pipe(
         map((user) => this.db.doc<Moment>(user.moment)),
