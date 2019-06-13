@@ -4,6 +4,7 @@ import { DatabaseService } from '../services/db';
 import { Location } from '../models/location';
 import * as admin from 'firebase-admin';
 import { User } from '../models/user';
+import { Moment } from '../models/moment';
 
 interface CreateRequest extends Request {
   user: admin.auth.DecodedIdToken;
@@ -60,6 +61,12 @@ export const create = async (request: CreateRequest, response: Response) => {
 
   // Get current user
   const user = await db.user(cred.uid);
+  // Check if too many options
+  const moment = await db.getRef<Moment>(user.moment);
+  if (!moment || moment.options.length >= 3) {
+    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Too many options exist for this moment.'});
+  }
+
   // If type is location then we need to find/create it
   switch(type) {
     case 'north':

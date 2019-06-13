@@ -3,6 +3,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
 
+const MAXIMUM_OPTIONS = 3;
+
 @Component({
   selector: 'app-options',
   templateUrl: './options.component.html',
@@ -22,6 +24,10 @@ export class OptionsComponent implements OnInit {
 
   ngOnInit() {
     this.form.disable();
+  }
+
+  get showAddOptionButton(): boolean {
+    return !this.moment.end && this.form.disabled && this.moment.options.length < MAXIMUM_OPTIONS;
   }
 
   async next(option: Option) {

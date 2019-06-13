@@ -21,7 +21,7 @@
 </ng-container>
 
 <div class='tab-buttons'>
-  <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='form.disabled && !moment.end'></app-tab-button>
+  <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='showAddOptionButton'></app-tab-button>
   <app-tab-button icon='save' (click)='save()' *ngIf='form.enabled' [disabled]='form.invalid'></app-tab-button>
   <br/>
   <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled'></app-tab-button>
