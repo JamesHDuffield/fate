@@ -58,8 +58,9 @@ export class DatabaseService {
     return this.firestore.doc(`/moment/${id}`);
   }
 
-  async createMoment(text: string): Promise<DocumentReference> {
+  async createMoment(uid: string, text: string): Promise<DocumentReference> {
     const moment = {
+      owner: this.firestore.doc(`/users/${uid}`),
       text,
       options: [],
     }

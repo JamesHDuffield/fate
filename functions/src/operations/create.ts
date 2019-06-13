@@ -36,7 +36,7 @@ export const create = async (request: CreateRequest, response: Response) => {
     return {};
   }
 
-  const createLocation = async (userO: User, xoffset: number, yoffset: number): Promise<void> => {
+  const createLocation = async (uid: string, userO: User, xoffset: number, yoffset: number): Promise<void> => {
     const location = await db.getRef<Location>(userO.location);
     // Check if location already exists
     const x = location.x + xoffset;
@@ -52,7 +52,7 @@ export const create = async (request: CreateRequest, response: Response) => {
     }
     // Create new
     console.log('Creating moment/location and moving user there');
-    const momentRef = await db.createMoment('And then...');
+    const momentRef = await db.createMoment(uid, 'And then...');
     const newLoc: Location = Object.assign({ x, y, moment: momentRef }, generateRoads(xoffset, yoffset, true));
     const newLocationRef = await db.createLocation(userO.zone, newLoc);
     await db.addOption(userO.moment, { text, location: newLocationRef });
@@ -61,6 +61,7 @@ export const create = async (request: CreateRequest, response: Response) => {
 
   // Get current user
   const user = await db.user(cred.uid);
+  console.log(user);
   // Check if too many options
   const moment = await db.getRef<Moment>(user.moment);
   if (!moment || moment.options.length >= 3) {
@@ -70,20 +71,20 @@ export const create = async (request: CreateRequest, response: Response) => {
   // If type is location then we need to find/create it
   switch(type) {
     case 'north':
-      await createLocation(user, 0, 1);
+      await createLocation(cred.uid, user, 0, 1);
       break;
     case 'east':
-      await createLocation(user, 1, 0);
+      await createLocation(cred.uid, user, 1, 0);
       break;
     case 'south':
-      await createLocation(user, 0, -1);
+      await createLocation(cred.uid, user, 0, -1);
       break;
     case 'west':
-      await createLocation(user, -1, 0);
+      await createLocation(cred.uid, user, -1, 0);
       break;
     default:
       // Create new moment
-      const newMomentRef = await db.createMoment('And then...');
+      const newMomentRef = await db.createMoment(cred.uid, 'And then...');
       // Add option to previous moment
       await db.addOption(user.moment, { text, moment: newMomentRef });
       // Update user to new moment
