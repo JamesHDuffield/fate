@@ -15,10 +15,10 @@
   </div>
 </form>
 
-<ng-container *ngIf='form.disabled'>
+<div class='button-container' *ngIf='form.disabled'>
   <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of moment.options'>{{ option.text }}</button>
   <button mat-line (click)='story.respawn()' mat-button color='warn' class='button-option' *ngIf='moment.end || !moment.options.length'>Respawn at the End of Eternity</button>
-</ng-container>
+</div>
 
 <div class='tab-buttons'>
   <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='showAddOptionButton'></app-tab-button>
