@@ -9,6 +9,6 @@ export interface Location {
   S?: boolean;
   E?: boolean;
   W?: boolean;
-  road?: boolean;
   moment?: DocumentReference;
+  name?: string;
 }

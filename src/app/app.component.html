@@ -5,7 +5,10 @@
   </span>
   <span class="fill-remaining-space"></span>
 
-  <span *ngIf='zone$ | async; let zone' (click)='storyService.respawn()'>
+  <small *ngIf='location$ | async; let location'>
+    {{ location.name }}
+  </small>
+  <span *ngIf='zone$ | async; let zone' (click)='storyService.respawn()' class='zone'>
     {{ zone.name }}
   </span>
 </mat-toolbar>

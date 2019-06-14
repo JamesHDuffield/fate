@@ -81,7 +81,7 @@ export class MapComponent implements AfterViewInit {
       if (location.E) {
         this.ctx.fillRect(x - 2, y - 2, 17, 4);
       }
-      if (!location.road) {
+      if (!!location.name) {
         this.ctx.fillStyle = '#A9A9A9';
         this.ctx.fillRect(x - 5, y - 5, 10, 10);
       }

@@ -11,6 +11,7 @@ import { StoryService } from '../service/story';
 export class AppComponent {
   user$ = this.auth.user$;
   zone$ = this.location.zone$;
+  location$ = this.location.currentLocation$;
   storyService = this.story;
 
   constructor(private auth: AuthService, private location: LocationService, private story: StoryService) {}
