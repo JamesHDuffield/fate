@@ -25,7 +25,8 @@
 
 <div class='button-container' *ngIf='form.disabled'>
   <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of _moment.options' [disabled]='disabled'>{{ option.text }}</button>
-  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end || !_moment.options.length' [disabled]='disabled'>Respawn at the End of Eternity</button>
+  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length' [disabled]='disabled'>Respawn at the End of Eternity</button>
+  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end' [disabled]='disabled'>Respawn at the End of Eternity</button>
 </div>
 
 <div class='tab-buttons'>
