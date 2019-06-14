@@ -1,7 +1,7 @@
 {
   "name": "functions",
   "engines": {
-    "node": "8.16.0",
+    "node": "8",
     "npm": "6.2.0"
   },
   "scripts": {
