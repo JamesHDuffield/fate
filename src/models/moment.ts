@@ -11,4 +11,5 @@ export interface Moment {
   text: string;
   options: Option[];
   end?: boolean;
+  owner?: DocumentReference;
 }

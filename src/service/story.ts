@@ -4,7 +4,7 @@ import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import { LocationService } from './location';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, NEVER } from 'rxjs';
 import { filter, switchMap, map, first, catchError } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
@@ -28,13 +28,18 @@ export class StoryService {
           .pipe( // When user swaps moment is not accessible. Ignore those errors
             catchError((e: firebase.FirebaseError) => {
               if (e && e.code === 'permission-denied') {
-                return of(null);
+                return NEVER;
               }
               console.log(JSON.stringify(e));
               throw e;
             }),
           ),
       ),
+    );
+
+  canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
+    .pipe(
+      map(([ user, firebaseUser, current ]) => user.admin || (current.owner && firebaseUser.uid === current.owner.id) ),
     );
 
   cursor: DocumentReference;

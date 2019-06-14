@@ -11,7 +11,7 @@
   </mat-button-toggle-group>
 </form>
 <div class='tab-buttons'>
-  <app-tab-button *ngIf='form.disabled' icon='edit' (clicked)='edit()'></app-tab-button>
+  <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'></app-tab-button>
   <app-tab-button *ngIf='form.enabled' icon='save' (clicked)='save()'></app-tab-button>
   <br/>
   <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>

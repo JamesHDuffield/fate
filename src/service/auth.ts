@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { filter, switchMap, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, switchMap, map, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../models/user';
 
@@ -10,11 +10,14 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
+  admin: boolean = false;
+  uid: string = null;
   provider = new firebase.auth.GoogleAuthProvider();
   firebaseUser$ = new BehaviorSubject<firebase.User>(null);
   userDoc$: Observable<AngularFirestoreDocument<User>> = this.firebaseUser$
     .pipe(
       filter((firebaseUser) => !!firebaseUser && !!firebaseUser.uid),
+      tap((firebaseUser) => this.uid = firebaseUser.uid),
       map((firebaseUser) => this.db.collection('users')
         .doc<User>(firebaseUser.uid)),
     );

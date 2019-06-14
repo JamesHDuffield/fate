@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Moment } from '../../models/moment';
 import { FormGroup, FormControl } from '@angular/forms';
 import { StoryService } from '../../service/story';
+import { AuthService } from '../../service/auth';
 
 @Component({
   selector: 'app-moment',
@@ -18,7 +19,7 @@ export class MomentComponent implements OnInit {
     end: new FormControl(false),
   });
 
-  constructor(private story: StoryService) { }
+  constructor(private story: StoryService, private auth: AuthService) { }
 
   ngOnInit() {
     this.form.disable();
