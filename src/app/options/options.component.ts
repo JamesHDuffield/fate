@@ -12,8 +12,13 @@ const MAXIMUM_OPTIONS = 3;
 })
 export class OptionsComponent implements OnInit {
 
-  @Input()
-  moment: Moment;
+  disabled = false;
+  _moment: Moment = null;
+
+  @Input() set moment(value: Moment) {
+    this._moment = value;
+    this.disabled = false;
+  }
 
   form = new FormGroup({
     text: new FormControl(''),
@@ -27,10 +32,11 @@ export class OptionsComponent implements OnInit {
   }
 
   get showAddOptionButton(): boolean {
-    return !this.moment.end && this.form.disabled && this.moment.options.length < MAXIMUM_OPTIONS;
+    return !this._moment.end && this.form.disabled && this._moment.options.length < MAXIMUM_OPTIONS;
   }
 
   async next(option: Option) {
+    this.disabled = true;
     await this.story.progressToOption(option);
   }
 
@@ -39,6 +45,11 @@ export class OptionsComponent implements OnInit {
       return;
     }
     await this.story.createMoment(this.form.value);
+  }
+
+  async respawn() {
+    this.disabled = true;
+    return this.story.respawn();
   }
 
 }
