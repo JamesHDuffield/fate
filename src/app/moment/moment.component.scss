@@ -9,11 +9,18 @@ pre {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  mat-button-toggle-group {
+    width: fit-content;
+  }
+
 }
 
 .container > * {
  width: 100%;
 }
+
+
 
 .tab-buttons {
   position: absolute;

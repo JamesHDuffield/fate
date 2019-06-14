@@ -32,6 +32,11 @@ export class MomentComponent implements OnInit {
     this.form.enable();
   }
 
+  toggle(property: string) {
+    const prop = this.form.get(property);
+    prop.setValue(!prop.value);
+  }
+
   async save() {
     return this.story.updateMoment(this.form.value);
   }
