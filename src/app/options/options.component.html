@@ -3,15 +3,23 @@
     <mat-form-field class="full-width">
       <input matInput placeholder="Describe the choice" formControlName='text'>
     </mat-form-field>
-    <mat-form-field class="full-width">
-      <mat-select placeholder="Action" formControlName='type'>
-        <mat-option value="moment">New Moment</mat-option>
-        <mat-option value="north">Go North</mat-option>
-        <mat-option value="east">Go East</mat-option>
-        <mat-option value="south">Go South</mat-option>
-        <mat-option value="west">Go West</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-button-toggle-group formControlName='type'>
+      <mat-button-toggle value='moment' aria-label="New Moment" matTooltip="New Moment">
+        <mat-icon>add_comment</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='north' aria-label="Go North" matTooltip="Go North">
+        <mat-icon>arrow_upward</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='east' aria-label="Go East" matTooltip="Go East">
+        <mat-icon>arrow_forward</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='south' aria-label="Go South" matTooltip="Go South">
+        <mat-icon>arrow_downward</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='west' aria-label="Go West" matTooltip="Go West">
+        <mat-icon>arrow_back</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
 </form>
 
