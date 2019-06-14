@@ -15,6 +15,7 @@ service cloud.firestore {
     
     match /moment/{moment} {
     	allow read: if get(getUserData().moment).id == moment;
+      allow write: if get(get(getUserData().moment).data.owner).id == request.auth.uid || isAdmin() == true;
     }
     
     match /zones/{zone} {
