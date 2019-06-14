@@ -1,0 +1,10 @@
+<form [formGroup]="form" class='container' *ngIf='form.enabled'>
+  <mat-form-field>
+    <textarea matInput matTextareaAutosize placeholder="Location Name" formControlName="name"></textarea>
+  </mat-form-field>
+  <div>
+    <button mat-icon-button class='button-right' (click)='submit()' [disabled]='form.invalid || disabled'>
+      <mat-icon small>save</mat-icon>
+    </button>
+  </div>
+</form>

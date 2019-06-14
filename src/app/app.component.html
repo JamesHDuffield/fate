@@ -5,10 +5,10 @@
   </span>
   <span class="fill-remaining-space"></span>
 
-  <small *ngIf='location$ | async; let location'>
-    {{ location.name }}
-  </small>
-  <span *ngIf='zone$ | async; let zone' (click)='storyService.respawn()' class='zone'>
+  <span *ngIf='zone$ | async; let zone' class='zone'>
+    <small *ngIf='location$ | async; let location' (click)='openLocationDialog(location)'>
+      {{ location.name || 'Road' }}
+    </small>
     {{ zone.name }}
   </span>
 </mat-toolbar>

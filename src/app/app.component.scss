@@ -11,6 +11,10 @@ pre {
 small {
     font-size: xx-small;
     color: darkgrey;
+    mat-icon {
+        width: 15px;
+        font-size: small;
+    }
 }
 
 .zone {

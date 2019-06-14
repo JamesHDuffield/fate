@@ -3,7 +3,6 @@
   <mat-form-field>
     <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
   </mat-form-field>
-  <button mat-raised-button matTooltip="Does the story ends here?"></button>
   <mat-button-toggle-group multiple>
     <mat-button-toggle (click)="toggle('end')" [checked]="form.get('end').value" aria-label="Does the story ends here?" matTooltip="Does the story ends here?">
       <mat-icon>error</mat-icon>

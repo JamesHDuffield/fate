@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { AuthService } from '../service/auth';
 import { LocationService } from '../service/location';
 import { StoryService } from '../service/story';
+import { MatDialog } from '@angular/material/dialog';
+import { LocationComponent } from './location/location.component';
+import { Location } from '../models/location';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +17,14 @@ export class AppComponent {
   location$ = this.location.currentLocation$;
   storyService = this.story;
 
-  constructor(private auth: AuthService, private location: LocationService, private story: StoryService) {}
+  constructor(private auth: AuthService, private location: LocationService, private story: StoryService, public dialog: MatDialog) {}
+
+  openLocationDialog(location: Location): void {
+
+    this.dialog.open(LocationComponent, {
+      width: '40vw',
+      data: location,
+    });
+  }
 
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth';
-import { filter, switchMap } from 'rxjs/operators';
-import { Zone } from '../models/zone';
+import { filter, switchMap, map, first } from 'rxjs/operators';
 import { Location } from '../models/location';
 
 @Injectable({
@@ -34,4 +33,13 @@ export class LocationService {
 
   constructor(private db: AngularFirestore, private auth: AuthService) {}
 
+  async updateLocation(location: Partial<Location>): Promise<void> {
+    return this.auth.user$
+      .pipe(
+        map((user) => this.db.doc<Location>(user.location)),
+        first(),
+        switchMap((locationDoc) => locationDoc.set(<Location>location, { merge: true })),
+      )
+      .toPromise();
+  }
 }

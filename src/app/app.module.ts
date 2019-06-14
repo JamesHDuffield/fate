@@ -13,6 +13,7 @@ import {
   MatSnackBarModule,
   MatButtonToggleModule,
   MatTooltipModule,
+  MatDialogModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -31,6 +32,7 @@ import { StoryComponent } from './story/story.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentComponent } from './moment/moment.component';
 import { OptionsComponent } from './options/options.component';
+import { LocationComponent } from './location/location.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { OptionsComponent } from './options/options.component';
     StoryComponent,
     MomentComponent,
     OptionsComponent,
+    LocationComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,11 +61,13 @@ import { OptionsComponent } from './options/options.component';
     MatSnackBarModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
   bootstrap: [ AppComponent ],
+  entryComponents: [ LocationComponent ],
 })
 export class AppModule { }
