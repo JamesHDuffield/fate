@@ -1,9 +1,9 @@
 <form [formGroup]="form" class='container' *ngIf='form.enabled'>
   <div class='container'>
     <mat-form-field class="full-width">
-      <input matInput placeholder="Describe the choice" formControlName='text'>
+      <input matInput placeholder="Describe the choice" formControlName='text' [disabled]='disabled'>
     </mat-form-field>
-    <mat-button-toggle-group formControlName='type'>
+    <mat-button-toggle-group formControlName='type' [disabled]='disabled'>
       <mat-button-toggle value='moment' aria-label="New Moment" matTooltip="New Moment">
         <mat-icon>add_comment</mat-icon>
       </mat-button-toggle>
@@ -31,7 +31,7 @@
 
 <div class='tab-buttons'>
   <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='showAddOptionButton' [disabled]='disabled'></app-tab-button>
-  <app-tab-button icon='save' (click)='save()' *ngIf='form.enabled' [disabled]='form.invalid'></app-tab-button>
+  <app-tab-button icon='save' (click)='save()' *ngIf='form.enabled' [disabled]='form.invalid || disabled'></app-tab-button>
   <br/>
-  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled'></app-tab-button>
+  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='disabled'></app-tab-button>
 </div>

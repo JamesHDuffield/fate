@@ -1,7 +1,7 @@
 <mat-toolbar>
   <span *ngIf='user$ | async; let user'>
-      {{ user.username }}
-      <small>{{ user.moment.id }}</small>
+      <span  (click)='auth.logout()'>{{ user.username }}</span>
+      <small (click)='story.respawn()'>{{ user.moment.id }}</small>
   </span>
   <span class="fill-remaining-space"></span>
 

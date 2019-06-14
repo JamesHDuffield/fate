@@ -44,6 +44,7 @@ export class OptionsComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    this.disabled = true;
     await this.story.createMoment(this.form.value);
   }
 
