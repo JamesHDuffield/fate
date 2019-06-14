@@ -4,8 +4,8 @@ import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import { LocationService } from './location';
-import { Observable, combineLatest } from 'rxjs';
-import { filter, switchMap, map, first, take, tap } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { filter, switchMap, map, first, catchError } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
@@ -22,8 +22,19 @@ export class StoryService {
   current$: Observable<Moment> = this.auth.user$
     .pipe(
       filter((user) => !!user),
-      switchMap((user) => this.db.doc<Moment>(user.moment)
-        .valueChanges()),
+      switchMap((user) =>
+        this.db.doc<Moment>(user.moment)
+          .valueChanges()
+          .pipe( // When user swaps moment is not accessible. Ignore those errors
+            catchError((e: firebase.FirebaseError) => {
+              if (e && e.code === 'permission-denied') {
+                return of(null);
+              }
+              console.log(JSON.stringify(e));
+              throw e;
+            }),
+          ),
+      ),
     );
 
   cursor: DocumentReference;
