@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
 
@@ -21,8 +21,8 @@ export class OptionsComponent implements OnInit {
   }
 
   form = new FormGroup({
-    text: new FormControl(''),
-    type: new FormControl('moment'),
+    text: new FormControl('', [ Validators.required ]),
+    type: new FormControl('moment', [ Validators.required ]),
   });
 
   constructor(private story: StoryService) { }
@@ -37,7 +37,8 @@ export class OptionsComponent implements OnInit {
 
   async next(option: Option) {
     this.disabled = true;
-    await this.story.progressToOption(option);
+    await this.story.progressToOption(option)
+      .catch((e) => this.disabled = false);
   }
 
   async save() {
@@ -45,12 +46,14 @@ export class OptionsComponent implements OnInit {
       return;
     }
     this.disabled = true;
-    await this.story.createMoment(this.form.value);
+    await this.story.createMoment(this.form.value)
+      .catch((e) => this.disabled = false);
   }
 
   async respawn() {
     this.disabled = true;
-    return this.story.respawn();
+    return this.story.respawn()
+      .catch((e) => this.disabled = false);
   }
 
 }

@@ -78,8 +78,8 @@ export class DatabaseService {
     await currentRef.set(<any>{ options: current.options }, { merge: true })
   }
 
-  async getLocationByXY(x: number, y: number): Promise<DocumentReference> {
-    const found = await this.firestore.collection('location')
+  async getLocationByXY(zone: DocumentReference, x: number, y: number): Promise<DocumentReference> {
+    const found = await zone.collection('locations')
       .where('x', '==', x)
       .where('y', '==', y)
       .limit(1)

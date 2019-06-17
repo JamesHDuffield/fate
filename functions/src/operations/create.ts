@@ -41,7 +41,7 @@ export const create = async (request: CreateRequest, response: Response) => {
     // Check if location already exists
     const x = location.x + xoffset;
     const y = location.y + yoffset;
-    const existingRef = await db.getLocationByXY(x, y);
+    const existingRef = await db.getLocationByXY(userO.zone, x, y);
     await userO.location.set(generateRoads(xoffset, yoffset), { merge: true });
     // Move to new
     if (existingRef) {
@@ -59,9 +59,13 @@ export const create = async (request: CreateRequest, response: Response) => {
     return db.userToLocation(cred.uid, newLocationRef);
   }
 
+  // Invalid if no text
+  if (!text) {
+    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Text is required'});
+  }
+
   // Get current user
   const user = await db.user(cred.uid);
-  console.log(user);
   // Check if too many options
   const moment = await db.getRef<Moment>(user.moment);
   if (!moment || moment.options.length >= 3) {
