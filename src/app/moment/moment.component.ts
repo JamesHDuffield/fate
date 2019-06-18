@@ -43,7 +43,7 @@ export class MomentComponent implements OnInit {
     const splitted = this._moment.text.split('`');
     const readArray = splitted.map((text, i) => {
       if (i % 2) {
-        return { text, tip: 'This is a tip' };
+        return { text, tip: text };
       }
       return { text };
     });
@@ -53,11 +53,13 @@ export class MomentComponent implements OnInit {
   getSel() {
     const start = this.editor.nativeElement.selectionStart;
     let finish = this.editor.nativeElement.selectionEnd;
-    if (this.editor.nativeElement.value[finish - 1] === ' ') {
+    const text = this.editor.nativeElement.value;
+    if (text[finish - 1] === ' ') {
       finish--;
     }
-    this.editor.nativeElement.value = this.editor.nativeElement.value.slice(0, start) + '`' + this.editor.nativeElement.value.slice(start);
-    this.editor.nativeElement.value = this.editor.nativeElement.value.slice(0, finish + 1) + '`' + this.editor.nativeElement.value.slice(finish + 1);
+    const output = text.slice(0, start) + '`' + text.slice(start, finish) + '`' + text.slice(finish);
+    this.form.get('text')
+      .setValue(output);
   }
 
   edit() {
