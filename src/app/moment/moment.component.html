@@ -1,7 +1,12 @@
-<pre *ngIf='form.disabled'>{{ moment.text }}</pre>
+<div *ngIf='form.disabled'>
+  <span *ngFor='let field of _cachedRead'>
+    <span *ngIf='!field.tip'>{{ field.text }}</span>
+    <span class='tip' [matTooltip]='field.tip' [attr.aria-label]='field.tip' *ngIf='field.tip'>{{ field.text }}</span>
+  </span>
+</div>
 <form [formGroup]="form" class='container' *ngIf='form.enabled'>
   <mat-form-field>
-    <textarea matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
+    <textarea #editor matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
   </mat-form-field>
   <mat-button-toggle-group multiple>
     <mat-button-toggle (click)="toggle('end')" [checked]="form.get('end').value" aria-label="Does the story ends here?" matTooltip="Does the story ends here?">
@@ -15,9 +20,10 @@
   <br/>
   <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>
 </div>
-<div *ngIf='form.disabled && !moment.end && !moment.options.length'>
+<div *ngIf='form.disabled && !_moment.end && !_moment.options.length'>
   <pre>The story ends here unless you continue it.</pre>
 </div>
-<div *ngIf='form.disabled && moment.end'>
+<div *ngIf='form.disabled && _moment.end'>
   <pre>Your fate is sealed.</pre>
 </div>
+<button *ngIf='form.enabled' mat-button (click)='getSel()'>Click</button>

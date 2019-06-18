@@ -33,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MomentComponent } from './moment/moment.component';
 import { OptionsComponent } from './options/options.component';
 import { LocationComponent } from './location/location.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { LocationComponent } from './location/location.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,
+    MarkdownModule.forRoot(),
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
   bootstrap: [ AppComponent ],
