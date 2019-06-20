@@ -21,6 +21,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoryService } from '../service/story';
+import { EncyclopediaService } from '../service/encyclopedia';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -68,7 +69,7 @@ import { MarkdownModule } from 'ngx-markdown';
     HttpClientModule,
     MarkdownModule.forRoot(),
   ],
-  providers: [ AngularFirestore, StoryService, AuthService, LocationService ],
+  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
   entryComponents: [ LocationComponent ],
 })

@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Moment } from '../../models/moment';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { MarkdownService, MarkedRenderer } from 'ngx-markdown';
+import { EncyclopediaService } from '../../service/encyclopedia';
 
 interface TextDisplayPart {
-  text: string;
+  text?: string;
   tip?: string;
 }
 
@@ -18,6 +19,7 @@ export class MomentComponent implements OnInit {
 
   _moment: Moment;
   _cachedRead: TextDisplayPart[] = [];
+  _cachedEncyclopedia: TextDisplayPart[] = [];
 
   @ViewChild('editor')
   editor: ElementRef;
@@ -25,32 +27,56 @@ export class MomentComponent implements OnInit {
   @Input() set moment(value: Moment) {
     this._moment = value;
     this.form.disable();
-    this._cachedRead = this.read();
+    this.read();
   }
 
   form = new FormGroup({
     text: new FormControl(''),
     end: new FormControl(false),
+    // encyclopedias: new FormArray([]),
   });
 
-  constructor(public story: StoryService, private markdown: MarkdownService) { }
+  constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private markdown: MarkdownService) { }
 
   ngOnInit() {
     this.form.disable();
+    this.form.get('text').valueChanges
+      .subscribe(() => this.encyclopedias());
   }
 
-  read(): TextDisplayPart[] {
+  async read(): Promise<void> {
     const splitted = this._moment.text.split('`');
-    const readArray = splitted.map((text, i) => {
+    const promiseArray = splitted.map(async (text, i): Promise<TextDisplayPart> => {
+      // tslint:disable-next-line: no-magic-numbers
       if (i % 2) {
-        return { text, tip: text };
+        const tip = await this.encyclopedia.lookup(text);
+        return { text, tip };
       }
       return { text };
     });
-    return readArray.filter((field) => !!field.text);
+    const readArray = await Promise.all(promiseArray);
+    this._cachedRead = readArray.filter((field) => !!field.text);
   }
 
-  getSel() {
+  async encyclopedias(): Promise<TextDisplayPart[]> {
+    const value: string = this.form.get('text').value;
+    const splitted = value.split('`');
+    if (splitted.length % 2) {
+      const promiseArray = splitted.map(async (text, i): Promise<TextDisplayPart> => {
+        // tslint:disable-next-line: no-magic-numbers
+        if (i % 2) {
+          const tip = await this.encyclopedia.lookup(text);
+          return { text, tip };
+        }
+        return { text: null };
+      });
+      const readArray = await Promise.all(promiseArray);
+      this._cachedEncyclopedia = readArray.filter((field) => !!field.text);
+    }
+    return this._cachedEncyclopedia;
+  }
+
+  mark() {
     const start = this.editor.nativeElement.selectionStart;
     let finish = this.editor.nativeElement.selectionEnd;
     const text = this.editor.nativeElement.value;

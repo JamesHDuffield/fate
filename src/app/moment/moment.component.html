@@ -12,7 +12,14 @@
     <mat-button-toggle (click)="toggle('end')" [checked]="form.get('end').value" aria-label="Does the story ends here?" matTooltip="Does the story ends here?">
       <mat-icon>error</mat-icon>
     </mat-button-toggle>
+    <mat-button-toggle (click)="mark()" aria-label="Highlight selected text and provide encyclopedia entry." matTooltip="Highlight selected text and provide encyclopedia entry.">
+      <mat-icon>book</mat-icon>
+    </mat-button-toggle>
   </mat-button-toggle-group>
+  <br/>
+  <mat-form-field *ngFor='let encyclopedia of _cachedEncyclopedia'>
+    <input matInput [placeholder]="encyclopedia.text" [value]='encyclopedia.tip'>
+  </mat-form-field>
 </form>
 <div class='tab-buttons'>
   <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'></app-tab-button>
@@ -26,4 +33,3 @@
 <div *ngIf='form.disabled && _moment.end'>
   <pre>Your fate is sealed.</pre>
 </div>
-<button *ngIf='form.enabled' mat-button (click)='getSel()'>Click</button>
