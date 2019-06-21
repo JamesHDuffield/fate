@@ -3,6 +3,8 @@ description: Orb for firebase deploy.
 jobs:
   deploy:
     description: Deploy to firebase
+    docker: 
+      - image: circleci/<language>:<version TAG>
     parameters:
       token:
         type: string
