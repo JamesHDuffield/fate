@@ -1,7 +1,7 @@
 version: 2.1
 description: Orb for firebase deploy.
-commands:
-  build:
+jobs:
+  deploy:
     description: Deploy to firebase
     parameters:
       token:
@@ -14,3 +14,9 @@ commands:
       - run:
           name: Deploy to Firebase
           command: npm run deploy -- --token=<< parameters.token >>
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy
