@@ -4,6 +4,7 @@
     <span class='tip' [matTooltip]='field.tip' [attr.aria-label]='field.tip' *ngIf='field.tip'>{{ field.text }}</span>
   </span>
 </div>
+
 <form [formGroup]="form" class='container' *ngIf='form.enabled'>
   <mat-form-field>
     <textarea #editor matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
@@ -17,13 +18,13 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <br/>
-  <mat-form-field *ngFor='let encyclopedia of _cachedEncyclopedia'>
-    <input matInput [placeholder]="encyclopedia.text" [value]='encyclopedia.tip'>
+  <mat-form-field formGroupName="encyclopedias" *ngFor="let key of getFormGroupKeys()">
+    <input matInput [formControlName]='key' [placeholder]='key'>
   </mat-form-field>
 </form>
 <div class='tab-buttons'>
   <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'></app-tab-button>
-  <app-tab-button *ngIf='form.enabled' icon='save' (clicked)='save()'></app-tab-button>
+  <app-tab-button *ngIf='form.enabled' icon='save' [disabled]='form.invalid' (clicked)='save()'></app-tab-button>
   <br/>
   <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>
 </div>

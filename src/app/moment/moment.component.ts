@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Moment } from '../../models/moment';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
-import { MarkdownService, MarkedRenderer } from 'ngx-markdown';
+import { MarkdownService } from 'ngx-markdown';
 import { EncyclopediaService } from '../../service/encyclopedia';
 
 interface TextDisplayPart {
@@ -27,13 +27,14 @@ export class MomentComponent implements OnInit {
   @Input() set moment(value: Moment) {
     this._moment = value;
     this.form.disable();
+    // tslint:disable-next-line: no-floating-promises
     this.read();
   }
 
   form = new FormGroup({
-    text: new FormControl(''),
+    text: new FormControl('', Validators.required),
     end: new FormControl(false),
-    // encyclopedias: new FormArray([]),
+    encyclopedias: new FormGroup({}),
   });
 
   constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private markdown: MarkdownService) { }
@@ -41,7 +42,7 @@ export class MomentComponent implements OnInit {
   ngOnInit() {
     this.form.disable();
     this.form.get('text').valueChanges
-      .subscribe(() => this.encyclopedias());
+      .subscribe(() => this.updateEncyclopedias());
   }
 
   async read(): Promise<void> {
@@ -58,7 +59,32 @@ export class MomentComponent implements OnInit {
     this._cachedRead = readArray.filter((field) => !!field.text);
   }
 
-  async encyclopedias(): Promise<TextDisplayPart[]> {
+  syncFormControlsForEncyclopedias() {
+    const group = this.form.get('encyclopedias') as FormGroup;
+
+    for (const key of Object.keys(group.controls)) {
+      console.log(key);
+      if (!this._cachedEncyclopedia.find((enc) => enc.text === key)) {
+        // Delete if missing
+        group.removeControl(key);
+      }
+    }
+
+    for (const enc of this._cachedEncyclopedia) {
+      if (!group.get(enc.text)) {
+        // Add if missing
+        const ctrl = new FormControl(enc.tip, Validators.required);
+        group.addControl(enc.text, ctrl);
+      }
+    }
+  }
+
+  getFormGroupKeys() {
+    const group = this.form.get('encyclopedias') as FormGroup;
+    return Object.keys(group.controls);
+  }
+
+  async updateEncyclopedias(): Promise<void> {
     const value: string = this.form.get('text').value;
     const splitted = value.split('`');
     if (splitted.length % 2) {
@@ -72,8 +98,8 @@ export class MomentComponent implements OnInit {
       });
       const readArray = await Promise.all(promiseArray);
       this._cachedEncyclopedia = readArray.filter((field) => !!field.text);
+      this.syncFormControlsForEncyclopedias();
     }
-    return this._cachedEncyclopedia;
   }
 
   mark() {
@@ -89,10 +115,10 @@ export class MomentComponent implements OnInit {
   }
 
   edit() {
-    this.form.setValue({
-      text: this._moment.text,
-      end: !!this._moment.end,
-    });
+    this.form.get('text')
+      .setValue(this._moment.text);
+    this.form.get('end')
+      .setValue(!!this._moment.end);
     this.form.enable();
   }
 

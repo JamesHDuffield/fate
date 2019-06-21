@@ -9,6 +9,9 @@ export class EncyclopediaService {
   constructor(private db: AngularFirestore) {}
 
   async lookup(key: string): Promise<string> {
+    if (!key) {
+      return null;
+    }
     const document = await this.db.collection('encyclopedia')
       .doc(key.toLowerCase())
       .get()
