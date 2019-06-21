@@ -5,10 +5,6 @@ jobs:
     description: Deploy to firebase
     docker: 
       - image: circleci/<language>:<version TAG>
-    parameters:
-      token:
-        type: string
-        description: Firebase Deploy Token
     steps:
       - run:
           name: Install
