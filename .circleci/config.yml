@@ -8,6 +8,7 @@ jobs:
     steps:
       - checkout
       - run: npm ci
+      - run: cd functions && npm ci && cd ..
       - run: npm run deploy -- --token=$FIREBASE_TOKEN
 
 workflows:
