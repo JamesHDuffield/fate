@@ -86,6 +86,11 @@ export const create = async (request: CreateRequest, response: Response) => {
     case 'west':
       await createLocation(cred.uid, user, -1, 0);
       break;
+    case 'reset':
+      const location = await db.getRef<Location>(user.location);
+      await db.addOption(user.moment, { text, moment: location.moment });
+      await db.userToMoment(cred.uid, location.moment);
+      break;
     default:
       // Create new moment
       const newMomentRef = await db.createMoment(cred.uid, 'And then...');
