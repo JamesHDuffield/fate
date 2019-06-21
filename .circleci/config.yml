@@ -8,7 +8,7 @@ jobs:
     steps:
       - run:
           name: Install
-          command: npm ci
+          command: ls && npm ci
       - run:
           name: Deploy to Firebase
           command: npm run deploy -- --token=$FIREBASE_TOKEN
