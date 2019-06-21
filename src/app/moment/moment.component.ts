@@ -2,8 +2,10 @@ import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Moment } from '../../models/moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
-import { MarkdownService } from 'ngx-markdown';
 import { EncyclopediaService } from '../../service/encyclopedia';
+import { fade } from '../../animations/fade';
+
+const FADE_IN = 300;
 
 interface TextDisplayPart {
   text?: string;
@@ -14,21 +16,24 @@ interface TextDisplayPart {
   selector: 'app-moment',
   templateUrl: './moment.component.html',
   styleUrls: [ './moment.component.scss' ],
+  animations: [ fade(FADE_IN, 0) ],
 })
 export class MomentComponent implements OnInit {
 
-  _moment: Moment;
-  _cachedRead: TextDisplayPart[] = [];
   _cachedEncyclopedia: TextDisplayPart[] = [];
 
   @ViewChild('editor')
   editor: ElementRef;
 
+  _moment: Moment;
+
   @Input() set moment(value: Moment) {
     this._moment = value;
     this.form.disable();
-    // tslint:disable-next-line: no-floating-promises
-    this.read();
+  }
+
+  get moment(): Moment {
+    return this._moment;
   }
 
   form = new FormGroup({
@@ -37,26 +42,12 @@ export class MomentComponent implements OnInit {
     encyclopedias: new FormGroup({}),
   });
 
-  constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private markdown: MarkdownService) { }
+  constructor(public story: StoryService, private encyclopedia: EncyclopediaService) { }
 
   ngOnInit() {
     this.form.disable();
     this.form.get('text').valueChanges
       .subscribe(() => this.updateEncyclopedias());
-  }
-
-  async read(): Promise<void> {
-    const splitted = this._moment.text.split('`');
-    const promiseArray = splitted.map(async (text, i): Promise<TextDisplayPart> => {
-      // tslint:disable-next-line: no-magic-numbers
-      if (i % 2) {
-        const tip = await this.encyclopedia.lookup(text);
-        return { text, tip };
-      }
-      return { text: text };
-    });
-    const readArray = await Promise.all(promiseArray);
-    this._cachedRead = readArray.filter((field) => !!field.text);
   }
 
   syncFormControlsForEncyclopedias() {
@@ -136,8 +127,7 @@ export class MomentComponent implements OnInit {
   async save() {
     const value = this.form.value;
     return this.story.updateMoment({ text: value.text, end: value.end }, value.encyclopedias)
-      .then(() => this.form.disable())
-      .then(() => this.read());
+      .then(() => this.form.disable());
   }
 
 }

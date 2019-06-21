@@ -35,6 +35,7 @@ import { MomentComponent } from './moment/moment.component';
 import { OptionsComponent } from './options/options.component';
 import { LocationComponent } from './location/location.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { TextDisplayComponent } from './text-display/text-display.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MarkdownModule } from 'ngx-markdown';
     MomentComponent,
     OptionsComponent,
     LocationComponent,
+    TextDisplayComponent,
   ],
   imports: [
     BrowserModule,

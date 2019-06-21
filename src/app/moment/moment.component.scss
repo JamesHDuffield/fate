@@ -1,5 +1,3 @@
-@import '../../theme.scss';
-
 pre {
   overflow-x: auto;
   white-space: pre-wrap;
@@ -32,13 +30,5 @@ pre {
 
   app-tab-button {
     position: fixed;
-  }
-}
-
-
-span.tip {
-  color: mat-color($fate-app-primary);
-  &:hover {
-    cursor: pointer;
   }
 }

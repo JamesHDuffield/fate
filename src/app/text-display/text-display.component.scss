@@ -1,0 +1,8 @@
+@import '../../theme.scss';
+
+span.tip {
+  color: mat-color($fate-app-primary);
+  &:hover {
+    cursor: pointer;
+  }
+}

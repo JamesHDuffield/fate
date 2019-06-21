@@ -1,11 +1,8 @@
-<div *ngIf='form.disabled'>
-  <span *ngFor='let field of _cachedRead'>
-    <span *ngIf='!field.tip'>{{ field.text }}</span>
-    <span class='tip' [matTooltip]='field.tip' [attr.aria-label]='field.tip' *ngIf='field.tip'>{{ field.text }}</span>
-  </span>
+<div *ngIf='form.disabled && moment' @fade>
+  <app-text-display [text]='moment.text'></app-text-display>
 </div>
 
-<form [formGroup]="form" class='container' *ngIf='form.enabled'>
+<form [formGroup]="form" class='container' *ngIf='form.enabled' @fade>
   <mat-form-field>
     <textarea #editor matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
   </mat-form-field>
