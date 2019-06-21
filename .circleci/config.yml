@@ -1,7 +1,7 @@
 version: 2.1
 description: Orb for firebase deploy.
 commands:
-  deploy:
+  build:
     description: Deploy to firebase
     parameters:
       token:
