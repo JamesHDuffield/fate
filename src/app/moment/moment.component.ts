@@ -53,7 +53,7 @@ export class MomentComponent implements OnInit {
         const tip = await this.encyclopedia.lookup(text);
         return { text, tip };
       }
-      return { text };
+      return { text: text };
     });
     const readArray = await Promise.all(promiseArray);
     this._cachedRead = readArray.filter((field) => !!field.text);
@@ -63,7 +63,6 @@ export class MomentComponent implements OnInit {
     const group = this.form.get('encyclopedias') as FormGroup;
 
     for (const key of Object.keys(group.controls)) {
-      console.log(key);
       if (!this._cachedEncyclopedia.find((enc) => enc.text === key)) {
         // Delete if missing
         group.removeControl(key);
@@ -109,9 +108,16 @@ export class MomentComponent implements OnInit {
     if (text[finish - 1] === ' ') {
       finish--;
     }
-    const output = text.slice(0, start) + '`' + text.slice(start, finish) + '`' + text.slice(finish);
-    this.form.get('text')
-      .setValue(output);
+    if (text[start - 1] === '`' && text[finish] === '`') {
+      const output = text.slice(0, start - 1) + text.slice(start, finish) + text.slice(finish + 1);
+      this.form.get('text')
+        .setValue(output);
+    } else {
+      const output = text.slice(0, start) + '`' + text.slice(start, finish) + '`' + text.slice(finish);
+      this.form.get('text')
+        .setValue(output);
+    }
+
   }
 
   edit() {
