@@ -4,7 +4,7 @@ jobs:
   deploy:
     description: Deploy to firebase
     docker: 
-      - image: circleci/<language>:<version TAG>
+      - image: node:8
     steps:
       - run:
           name: Install
