@@ -128,7 +128,10 @@ export class MomentComponent implements OnInit {
   }
 
   async save() {
-    return this.story.updateMoment(this.form.value);
+    const value = this.form.value;
+    return this.story.updateMoment({ text: value.text, end: value.end }, value.encyclopedias)
+      .then(() => this.form.disable())
+      .then(() => this.read());
   }
 
 }

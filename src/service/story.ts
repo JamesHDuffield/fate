@@ -5,10 +5,11 @@ import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import { LocationService } from './location';
 import { Observable, combineLatest, NEVER } from 'rxjs';
-import { filter, switchMap, map, first, catchError } from 'rxjs/operators';
+import { filter, switchMap, map, first, catchError, tap } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
+import { Encyclopedia } from 'src/models/encyclopedia';
 
 @Injectable()
 export class StoryService {
@@ -82,14 +83,37 @@ export class StoryService {
     return this.request('/respawn');
   }
 
-  async updateMoment(moment: Partial<Moment>): Promise<void> {
-    return this.auth.user$
+  async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
+    await this.auth.user$
       .pipe(
         map((user) => this.db.doc<Moment>(user.moment)),
         first(),
         switchMap((momentDoc) => momentDoc.set(<Moment>moment, { merge: true })),
       )
-      .toPromise();
-  }
+      .toPromise()
+      .catch((e: Error) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        throw e;
+      });
 
+    try {
+      const userDoc = await this.auth.userDoc$.pipe(first())
+        .toPromise();
+      for (const name of Object.keys(encyclopedias)) {
+        const ref = this.db.collection('encyclopedia')
+          .doc<Encyclopedia>(name.toLowerCase());
+        const doc = await ref.get()
+          .toPromise();
+        if (!doc.exists || this.auth.admin || (doc.data().owner && doc.data().owner.id === userDoc.ref.id)) {
+          const enc = { text: encyclopedias[name], owner: userDoc.ref };
+          await ref.set(enc, { merge: true });
+        }
+      }
+    } catch (e) {
+      this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+      throw e;
+    }
+  }
+  
 }
+
