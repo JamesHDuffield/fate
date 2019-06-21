@@ -25,5 +25,10 @@ service cloud.firestore {
     match /zones/{zone}/locations/{location} {
     	allow read: if get(getUserData().zone).id == zone;
     }
+
+    match /encyclopedia/{encyclopedia} {
+    	allow read, create: if request.auth.uid != null;
+      allow update: if isAdmin() == true || resource.data.owner.id == request.auth.uid
+    }
   }
 }
