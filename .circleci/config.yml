@@ -15,7 +15,7 @@ jobs:
           command: npm ci
       - run:
           name: Deploy to Firebase
-          command: npm run deploy -- --token=<< parameters.token >>
+          command: npm run deploy -- --token=$FIREBASE_TOKEN
 
 workflows:
   version: 2
