@@ -6,12 +6,9 @@ jobs:
     docker: 
       - image: circleci/node:8.16.0
     steps:
-      - run:
-          name: Install
-          command: ls && npm ci
-      - run:
-          name: Deploy to Firebase
-          command: npm run deploy -- --token=$FIREBASE_TOKEN
+      - checkout
+      - run: npm ci
+      - run: npm run deploy -- --token=$FIREBASE_TOKEN
 
 workflows:
   version: 2
