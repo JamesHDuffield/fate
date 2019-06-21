@@ -42,6 +42,11 @@ export class MomentComponent implements OnInit {
     encyclopedias: new FormGroup({}),
   });
 
+  get encyclopediaKeys() {
+    const group = this.form.get('encyclopedias') as FormGroup;
+    return Object.keys(group.controls);
+  }
+
   constructor(public story: StoryService, private encyclopedia: EncyclopediaService) { }
 
   ngOnInit() {
@@ -67,11 +72,6 @@ export class MomentComponent implements OnInit {
         group.addControl(enc.text, ctrl);
       }
     }
-  }
-
-  getFormGroupKeys() {
-    const group = this.form.get('encyclopedias') as FormGroup;
-    return Object.keys(group.controls);
   }
 
   async updateEncyclopedias(): Promise<void> {
@@ -108,7 +108,6 @@ export class MomentComponent implements OnInit {
       this.form.get('text')
         .setValue(output);
     }
-
   }
 
   edit() {

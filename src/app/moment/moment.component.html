@@ -1,7 +1,15 @@
+<!-- Display moment -->
 <div *ngIf='form.disabled && moment' @fade>
   <app-text-display [text]='moment.text'></app-text-display>
+  <div *ngIf='!moment.end && !moment.options.length'>
+    <pre>The story ends here unless you continue it.</pre>
+  </div>
+  <div *ngIf='moment.end'>
+    <pre>Your fate is sealed.</pre>
+  </div>
 </div>
 
+<!-- Edit moment -->
 <form [formGroup]="form" class='container' *ngIf='form.enabled' @fade>
   <mat-form-field>
     <textarea #editor matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
@@ -15,19 +23,15 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <br/>
-  <mat-form-field formGroupName="encyclopedias" *ngFor="let key of getFormGroupKeys()">
+  <mat-form-field formGroupName="encyclopedias" *ngFor="let key of encyclopediaKeys" @fade>
     <input matInput [formControlName]='key' [placeholder]='key'>
   </mat-form-field>
 </form>
+
+<!-- Controls -->
 <div class='tab-buttons'>
   <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'></app-tab-button>
   <app-tab-button *ngIf='form.enabled' icon='save' [disabled]='form.invalid' (clicked)='save()'></app-tab-button>
   <br/>
   <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>
-</div>
-<div *ngIf='form.disabled && !_moment.end && !_moment.options.length'>
-  <pre>The story ends here unless you continue it.</pre>
-</div>
-<div *ngIf='form.disabled && _moment.end'>
-  <pre>Your fate is sealed.</pre>
 </div>
