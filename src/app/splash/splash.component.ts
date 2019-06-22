@@ -9,7 +9,7 @@ import { AuthService } from '../../service/auth';
   animations: [ fade(1000, 300) ],
 })
 export class SplashComponent {
-
+  hide: boolean;
   constructor(private auth: AuthService) {}
 
 }
