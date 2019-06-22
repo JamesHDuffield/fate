@@ -23,6 +23,7 @@
         height: 130px;
         font-size: 8em;
         margin-top: 30vh;
+        animation: float-animation 6s ease-in-out infinite;
     }
 
     .title-text {
@@ -30,4 +31,17 @@
         font-size: 4em;
     }
     
+}
+
+
+@keyframes float-animation {
+	0% {
+        transform: translatey(0px);
+	}
+	50% {
+        transform: translatey(-20px);
+	}
+	100% {
+        transform: translatey(0px);
+	}
 }
