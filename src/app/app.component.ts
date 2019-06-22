@@ -12,7 +12,7 @@ import { shareReplay, tap, filter, map } from 'rxjs/operators';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.scss' ],
-  animations: [ fade(1000, 0) ],
+  animations: [ fade(1000, 1000) ],
 })
 export class AppComponent {
   firebaseUser$ = this.auth.firebaseUser$;

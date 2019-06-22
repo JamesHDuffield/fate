@@ -6,7 +6,7 @@ import { AuthService } from '../../service/auth';
   selector: 'app-splash',
   templateUrl: './splash.component.html',
   styleUrls: [ './splash.component.scss' ],
-  animations: [ fade(1000, 0) ],
+  animations: [ fade(1000, 300) ],
 })
 export class SplashComponent {
 

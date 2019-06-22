@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, switchMap, map, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, empty } from 'rxjs';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../models/user';
 
@@ -16,15 +16,14 @@ export class AuthService {
   firebaseUser$ = new BehaviorSubject<firebase.User>(null);
   userDoc$: Observable<AngularFirestoreDocument<User>> = this.firebaseUser$
     .pipe(
-      filter((firebaseUser) => !!firebaseUser && !!firebaseUser.uid),
-      tap((firebaseUser) => this.uid = firebaseUser.uid),
-      map((firebaseUser) => this.db.collection('users')
-        .doc<User>(firebaseUser.uid)),
+      tap((firebaseUser) => this.uid = firebaseUser ? firebaseUser.uid : null),
+      map((firebaseUser) => firebaseUser ? this.db.collection('users')
+        .doc<User>(firebaseUser.uid) : null),
     );
   user$: Observable<User> = this.userDoc$
     .pipe(
-      switchMap((userDoc) => userDoc
-        .valueChanges()),
+      switchMap((userDoc) => userDoc ? userDoc
+        .valueChanges() : empty(null)),
     );
 
   constructor(private db: AngularFirestore) {
@@ -46,7 +45,8 @@ export class AuthService {
 
   async logout() {
     return firebase.auth()
-      .signOut();
+      .signOut()
+      .then(() => this.firebaseUser$.next(null));
   }
 
 }

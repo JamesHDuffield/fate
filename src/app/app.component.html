@@ -1,4 +1,4 @@
-<mat-toolbar >
+<mat-toolbar @fade *ngIf='firebaseUser$ | async'>
   <span *ngIf='user$ | async; let user;'>
       <span  (click)='auth.logout()'>{{ user.username }}</span>
       <small (click)='story.respawn()' *ngIf='user.admin'>{{ user.moment.id }}</small>
