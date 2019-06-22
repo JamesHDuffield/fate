@@ -5,13 +5,17 @@ import { StoryService } from '../service/story';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationComponent } from './location/location.component';
 import { Location } from '../models/location';
+import { fade } from '../animations/fade';
+import { shareReplay, tap, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.scss' ],
+  animations: [ fade(1000, 0) ],
 })
 export class AppComponent {
+  firebaseUser$ = this.auth.firebaseUser$;
   user$ = this.auth.user$;
   zone$ = this.location.zone$;
   location$ = this.location.currentLocation$;
@@ -25,6 +29,11 @@ export class AppComponent {
       width: '40vw',
       data: location,
     });
+  }
+
+  test(auth) {
+    console.log('test', auth);
+    return !!auth;
   }
 
 }

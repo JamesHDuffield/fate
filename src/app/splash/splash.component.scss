@@ -1,0 +1,33 @@
+@import '../../theme.scss';
+
+.splash-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    cursor: pointer;
+    
+    &:hover > * {
+        text-shadow: 2px 2px 3px mat-color($fate-app-primary);
+    }
+
+    & > * {
+        text-shadow: 2px 2px 5px black;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+
+    mat-icon {
+        height: 130px;
+        font-size: 8em;
+        margin-top: 30vh;
+    }
+
+    .title-text {
+        font-family: "Lucida Grande", "Lucida Sans Unicode", "GNU Unifont", Verdana, Helvetica, sans-serif;
+        font-size: 4em;
+    }
+    
+}

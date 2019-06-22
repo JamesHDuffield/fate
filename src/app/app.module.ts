@@ -36,6 +36,7 @@ import { OptionsComponent } from './options/options.component';
 import { LocationComponent } from './location/location.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { TextDisplayComponent } from './text-display/text-display.component';
+import { SplashComponent } from './splash/splash.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { TextDisplayComponent } from './text-display/text-display.component';
     OptionsComponent,
     LocationComponent,
     TextDisplayComponent,
+    SplashComponent,
   ],
   imports: [
     BrowserModule,

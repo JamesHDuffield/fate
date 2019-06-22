@@ -28,19 +28,11 @@ export class AuthService {
     );
 
   constructor(private db: AngularFirestore) {
-    (<any>window).logout = this.logout;
-    // tslint:disable-next-line: no-floating-promises
-    this.setup();
-  }
-
-  async setup() {
     firebase.auth()
       .onAuthStateChanged(
         (user) => {
           if (user) {
             this.firebaseUser$.next(user);
-          } else {
-            return this.login();
           }
         },
         (error) => console.error(error),

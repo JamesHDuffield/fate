@@ -1,7 +1,7 @@
-<mat-toolbar>
-  <span *ngIf='user$ | async; let user'>
+<mat-toolbar >
+  <span *ngIf='user$ | async; let user;'>
       <span  (click)='auth.logout()'>{{ user.username }}</span>
-      <small (click)='story.respawn()'>{{ user.moment.id }}</small>
+      <small (click)='story.respawn()' *ngIf='user.admin'>{{ user.moment.id }}</small>
   </span>
   <span class="fill-remaining-space"></span>
 
@@ -13,8 +13,9 @@
   </span>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<app-map @fade *ngIf='firebaseUser$ | async'></app-map>
 
-<app-map></app-map>
+<app-story @fade *ngIf='firebaseUser$ | async'></app-story>
 
-<app-story></app-story>
+<app-splash *ngIf='!(firebaseUser$ | async)'></app-splash>
+
