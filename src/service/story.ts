@@ -9,7 +9,7 @@ import { filter, switchMap, map, first, catchError, tap } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
-import { Encyclopedia } from 'src/models/encyclopedia';
+import { Encyclopedia } from '../models/encyclopedia';
 
 @Injectable()
 export class StoryService {
@@ -114,6 +114,4 @@ export class StoryService {
       throw e;
     }
   }
-  
 }
-

@@ -1,21 +1,8 @@
-<mat-toolbar @fade *ngIf='firebaseUser$ | async'>
-  <span *ngIf='user$ | async; let user;'>
-      <span  (click)='auth.logout()'>{{ user.username }}</span>
-      <small (click)='story.respawn()' *ngIf='user.admin'>{{ user.moment.id }}</small>
-  </span>
-  <span class="fill-remaining-space"></span>
+<app-header @fade *ngIf='auth.firebaseUser$ | async'></app-header>
 
-  <span *ngIf='zone$ | async; let zone' class='zone'>
-    <small *ngIf='location$ | async; let location' (click)='openLocationDialog(location)'>
-      {{ location.name || 'Road' }}
-    </small>
-    {{ zone.name }}
-  </span>
-</mat-toolbar>
+<app-map @fade *ngIf='auth.firebaseUser$ | async'></app-map>
 
-<app-map @fade *ngIf='firebaseUser$ | async'></app-map>
+<app-story @fade *ngIf='auth.firebaseUser$ | async'></app-story>
 
-<app-story @fade *ngIf='firebaseUser$ | async'></app-story>
-
-<app-splash *ngIf='!(firebaseUser$ | async)' [loaded]='(firebaseUser$ | async) !== undefined'></app-splash>
+<app-splash *ngIf='!(auth.firebaseUser$ | async)' [loaded]='(auth.firebaseUser$ | async) !== undefined'></app-splash>
 

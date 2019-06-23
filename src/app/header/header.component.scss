@@ -1,0 +1,21 @@
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+small {
+    font-size: xx-small;
+    color: darkgrey;
+    mat-icon {
+        width: 15px;
+        font-size: small;
+    }
+}
+
+span {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.zone {
+    margin-left: 8px;
+}

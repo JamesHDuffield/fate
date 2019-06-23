@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <span *ngIf='auth.user$ | async; let user;'>
+      <span  (click)='auth.logout()'>{{ user.username }}</span>
+      <small (click)='story.respawn()' *ngIf='user.admin'>{{ user.moment.id }}</small>
+  </span>
+  <span class="fill-remaining-space"></span>
+
+  <span *ngIf='location.zone$ | async; let zone' class='zone'>
+    <small *ngIf='location.currentLocation$ | async; let location' (click)='openLocationDialog(location)'>
+      {{ location.name || 'Road' }}
+    </small>
+    {{ zone.name }}
+  </span>
+</mat-toolbar>

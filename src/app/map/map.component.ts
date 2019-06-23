@@ -40,7 +40,6 @@ export class MapComponent implements AfterViewInit {
   }
 
   clipArc(ctx, x, y, r, f) { /// context, x, y, radius, feather size
-    console.log('clip');
     /// create off-screen temporary canvas where we draw in the shadow
     const temp = document.createElement('canvas');
     const tx = temp.getContext('2d');
