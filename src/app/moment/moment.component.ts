@@ -96,6 +96,9 @@ export class MomentComponent implements OnInit {
     const start = this.editor.nativeElement.selectionStart;
     let finish = this.editor.nativeElement.selectionEnd;
     const text = this.editor.nativeElement.value;
+    if (start === finish) {
+      return;
+    }
     if (text[finish - 1] === ' ') {
       finish--;
     }

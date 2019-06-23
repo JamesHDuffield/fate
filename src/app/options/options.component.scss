@@ -1,4 +1,5 @@
 .container {
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -33,5 +34,14 @@
 
   app-tab-button {
     position: fixed;
+  }
+}
+
+mat-button-toggle-group {
+  flex-wrap: wrap;
+  border: none;
+  mat-button-toggle {
+    border: solid 1px rgba(255, 255, 255, 0.12);
+    margin: 2px;
   }
 }

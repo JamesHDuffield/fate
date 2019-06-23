@@ -3,6 +3,7 @@
     <mat-form-field class="full-width">
       <input matInput placeholder="Describe the choice" formControlName='text' [disabled]='disabled'>
     </mat-form-field>
+    <mat-hint><small>Action</small></mat-hint>
     <mat-button-toggle-group formControlName='type' [disabled]='disabled'>
       <mat-button-toggle value='moment' aria-label="New Moment" matTooltip="New Moment">
         <mat-icon>add_comment</mat-icon>
