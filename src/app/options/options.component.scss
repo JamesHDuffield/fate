@@ -20,13 +20,16 @@
 .button-option {
   margin: auto;
   width: 100%;
+  line-height: 18px;
+  min-height: 40px;
+  white-space: normal !important;
 }
 
 .tab-buttons {
   position: absolute;
   height: 0px;
   top: 10px;
-  right: -18px;
+  right: -12px;
 
   app-tab-button {
     position: fixed;
