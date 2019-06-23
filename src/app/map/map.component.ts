@@ -39,6 +39,41 @@ export class MapComponent implements AfterViewInit {
     return (-long * this.SCALE) + (this.HEIGHT / 2);
   }
 
+  clipArc(ctx, x, y, r, f) { /// context, x, y, radius, feather size
+    console.log('clip');
+    /// create off-screen temporary canvas where we draw in the shadow
+    const temp = document.createElement('canvas');
+    const tx = temp.getContext('2d');
+
+    temp.width = ctx.canvas.width;
+    temp.height = ctx.canvas.height;
+
+    /// offset the context so shape itself is drawn outside canvas
+    tx.translate(-temp.width, 0);
+
+    /// offset the shadow to compensate, draws shadow only on canvas
+    tx.shadowOffsetX = temp.width;
+    tx.shadowOffsetY = 0;
+
+    /// black so alpha gets solid
+    tx.shadowColor = '#000';
+
+    /// "feather"
+    tx.shadowBlur = f;
+
+    /// draw the arc, only the shadow will be inside the context
+    tx.beginPath();
+    tx.arc(x, y, r, 0, 2 * Math.PI);
+    tx.closePath();
+    tx.fill();
+
+    /// now punch a hole in main canvas with the blurred shadow
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.drawImage(temp, 0, 0);
+    ctx.restore();
+  }
+
   // tslint:disable: no-magic-numbers
 
   triangle(x: number, y: number) {
@@ -56,13 +91,11 @@ export class MapComponent implements AfterViewInit {
     this.ctx.fill();
   }
 
-  async redraw (current:Location, locations: Location[]) {
-
+  async redraw (current: Location, locations: Location[]) {
     this.ctx.canvas.height = this.HEIGHT;
     this.ctx.canvas.width = this.WIDTH;
-
     this.ctx.strokeStyle = '#D3D3D3';
-    this.ctx.strokeRect(0, 0, 200, 200);
+    // this.ctx.strokeRect(0, 0, 200, 200);
 
     locations.forEach(async (location) => {
       // Draw directions
@@ -81,14 +114,14 @@ export class MapComponent implements AfterViewInit {
       if (location.E) {
         this.ctx.fillRect(x - 2, y - 2, 17, 4);
       }
-      if (!!location.name) {
+      if (location.name) {
         this.ctx.fillStyle = '#A9A9A9';
         this.ctx.fillRect(x - 5, y - 5, 10, 10);
       }
     });
 
     this.triangle(this.WIDTH / 2, this.HEIGHT / 2);
-
+    this.clipArc(this.ctx, this.WIDTH / 2, this.HEIGHT / 2, this.HEIGHT / 3, 10);
   }
 
   // tslint:enable: no-magic-numbers
