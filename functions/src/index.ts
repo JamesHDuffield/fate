@@ -34,4 +34,4 @@ app.post('/respawn', respawn)
 
 export const api = functions.https.onRequest(app);
 
-export const newUser = functions.auth.user().onCreate((event) => userCreate(event.data, app.locals.db));
+export const newUser = functions.auth.user().onCreate((data) => userCreate(data, app.locals.db));
