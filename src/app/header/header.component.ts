@@ -12,7 +12,7 @@ import { LocationComponent } from '../location/location.component';
 })
 export class HeaderComponent {
 
-  constructor(private auth: AuthService, private location: LocationService, private story: StoryService, public dialog: MatDialog) {}
+  constructor(public auth: AuthService, public location: LocationService, public story: StoryService, private dialog: MatDialog) {}
 
   openLocationDialog(location: Location): void {
     this.dialog.open(LocationComponent, {

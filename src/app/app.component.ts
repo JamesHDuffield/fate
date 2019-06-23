@@ -12,6 +12,6 @@ const FADE_DURATION = 1000;
 })
 export class AppComponent {
 
-  constructor(private auth: AuthService) {}
+  constructor(public auth: AuthService) {}
 
 }
