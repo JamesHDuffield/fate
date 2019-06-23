@@ -17,5 +17,5 @@
 
 <app-story @fade *ngIf='firebaseUser$ | async'></app-story>
 
-<app-splash *ngIf='!(firebaseUser$ | async)'></app-splash>
+<app-splash *ngIf='!(firebaseUser$ | async)' [loaded]='(firebaseUser$ | async) !== undefined'></app-splash>
 

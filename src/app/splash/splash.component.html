@@ -1,4 +1,5 @@
-<div @fade *ngIf='!hide' class='splash-container' (mouseover)='hover = true;' (mouseout)='hover = false;' (click)='auth.login(); hide = true;'>
+<div @fade *ngIf='!hide' class='splash-container' [class.highlight]='loaded' (mouseover)='hover = true;' (mouseout)='hover = false;' (click)='click()'>
   <mat-icon>import_contacts</mat-icon>
-  <div class='title-text'>fate</div>
+  <div class='title-text' *ngIf='!loaded'>...</div>
+  <div class='title-text' *ngIf='loaded'>fate</div>
 </div>

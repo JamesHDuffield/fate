@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable, BehaviorSubject, empty } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs/operators';
@@ -10,10 +10,11 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
+  loaded: boolean = false;
   admin: boolean = false;
   uid: string = null;
   provider = new firebase.auth.GoogleAuthProvider();
-  firebaseUser$ = new BehaviorSubject<firebase.User>(null);
+  firebaseUser$ = new BehaviorSubject<firebase.User>(undefined);
   userDoc$: Observable<AngularFirestoreDocument<User>> = this.firebaseUser$
     .pipe(
       tap((firebaseUser) => this.uid = firebaseUser ? firebaseUser.uid : null),
@@ -26,15 +27,16 @@ export class AuthService {
         .valueChanges() : empty(null)),
     );
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private zone: NgZone) {
     firebase.auth()
       .onAuthStateChanged(
         (user) => {
-          if (user) {
-            this.firebaseUser$.next(user);
-          }
+          console.log('User', user);
+          this.zone.run(() => this.firebaseUser$.next(user));
         },
-        (error) => console.error(error),
+        (error) => {
+          console.error(error);
+        },
       );
   }
 
