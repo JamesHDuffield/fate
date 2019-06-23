@@ -1,7 +1,3 @@
-.fill-remaining-space {
-    flex: 1 1 auto;
-}
-
 small {
     font-size: xx-small;
     color: darkgrey;
@@ -11,11 +7,18 @@ small {
     }
 }
 
-span {
-    margin-left: 3px;
-    margin-right: 3px;
+.left-align > ::ng-deep figure {
+    justify-content: flex-start;
 }
 
-.zone {
-    margin-left: 8px;
+.right-align > ::ng-deep figure {
+    justify-content: flex-end;
 }
+
+mat-grid-list {
+    width: 100%;
+    span {
+        height: 15px;
+    }
+}
+
