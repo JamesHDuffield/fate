@@ -28,7 +28,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
 import { LocationService } from '../service/location';
-import { MapComponent } from './map/map.component';
 import { StoryComponent } from './story/story.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentComponent } from './moment/moment.component';
@@ -43,7 +42,6 @@ import { HeaderComponent } from './header/header.component';
   declarations: [
     AppComponent,
     TabButtonComponent,
-    MapComponent,
     StoryComponent,
     MomentComponent,
     OptionsComponent,
