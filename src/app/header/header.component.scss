@@ -27,8 +27,10 @@ mat-grid-list {
 
 mat-toolbar {
     width: calc(100vw - 64px);
+    max-width: 832px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 4px;
+    margin-top: 3vh;
 }
 
