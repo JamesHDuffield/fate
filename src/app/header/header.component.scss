@@ -20,6 +20,9 @@ mat-grid-list {
     span {
         height: 15px;
     }
+    mat-grid-tile {
+        overflow: initial;
+    }
 }
 
 mat-toolbar {
