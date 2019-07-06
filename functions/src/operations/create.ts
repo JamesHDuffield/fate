@@ -1,14 +1,12 @@
 import * as HttpStatus from 'http-status-codes';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { DatabaseService } from '../services/db';
 import { Location } from '../models/location';
 import { Moment } from '../models/moment';
 // tslint:disable-next-line:no-implicit-dependencies
-import { DocumentReference } from '@google-cloud/firestore';
-import { User } from '../models/user';
+import { AuthorisedRequest } from '../services/auth';
 
-interface CreateRequest extends Request {
-  userRef: DocumentReference;
+interface CreateRequest extends AuthorisedRequest {
   body: { text: string, type: string; };
 }
 
@@ -23,10 +21,8 @@ export const create = async (request: CreateRequest, response: Response) => {
     return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Text is required'});
   }
 
-  // Get current user
-  const user = await db.getRef<User>(request.userRef);
   // Check if too many options
-  const moment = await db.getRef<Moment>(user.moment);
+  const moment = await db.getRef<Moment>(request.user.moment);
   if (!moment || moment.options.length >= 3) {
     return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Too many options exist for this moment.'});
   }
@@ -34,17 +30,17 @@ export const create = async (request: CreateRequest, response: Response) => {
   switch(type) {
     case 'reset':
       // Get current location
-      const location = await db.getRef<Location>(user.location);
+      const location = await db.getRef<Location>(request.user.location);
       // Add option to current moment
-      await db.addOption(user.moment, { text, moment: location.moment });
+      await db.addOption(request.user.moment, { text, moment: location.moment });
       // Move to location
-      await db.userToLocation(request.userRef, user.location);
+      await db.userToLocation(request.userRef, request.user.location);
       break;
     default:
       // Create new moment
       const newMomentRef = await db.createMoment(request.userRef, 'And then...');
       // Add option to current moment
-      await db.addOption(user.moment, { text, moment: newMomentRef });
+      await db.addOption(request.user.moment, { text, moment: newMomentRef });
       // Update user to new moment
       await db.userToMoment(request.userRef, newMomentRef);
       break;

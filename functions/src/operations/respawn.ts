@@ -1,11 +1,10 @@
 import * as HttpStatus from 'http-status-codes';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { DatabaseService } from '../services/db';
 // tslint:disable-next-line:no-implicit-dependencies
-import { DocumentReference } from '@google-cloud/firestore';
+import { AuthorisedRequest } from '../services/auth';
 
-interface RespawnRequest extends Request {
-  userRef: DocumentReference;
+interface RespawnRequest extends AuthorisedRequest {
   body: void;
 }
 

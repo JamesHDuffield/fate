@@ -1,13 +1,12 @@
 import * as HttpStatus from 'http-status-codes';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { DatabaseService } from '../services/db';
 import { Moment } from '../models/moment';
 // tslint:disable-next-line:no-implicit-dependencies
-import { DocumentReference } from '@google-cloud/firestore';
 import { User } from '../models/user';
+import { AuthorisedRequest } from '../services/auth';
 
-interface ChooseRequest extends Request {
-  userRef: DocumentReference;
+interface ChooseRequest extends AuthorisedRequest {
   body: void;
 }
 
@@ -19,7 +18,7 @@ export const choose = async (request: ChooseRequest, response: Response) => {
 
   // Get moment from option
   const user = await db.getRef<User>(request.userRef);
-  const current = await db.getRef<Moment>(user.moment);
+  const current = await db.getRef<Moment>(request.user.moment);
   const option = current.options.find((opt) => opt.id === +optId);
 
   if (!option) {

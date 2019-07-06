@@ -1,11 +1,20 @@
 import * as admin from 'firebase-admin';
 import { DatabaseService } from './db';
+import { Request } from 'express';
+import { User } from '../models/user';
+// tslint:disable-next-line:no-implicit-dependencies
+import { DocumentReference } from '@google-cloud/firestore';
+
+export interface AuthorisedRequest extends Request {
+  user: User;
+  userRef: DocumentReference;
+}
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
-export const auth = async (req, res, next) => {
+export const auth = async (req: AuthorisedRequest, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
 
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
@@ -35,9 +44,14 @@ export const auth = async (req, res, next) => {
 
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    req.user = decodedIdToken;
     const db: DatabaseService = req.app.locals.db;
-    req.userRef = db.firestore.doc(`/users/${req.user.uid}`);
+    req.userRef = db.firestore.doc(`/users/${decodedIdToken.uid}`);
+    const doc = await req.userRef.get();
+    if (!doc.exists) {
+      res.status(403).send('User record not found');
+      return;
+    }
+    req.user = doc.data();
     next();
     return;
   } catch (error) {
