@@ -1,4 +1,4 @@
 <span *ngFor='let field of _cachedRead'>
-  <span *ngIf='!field.tip'>{{ field.text }}</span>
-  <span class='tip' [matTooltip]='field.tip' [attr.aria-label]='field.tip' *ngIf='field.tip'>{{ field.text }}</span>
+  <span *ngIf='!field.tip' [innerHTML]='field.text'></span>
+  <span class='tip' [matTooltip]='field.tip' [attr.aria-label]='field.tip' *ngIf='field.tip' [innerHTML]='field.text'></span>
 </span>

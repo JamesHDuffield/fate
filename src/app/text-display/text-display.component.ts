@@ -23,6 +23,7 @@ export class TextDisplayComponent {
   constructor(private encyclopedia: EncyclopediaService) { }
 
   async read(text: string): Promise<void> {
+    text = text.replace('\n', '<br/><br/>');
     if (!this._cachedRead.length) {
       this._cachedRead = [{ text: text.replace(/`/g, '') }]; // load immediately
     }
