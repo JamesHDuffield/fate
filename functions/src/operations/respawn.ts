@@ -13,7 +13,7 @@ export const respawn = async (request: RespawnRequest, response: Response) => {
   const db: DatabaseService = request.app.locals.db;
 
   // Update user to new moment
-  await db.userToLocation(cred.uid, db.respawnPoint);
+  await db.userToZone(cred.uid, db.respawnPoint);
 
   return response.sendStatus(HttpStatus.NO_CONTENT);
 };

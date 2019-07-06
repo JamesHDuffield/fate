@@ -3,8 +3,9 @@ import { Moment, Option } from '../models/moment';
 import { Location } from '../models/location';
 // tslint:disable-next-line: no-implicit-dependencies
 import { DocumentReference } from '@google-cloud/firestore';
+import { Zone } from '../models/zone';
 
-const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH/locations/QpxWih4cW4w3fSHDl3k0'
+const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH'
 
 export class DatabaseService {
 
@@ -46,6 +47,18 @@ export class DatabaseService {
         zone: locationRef.parent.parent,
         location: locationRef,
         moment: location.data().moment,
+      }, { merge: true })
+  }
+
+  async userToZone(uid: string, zoneRef: DocumentReference): Promise<void> {
+    const zone = await zoneRef.get();
+    const location: FirebaseFirestore.DocumentSnapshot = await zone.data().location.get();
+    const momentRef: DocumentReference = location.data().moment;
+    await this.firestore.doc(`/users/${uid}`)
+      .set({
+        zone: zone.ref,
+        location: location.ref,
+        moment: momentRef,
       }, { merge: true })
   }
 
