@@ -5,23 +5,17 @@
     </mat-form-field>
     <mat-hint><small>Action</small></mat-hint>
     <mat-button-toggle-group formControlName='type' [disabled]='disabled'>
-      <mat-button-toggle value='moment' aria-label="New Moment" matTooltip="New Moment">
+      <mat-button-toggle value='moment' aria-label="Go to a new moment" matTooltip="Go to a new moment">
         <mat-icon>add_comment</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='north' aria-label="Go North" matTooltip="Go North">
-        <mat-icon>arrow_upward</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value='east' aria-label="Go East" matTooltip="Go East">
-        <mat-icon>arrow_forward</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value='south' aria-label="Go South" matTooltip="Go South">
-        <mat-icon>arrow_downward</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value='west' aria-label="Go West" matTooltip="Go West">
-        <mat-icon>arrow_back</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value='reset' aria-label="Return to first moment of location" matTooltip="Return to first moment of location">
+      <mat-button-toggle value='reset' aria-label="Return to first moment of this location" matTooltip="Return to first moment of this location">
         <mat-icon>refresh</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='location' aria-label="Go to a location" matTooltip="Go to a location">
+        <mat-icon>location_on</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='zone' aria-label="Go to a zone" matTooltip="Go to a zone">
+        <mat-icon>public</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
