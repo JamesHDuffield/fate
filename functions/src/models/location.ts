@@ -4,4 +4,5 @@ import { DocumentReference } from "@google-cloud/firestore";
 export interface Location {
   moment: DocumentReference;
   name?: string;
+  owner?: DocumentReference;
 }

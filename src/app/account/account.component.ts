@@ -11,8 +11,6 @@ import { AuthService } from '../../service/auth';
 })
 export class AccountComponent {
 
-  disabled = false;
-
   form = new FormGroup({
     username: new FormControl(this.data.username),
   });
@@ -28,13 +26,13 @@ export class AccountComponent {
   }
 
   async submit(): Promise<void> {
-    this.disabled = true;
+    this.form.disable();
     await this.auth.updateAccount(this.form.value);
     this.dialogRef.close();
   }
 
   async logout(): Promise<void> {
-    this.disabled = true;
+    this.form.disable();
     await this.auth.logout();
     this.dialogRef.close();
   }

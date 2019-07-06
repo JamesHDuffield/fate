@@ -51,7 +51,7 @@ export const create = async (request: CreateRequest, response: Response) => {
           return response.sendStatus(HttpStatus.BAD_REQUEST);
         }
       const zoneRef = locationRef.parent.parent;
-      const [newLocationRef, newLocationMomentRef] = await db.createLocation(zoneRef, { name: request.body.name }, defaultMoment);
+      const [newLocationRef, newLocationMomentRef] = await db.createLocation(zoneRef, { name: request.body.name, owner: request.userRef }, defaultMoment);
       await db.addOption(request.user.moment, { text, location: newLocationRef });
       // Update user to new moment
       await db.userToMoment(request.userRef, newLocationMomentRef);
