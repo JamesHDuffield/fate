@@ -27,6 +27,7 @@ export class OptionsComponent implements OnInit {
     text: new FormControl('', [ Validators.required ]),
     type: new FormControl('moment', [ Validators.required ]),
     location: new FormControl(null, []),
+    name: new FormControl(null, []),
   });
 
   constructor(private story: StoryService, private location: LocationService) { }

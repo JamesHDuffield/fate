@@ -3,7 +3,7 @@
     <mat-form-field class="full-width">
       <input matInput placeholder="Describe the choice" formControlName='text' [disabled]='disabled'>
     </mat-form-field>
-    <mat-hint><small>Action</small></mat-hint>
+    <mat-hint><small>Choose an action to perform</small></mat-hint>
     <mat-button-toggle-group formControlName='type' [disabled]='disabled'>
       <mat-button-toggle value='moment' aria-label="Go to a new moment" matTooltip="Go to a new moment">
         <mat-icon>add_comment</mat-icon>
@@ -22,10 +22,13 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
     <mat-form-field *ngIf="form.get('type').value === 'location'">
-      <mat-label>Go to location?</mat-label>
-      <mat-select matNativeControl formControlName='location'>
+      <mat-label>Choose a location to go to</mat-label>
+      <mat-select matNativeControl formControlName='location' [disabled]='disabled'>
         <mat-option *ngFor="let location of locations$ | async" [value]="location.ref">{{ location.name }}</mat-option>
       </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width" *ngIf="form.get('type').value === 'newlocation'">
+      <input matInput placeholder="Name the new location" formControlName='name' [disabled]='disabled'>
     </mat-form-field>
   </div>
 </form>
