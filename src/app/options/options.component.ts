@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
+import { LocationService } from '../../service/location';
+import { tap } from 'rxjs/operators';
 
 const MAXIMUM_OPTIONS = 3;
 
@@ -14,6 +16,7 @@ export class OptionsComponent implements OnInit {
 
   disabled = false;
   _moment: Moment = null;
+  locations$ = this.location.locations$;
 
   @Input() set moment(value: Moment) {
     this._moment = value;
@@ -23,9 +26,10 @@ export class OptionsComponent implements OnInit {
   form = new FormGroup({
     text: new FormControl('', [ Validators.required ]),
     type: new FormControl('moment', [ Validators.required ]),
+    location: new FormControl(null, []),
   });
 
-  constructor(private story: StoryService) { }
+  constructor(private story: StoryService, private location: LocationService) { }
 
   ngOnInit() {
     this.form.disable();

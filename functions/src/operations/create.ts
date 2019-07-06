@@ -7,7 +7,11 @@ import { Moment } from '../models/moment';
 import { AuthorisedRequest } from '../services/auth';
 
 interface CreateRequest extends AuthorisedRequest {
-  body: { text: string, type: string; };
+  body: {
+    text: string,
+    type: string;
+    location?: string,
+  };
 }
 
 export const create = async (request: CreateRequest, response: Response) => {
@@ -34,12 +38,20 @@ export const create = async (request: CreateRequest, response: Response) => {
     case 'zone':
       return response.sendStatus(HttpStatus.NOT_IMPLEMENTED);
     case 'location':
+        if (!request.body.location) {
+          return response.sendStatus(HttpStatus.BAD_REQUEST);
+        }
+        const existingLocationRef = db.firestore.doc(request.body.location);
+        await db.addOption(request.user.moment, { text, location: existingLocationRef });
+        await db.userToLocation(request.userRef, existingLocationRef);
+        break;
+    case 'newlocation':
       const zoneRef = locationRef.parent.parent;
       const [newLocationRef, newLocationMomentRef] = await db.createLocation(zoneRef, {}, defaultMoment);
       await db.addOption(request.user.moment, { text, location: newLocationRef });
       // Update user to new moment
       await db.userToMoment(request.userRef, newLocationMomentRef);
-      break
+      break;
     case 'reset':
       // Get current location
       const location = await db.getRef<Location>(locationRef);

@@ -11,13 +11,22 @@
       <mat-button-toggle value='reset' aria-label="Return to first moment of this location" matTooltip="Return to first moment of this location">
         <mat-icon>refresh</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='location' aria-label="Go to a location" matTooltip="Go to a location">
+      <mat-button-toggle value='location' aria-label="Go to an existing location" matTooltip="Go to an existing location">
         <mat-icon>location_on</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='zone' aria-label="Go to a zone" matTooltip="Go to a zone">
+      <mat-button-toggle value='newlocation' aria-label="Go to a new location" matTooltip="Go to a new location">
+        <mat-icon>add_location</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value='zone' aria-label="Go to a zone" matTooltip="Go to a zone" disabled='true'>
         <mat-icon>public</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
+    <mat-form-field *ngIf="form.get('type').value === 'location'">
+      <mat-label>Go to location?</mat-label>
+      <mat-select matNativeControl formControlName='location'>
+        <mat-option *ngFor="let location of locations$ | async" [value]="location.ref">{{ location.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 </form>
 

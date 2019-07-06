@@ -14,6 +14,8 @@ import {
   MatButtonToggleModule,
   MatTooltipModule,
   MatDialogModule,
+  MatSelectModule,
+  MatOptionModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -68,6 +70,8 @@ import { HeaderComponent } from './header/header.component';
     MatButtonToggleModule,
     MatTooltipModule,
     MatDialogModule,
+    MatSelectModule,
+    MatOptionModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,

@@ -21,7 +21,12 @@ export class LocationService {
       filter((user) => !!user && !!user.moment),
       switchMap((user) => this.db.doc(user.moment.parent.parent.parent.parent)
         .collection<Location>('locations')
-        .valueChanges()),
+        .get(),
+      ),
+      map((query) => query.docs
+        .map((doc) => ({ ref: doc.ref.path, name: doc.data().name }))
+        .filter((doc) => doc.name),
+      ),
     );
 
   currentLocation$ = this.auth.user$
