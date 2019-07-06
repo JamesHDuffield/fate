@@ -6,6 +6,7 @@ export interface Option {
   id: number;
   moment?: DocumentReference;
   location?: DocumentReference;
+  zone?: DocumentReference;
 }
 
 export interface Moment {

@@ -1,12 +1,5 @@
 
 export interface Location {
-  x: number;
-  y: number;
-  connections?: firebase.firestore.DocumentReference[];
-  N?: boolean;
-  S?: boolean;
-  E?: boolean;
-  W?: boolean;
-  moment?:  firebase.firestore.DocumentReference;
+  moment:  firebase.firestore.DocumentReference;
   name?: string;
 }

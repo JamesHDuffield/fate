@@ -3,7 +3,6 @@ import { Moment, Option } from '../models/moment';
 import { Location } from '../models/location';
 // tslint:disable-next-line: no-implicit-dependencies
 import { DocumentReference } from '@google-cloud/firestore';
-import { Zone } from '../models/zone';
 
 const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH'
 
@@ -15,23 +14,19 @@ export class DatabaseService {
     this.respawnPoint = this.firestore.doc(RESPAWN_LOCATION);
   }
 
-  async createUser(uid: string, username: string): Promise<void> {
-    const ref = this.firestore.doc(`/users/${uid}`)
-    const doc = await ref.get();
-    if (doc.exists) {
-      return;
-    }
-    const user: User = {
-      username,
-    };
-    await ref.set(user);
-    await this.userToLocation(uid, this.respawnPoint);
+  // Util
+
+  async getRef<T>(docRef: DocumentReference): Promise<T> {
+    const ref = await docRef.get();
+    return ref.data() as T;
   }
 
   async user(uid: string): Promise<User> {
     const ref = await this.firestore.doc(`/users/${uid}`).get();
     return ref.data() as User;
   }
+
+  // Move user
 
   async userToMoment(uid: string, momentRef: DocumentReference): Promise<void> {
     await this.firestore.doc(`/users/${uid}`)
@@ -62,13 +57,19 @@ export class DatabaseService {
       }, { merge: true })
   }
 
-  async getRef<T>(docRef: DocumentReference): Promise<T> {
-    const ref = await docRef.get();
-    return ref.data() as T;
-  }
+  // Creation
 
-  async moment(id: string): Promise<DocumentReference> {
-    return this.firestore.doc(`/moment/${id}`);
+  async createUser(uid: string, username: string): Promise<void> {
+    const ref = this.firestore.doc(`/users/${uid}`)
+    const doc = await ref.get();
+    if (doc.exists) {
+      return;
+    }
+    const user: User = {
+      username,
+    };
+    await ref.set(user);
+    await this.userToLocation(uid, this.respawnPoint);
   }
 
   async createMoment(uid: string, text: string): Promise<DocumentReference> {
@@ -89,15 +90,6 @@ export class DatabaseService {
     option.id = Math.max(-1, ...current.options.map((opt)=> opt.id)) + 1;
     current.options.push(option as Option);
     await currentRef.set(<any>{ options: current.options }, { merge: true })
-  }
-
-  async getLocationByXY(zone: DocumentReference, x: number, y: number): Promise<DocumentReference> {
-    const found = await zone.collection('locations')
-      .where('x', '==', x)
-      .where('y', '==', y)
-      .limit(1)
-      .get();
-    return found.empty ? null : found.docs[0].ref;
   }
 
 }

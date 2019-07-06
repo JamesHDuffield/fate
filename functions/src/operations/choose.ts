@@ -25,6 +25,10 @@ export const choose = async (request: ChooseRequest, response: Response) => {
     return response.sendStatus(HttpStatus.BAD_REQUEST);
   }
 
+  if (option.zone) {
+    await db.userToZone(cred.uid, option.zone);
+  }
+
   if (option.location) {
     await db.userToLocation(cred.uid, option.location);
   }
