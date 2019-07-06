@@ -13,7 +13,7 @@ service cloud.firestore {
       allow read, write: if request.auth.uid == userId;
     }
     
-    match /moment/{moment} {
+    match /zones/{zone}/locations/{location}/moments/{moment} {
     	allow read: if get(getUserData().moment).id == moment;
       allow write: if get(get(getUserData().moment).data.owner).id == request.auth.uid || isAdmin() == true;
     }

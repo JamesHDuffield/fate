@@ -27,18 +27,20 @@ export const create = async (request: CreateRequest, response: Response) => {
     return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Too many options exist for this moment.'});
   }
 
+  const locationRef = request.user.moment.parent.parent;
+
   switch(type) {
     case 'reset':
       // Get current location
-      const location = await db.getRef<Location>(request.user.location);
+      const location = await db.getRef<Location>(locationRef);
       // Add option to current moment
       await db.addOption(request.user.moment, { text, moment: location.moment });
       // Move to location
-      await db.userToLocation(request.userRef, request.user.location);
+      await db.userToLocation(request.userRef, locationRef);
       break;
     default:
       // Create new moment
-      const newMomentRef = await db.createMoment(request.userRef, 'And then...');
+      const newMomentRef = await db.createMoment(locationRef, { owner: request.userRef, text: 'And then...', options: [] });
       // Add option to current moment
       await db.addOption(request.user.moment, { text, moment: newMomentRef });
       // Update user to new moment

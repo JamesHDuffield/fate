@@ -3,6 +3,7 @@ import { Moment, Option } from '../models/moment';
 import { Location } from '../models/location';
 // tslint:disable-next-line: no-implicit-dependencies
 import { DocumentReference } from '@google-cloud/firestore';
+import { Zone } from '../models/zone';
 
 const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH'
 
@@ -67,17 +68,16 @@ export class DatabaseService {
     await this.userToLocation(ref, this.respawnPoint);
   }
 
-  async createMoment(userRef: DocumentReference, text: string): Promise<DocumentReference> {
-    const moment = {
-      owner: userRef,
-      text,
-      options: [],
-    }
-    return this.firestore.collection('moment').add(moment);
+  async createMoment(locationRef: DocumentReference, moment: Moment): Promise<DocumentReference> {
+    return locationRef.collection('moments').add(moment);
   }
 
-  async createLocation(zone: DocumentReference, location: Location): Promise<DocumentReference> {
-    return zone.collection('locations').add(location);
+  async createLocation(zoneRef: DocumentReference, location: Location): Promise<DocumentReference> {
+    return zoneRef.collection('locations').add(location);
+  }
+
+  async createZone(zone: Zone): Promise<DocumentReference> {
+    return this.firestore.collection('zones').add(zone);
   }
 
   async addOption(currentRef: DocumentReference, option: Partial<Option>): Promise<void> {
