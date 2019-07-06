@@ -28,8 +28,18 @@ export const create = async (request: CreateRequest, response: Response) => {
   }
 
   const locationRef = request.user.moment.parent.parent;
+  const defaultMoment = { owner: request.userRef, text: 'And then...', options: [] };
 
   switch(type) {
+    case 'zone':
+      return response.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+    case 'location':
+      const zoneRef = locationRef.parent.parent;
+      const [newLocationRef, newLocationMomentRef] = await db.createLocation(zoneRef, {}, defaultMoment);
+      await db.addOption(request.user.moment, { text, location: newLocationRef });
+      // Update user to new moment
+      await db.userToMoment(request.userRef, newLocationMomentRef);
+      break
     case 'reset':
       // Get current location
       const location = await db.getRef<Location>(locationRef);
@@ -40,7 +50,7 @@ export const create = async (request: CreateRequest, response: Response) => {
       break;
     default:
       // Create new moment
-      const newMomentRef = await db.createMoment(locationRef, { owner: request.userRef, text: 'And then...', options: [] });
+      const newMomentRef = await db.createMoment(locationRef, defaultMoment);
       // Add option to current moment
       await db.addOption(request.user.moment, { text, moment: newMomentRef });
       // Update user to new moment

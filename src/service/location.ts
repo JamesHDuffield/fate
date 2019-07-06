@@ -36,7 +36,7 @@ export class LocationService {
   async updateLocation(location: Partial<Location>): Promise<void> {
     return this.auth.user$
       .pipe(
-        map((user) => this.db.doc<Location>(user.location)),
+        map((user) => this.db.doc<Location>(user.moment.parent.parent)),
         first(),
         switchMap((locationDoc) => locationDoc.set(<Location>location, { merge: true })),
       )

@@ -62,8 +62,11 @@ export class DatabaseService {
     return locationRef.collection('moments').add(moment);
   }
 
-  async createLocation(zoneRef: DocumentReference, location: Location): Promise<DocumentReference> {
-    return zoneRef.collection('locations').add(location);
+  async createLocation(zoneRef: DocumentReference, location: Partial<Location>, moment: Moment): Promise<[DocumentReference, DocumentReference]> {
+    const locationRef = await zoneRef.collection('locations').add(location);
+    const momentRef = await this.createMoment(locationRef, moment);
+    await locationRef.set({ moment: momentRef }, { merge: true });
+    return [locationRef, momentRef];
   }
 
   async createZone(zone: Zone): Promise<DocumentReference> {
