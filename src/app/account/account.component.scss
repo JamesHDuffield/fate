@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  
+    mat-button-toggle-group {
+      width: fit-content;
+    }
+  
+    button {
+      max-width: 50px;
+      float: right;
+    }
+  
+  }
+  
+  .container > * {
+   width: 100%;
+  }

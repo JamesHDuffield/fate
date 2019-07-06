@@ -10,7 +10,11 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, write: if request.auth.uid == userId;
+      allow read: if request.auth.uid == userId;
+      allow update: if request.auth.uid == userId &&
+      	request.resource.data.moment == resource.data.moment &&
+        request.resource.data.admin == resource.data.admin &&
+        request.resource.data.size() == resource.data.size();
     }
     
     match /zones/{zone}/locations/{location}/moments/{moment} {

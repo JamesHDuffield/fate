@@ -39,6 +39,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { TextDisplayComponent } from './text-display/text-display.component';
 import { SplashComponent } from './splash/splash.component';
 import { HeaderComponent } from './header/header.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { HeaderComponent } from './header/header.component';
     TextDisplayComponent,
     SplashComponent,
     HeaderComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,6 @@ import { HeaderComponent } from './header/header.component';
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
-  entryComponents: [ LocationComponent ],
+  entryComponents: [ LocationComponent, AccountComponent ],
 })
 export class AppModule { }

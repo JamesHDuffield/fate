@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable, BehaviorSubject, empty } from 'rxjs';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { switchMap, map, tap, withLatestFrom } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../models/user';
 
@@ -49,6 +49,12 @@ export class AuthService {
     return firebase.auth()
       .signOut()
       .then(() => this.firebaseUser$.next(null));
+  }
+
+  async updateAccount(user: Partial<User>): Promise<void> {
+    return this.db.collection('users')
+      .doc<User>(this.uid)
+      .set(user, { merge: true });
   }
 
 }

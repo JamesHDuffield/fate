@@ -1,0 +1,16 @@
+<form [formGroup]="form" class='container' *ngIf='form.enabled'>
+  <mat-form-field>
+    <textarea matInput matTextareaAutosize placeholder="Username" formControlName="username"></textarea>
+  </mat-form-field>
+  <div class='button-right'>
+    <button mat-icon-button  (click)='submit()' [disabled]='form.invalid || disabled'>
+      <mat-icon small>save</mat-icon>
+    </button>
+    <button mat-icon-button (click)='onNoClick()'>
+      <mat-icon small>cancel</mat-icon>
+    </button>
+  </div>
+</form>
+<button mat-button color='warn' (click)='logout()'>
+  Log out
+</button>

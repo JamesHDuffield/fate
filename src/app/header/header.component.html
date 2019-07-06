@@ -1,13 +1,13 @@
 <mat-toolbar>
   <mat-grid-list cols="2" rowHeight="28px">
     <mat-grid-tile [colspan]='1' [rowspan]='1' class='left-align'>
-      <span *ngIf='auth.user$ | async; let user;' (click)='auth.logout()'>{{ user.username }}</span>
+      <span class='clickable' *ngIf='auth.user$ | async; let user;' (click)='openAccountDialog(user)'>{{ user.username }}</span>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='right-align'>
-      <span *ngIf='location.currentLocation$ | async; let location' (click)='openLocationDialog(location)'>{{ location.name || 'Road' }}</span>
+      <span class='clickable' *ngIf='location.currentLocation$ | async; let location' (click)='openLocationDialog(location)'>{{ location.name || 'Road' }}</span>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='left-align'>
-      <small *ngIf='auth.user$ | async; let user;' [hidden]='!user.admin' (click)='story.respawn()'>{{ user.moment.id }}</small>
+      <small *ngIf='auth.user$ | async; let user;' [hidden]='true' (click)='story.respawn()'>{{ user.moment.id }}</small>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='right-align'>
         <small *ngIf='location.zone$ | async; let zone'>{{ zone.name }}</small>

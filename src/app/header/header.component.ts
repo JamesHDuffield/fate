@@ -4,6 +4,8 @@ import { LocationService } from '../../service/location';
 import { StoryService } from '../../service/story';
 import { MatDialog } from '@angular/material';
 import { LocationComponent } from '../location/location.component';
+import { User } from '../../models/user';
+import { AccountComponent } from '../account/account.component';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +20,13 @@ export class HeaderComponent {
     this.dialog.open(LocationComponent, {
       width: '40vw',
       data: location,
+    });
+  }
+
+  openAccountDialog(user: User): void {
+    this.dialog.open(AccountComponent, {
+      width: '40vw',
+      data: user,
     });
   }
 
