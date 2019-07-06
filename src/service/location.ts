@@ -11,23 +11,23 @@ export class LocationService {
 
   zone$ = this.auth.user$
     .pipe(
-      filter((user) => !!user && !!user.zone),
-      switchMap((user) => this.db.doc(user.zone.path)
+      filter((user) => !!user && !!user.moment),
+      switchMap((user) => this.db.doc(user.moment.parent.parent.parent.parent)
         .valueChanges()),
     );
 
   locations$ = this.auth.user$
     .pipe(
-      filter((user) => !!user && !!user.zone),
-      switchMap((user) => this.db.doc(user.zone.path)
+      filter((user) => !!user && !!user.moment),
+      switchMap((user) => this.db.doc(user.moment.parent.parent.parent.parent)
         .collection<Location>('locations')
         .valueChanges()),
     );
 
   currentLocation$ = this.auth.user$
     .pipe(
-      filter((user) => !!user && !!user.location),
-      switchMap((user) => this.db.doc<Location>(user.location)
+      filter((user) => !!user && !!user.moment),
+      switchMap((user) => this.db.doc<Location>(user.moment.parent.parent)
         .valueChanges()),
     );
 

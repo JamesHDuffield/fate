@@ -1,5 +1,5 @@
 
 export interface Location {
-  moment:  firebase.firestore.DocumentReference;
+  moment: firebase.firestore.DocumentReference;
   name?: string;
 }

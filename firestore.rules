@@ -19,11 +19,11 @@ service cloud.firestore {
     }
     
     match /zones/{zone} {
-    	allow read: if get(getUserData().zone).id == zone;
+    	allow read: if true;
     }
     
     match /zones/{zone}/locations/{location} {
-    	allow read: if get(getUserData().zone).id == zone;
+    	allow read: if true;
     }
 
     match /encyclopedia/{encyclopedia} {

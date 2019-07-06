@@ -26,19 +26,13 @@ export class DatabaseService {
 
   async userToMoment(userRef: DocumentReference, momentRef: DocumentReference): Promise<void> {
     await userRef
-      .set({
-        moment: momentRef,
-      }, { merge: true });
+      .set({ moment: momentRef }, { merge: true });
   }
 
   async userToLocation(userRef: DocumentReference, locationRef: DocumentReference): Promise<void> {
     const location = await locationRef.get();
     await userRef
-      .set({
-        zone: locationRef.parent.parent,
-        location: locationRef,
-        moment: location.data().moment,
-      }, { merge: true })
+      .set({ moment: location.data().moment}, { merge: true });
   }
 
   async userToZone(userRef: DocumentReference, zoneRef: DocumentReference): Promise<void> {
@@ -46,11 +40,7 @@ export class DatabaseService {
     const location: FirebaseFirestore.DocumentSnapshot = await zone.data().location.get();
     const momentRef: DocumentReference = location.data().moment;
     await userRef
-      .set({
-        zone: zone.ref,
-        location: location.ref,
-        moment: momentRef,
-      }, { merge: true })
+      .set({ moment: momentRef }, { merge: true });
   }
 
   // Creation
