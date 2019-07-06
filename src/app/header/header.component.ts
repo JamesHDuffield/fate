@@ -18,14 +18,16 @@ export class HeaderComponent {
 
   openLocationDialog(location: Location): void {
     this.dialog.open(LocationComponent, {
-      width: '40vw',
+      width: '80vw',
+      maxWidth: 800,
       data: location,
     });
   }
 
   openAccountDialog(user: User): void {
     this.dialog.open(AccountComponent, {
-      width: '40vw',
+      width: '80vw',
+      maxWidth: 800,
       data: user,
     });
   }
