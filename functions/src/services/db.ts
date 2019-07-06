@@ -10,7 +10,7 @@ export class DatabaseService {
 
   respawnPoint: DocumentReference;
 
-  constructor(private firestore: FirebaseFirestore.Firestore) {
+  constructor(public firestore: FirebaseFirestore.Firestore) {
     this.respawnPoint = this.firestore.doc(RESPAWN_LOCATION);
   }
 
@@ -21,23 +21,18 @@ export class DatabaseService {
     return ref.data() as T;
   }
 
-  async user(uid: string): Promise<User> {
-    const ref = await this.firestore.doc(`/users/${uid}`).get();
-    return ref.data() as User;
-  }
-
   // Move user
 
-  async userToMoment(uid: string, momentRef: DocumentReference): Promise<void> {
-    await this.firestore.doc(`/users/${uid}`)
+  async userToMoment(userRef: DocumentReference, momentRef: DocumentReference): Promise<void> {
+    await userRef
       .set({
         moment: momentRef,
       }, { merge: true });
   }
 
-  async userToLocation(uid: string, locationRef: DocumentReference): Promise<void> {
+  async userToLocation(userRef: DocumentReference, locationRef: DocumentReference): Promise<void> {
     const location = await locationRef.get();
-    await this.firestore.doc(`/users/${uid}`)
+    await userRef
       .set({
         zone: locationRef.parent.parent,
         location: locationRef,
@@ -45,11 +40,11 @@ export class DatabaseService {
       }, { merge: true })
   }
 
-  async userToZone(uid: string, zoneRef: DocumentReference): Promise<void> {
+  async userToZone(userRef: DocumentReference, zoneRef: DocumentReference): Promise<void> {
     const zone = await zoneRef.get();
     const location: FirebaseFirestore.DocumentSnapshot = await zone.data().location.get();
     const momentRef: DocumentReference = location.data().moment;
-    await this.firestore.doc(`/users/${uid}`)
+    await userRef
       .set({
         zone: zone.ref,
         location: location.ref,
@@ -69,12 +64,12 @@ export class DatabaseService {
       username,
     };
     await ref.set(user);
-    await this.userToLocation(uid, this.respawnPoint);
+    await this.userToLocation(ref, this.respawnPoint);
   }
 
-  async createMoment(uid: string, text: string): Promise<DocumentReference> {
+  async createMoment(userRef: DocumentReference, text: string): Promise<DocumentReference> {
     const moment = {
-      owner: this.firestore.doc(`/users/${uid}`),
+      owner: userRef,
       text,
       options: [],
     }

@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import { DatabaseService } from './db';
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -35,6 +36,8 @@ export const auth = async (req, res, next) => {
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
     req.user = decodedIdToken;
+    const db: DatabaseService = req.app.locals.db;
+    req.userRef = db.firestore.doc(`/users/${req.user.uid}`);
     next();
     return;
   } catch (error) {

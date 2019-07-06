@@ -1,23 +1,24 @@
 import * as HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
 import { DatabaseService } from '../services/db';
-import * as admin from 'firebase-admin';
 import { Moment } from '../models/moment';
+// tslint:disable-next-line:no-implicit-dependencies
+import { DocumentReference } from '@google-cloud/firestore';
+import { User } from '../models/user';
 
 interface ChooseRequest extends Request {
-  user: admin.auth.DecodedIdToken;
+  userRef: DocumentReference;
   body: void;
 }
 
 export const choose = async (request: ChooseRequest, response: Response) => {
   console.log(request.body);
 
-  const cred = request.user;
   const optId: string = request.params.momentId;
   const db: DatabaseService = request.app.locals.db;
 
   // Get moment from option
-  const user = await db.user(cred.uid);
+  const user = await db.getRef<User>(request.userRef);
   const current = await db.getRef<Moment>(user.moment);
   const option = current.options.find((opt) => opt.id === +optId);
 
@@ -26,15 +27,15 @@ export const choose = async (request: ChooseRequest, response: Response) => {
   }
 
   if (option.zone) {
-    await db.userToZone(cred.uid, option.zone);
+    await db.userToZone(request.userRef, option.zone);
   }
 
   if (option.location) {
-    await db.userToLocation(cred.uid, option.location);
+    await db.userToLocation(request.userRef, option.location);
   }
 
   if (option.moment) {
-    await db.userToMoment(cred.uid, option.moment);
+    await db.userToMoment(request.userRef, option.moment);
   }
  
 
