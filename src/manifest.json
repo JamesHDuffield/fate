@@ -3,7 +3,7 @@
   "short_name": "fate",
   "theme_color": "#b388ff",
   "background_color": "#303030",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "start_url": "/",
   "icons": [
