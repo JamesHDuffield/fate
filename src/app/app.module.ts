@@ -40,6 +40,7 @@ import { TextDisplayComponent } from './text-display/text-display.component';
 import { SplashComponent } from './splash/splash.component';
 import { HeaderComponent } from './header/header.component';
 import { AccountComponent } from './account/account.component';
+import { PwaInstaller } from '../service/pwa-installer';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,7 @@ import { AccountComponent } from './account/account.component';
     HttpClientModule,
     MarkdownModule.forRoot(),
   ],
-  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
+  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService, PwaInstaller ],
   bootstrap: [ AppComponent ],
   entryComponents: [ LocationComponent, AccountComponent ],
 })
