@@ -22,6 +22,7 @@ export class SplashComponent implements AfterViewInit {
   constructor(private auth: AuthService, private pwaInstaller: PwaInstaller, private snack: MatSnackBar) {}
 
   ngAfterViewInit() {
+    console.log(this.pwaInstaller);
     if (this.pwaInstaller.isPromptable) {
       setTimeout(() => this.snack.open('Install fate as an application?', 'Install', { panelClass: 'primary-snackbar', duration: DURATION_FOR_INSTALL_ALERT })
         .onAction()
