@@ -1,5 +1,5 @@
 <div @fade *ngIf='!hide' class='splash-container' [class.highlight]='loaded' (mouseover)='hover = true;' (mouseout)='hover = false;' (click)='click()'>
-  <mat-icon>import_contacts</mat-icon>
+  <img class='logo' src='../../assets/logo.svg'>
   <div class='title-text' *ngIf='!loaded'>...</div>
   <div class='title-text' *ngIf='loaded'>fate</div>
 </div>

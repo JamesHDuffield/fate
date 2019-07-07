@@ -5,13 +5,18 @@
     margin-right: auto;
     width: 200px;
     
-    &.highlight:hover > * {
-        text-shadow: 2px 2px 3px mat-color($fate-app-primary);
+    &.highlight:hover {
         cursor: pointer;
+        .title-text {
+            text-shadow: 1px 1px 3px mat-color($fate-app-primary);
+        }
+        .logo {
+            filter: drop-shadow(1px 1px 3px mat-color($fate-app-primary));
+        }
     }
 
     & > * {
-        text-shadow: 2px 2px 5px black;
+        
         margin-left: auto;
         margin-right: auto;
         text-align: center;
@@ -19,14 +24,15 @@
         width: 100%;
     }
 
-    mat-icon {
+    .logo {
         height: 130px;
-        font-size: 8em;
         margin-top: 30vh;
         animation: float-animation 6s ease-in-out infinite;
+        filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, .7));
     }
 
     .title-text {
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, .7);
         font-family: "Lucida Grande", "Lucida Sans Unicode", "GNU Unifont", Verdana, Helvetica, sans-serif;
         font-size: 4em;
     }
