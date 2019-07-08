@@ -1,13 +1,9 @@
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { fade } from '../../animations/fade';
 import { AuthService } from '../../service/auth';
-import { PwaInstaller } from '../../service/pwa-installer';
-import { MatSnackBar } from '@angular/material';
 
 const FADE_IN = 1000;
 const FADE_DELAY = 300;
-const DELAY_FOR_INSTALL_ALERT = 1500;
-const DURATION_FOR_INSTALL_ALERT = 10000;
 
 @Component({
   selector: 'app-splash',
@@ -15,24 +11,15 @@ const DURATION_FOR_INSTALL_ALERT = 10000;
   styleUrls: [ './splash.component.scss' ],
   animations: [ fade(FADE_IN, FADE_DELAY) ],
 })
-export class SplashComponent implements AfterViewInit {
+export class SplashComponent {
   @Input()
   loaded: boolean;
   hide: boolean;
-  constructor(private auth: AuthService, private pwaInstaller: PwaInstaller, private snack: MatSnackBar) {}
+  constructor(private auth: AuthService) {}
 
-  ngAfterViewInit() {
-    console.log(this.pwaInstaller);
-    if (this.pwaInstaller.isPromptable) {
-      setTimeout(() => this.snack.open('Install fate as an application?', 'Install', { panelClass: 'primary-snackbar', duration: DURATION_FOR_INSTALL_ALERT })
-        .onAction()
-        .subscribe(() => this.pwaInstaller.installApp()), DELAY_FOR_INSTALL_ALERT);
-    }
-  }
-
-  click() {
+  async click() {
     if (this.loaded) {
-      this.auth.login();
+      await this.auth.login();
       this.hide = true;
     }
   }

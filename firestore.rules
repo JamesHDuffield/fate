@@ -24,17 +24,17 @@ service cloud.firestore {
     
     match /zones/{zone} {
     	allow read: if true;
-      allow update: if isAdmin() == true || resource.data.owner.id == request.auth.uid;
+      allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
     }
     
     match /zones/{zone}/locations/{location} {
     	allow read: if true;
-      allow update: if isAdmin() == true || resource.data.owner.id == request.auth.uid;
+      allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
     }
 
     match /encyclopedia/{encyclopedia} {
     	allow read, create: if request.auth.uid != null;
-      allow update: if isAdmin() == true || resource.data.owner.id == request.auth.uid;
+      allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
     }
   }
 }

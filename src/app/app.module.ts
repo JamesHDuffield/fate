@@ -40,7 +40,6 @@ import { TextDisplayComponent } from './text-display/text-display.component';
 import { SplashComponent } from './splash/splash.component';
 import { HeaderComponent } from './header/header.component';
 import { AccountComponent } from './account/account.component';
-import { PwaInstaller } from '../service/pwa-installer';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
@@ -82,7 +81,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MarkdownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService, PwaInstaller ],
+  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
   entryComponents: [ LocationComponent, AccountComponent ],
 })
