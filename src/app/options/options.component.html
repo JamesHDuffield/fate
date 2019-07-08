@@ -35,12 +35,12 @@
 
 <div class='button-container' *ngIf='form.disabled'>
   <button mat-line (click)='next(option)' mat-button class='button-option' *ngFor='let option of _moment.options' [disabled]='disabled'>{{ option.text }}</button>
-  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length && !_moment.end' [disabled]='disabled'>Respawn at the End of Eternity</button>
+  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length && !_moment.end' [disabled]='disabled'>The story ends here. Start again?</button>
   <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end' [disabled]='disabled'>Respawn at the End of Eternity</button>
+  <button mat-line (click)='form.enable();' mat-button class='button-option button-add' *ngIf='showAddOptionButton' [disabled]='disabled'>Add a new choice</button>
 </div>
 
 <div class='tab-buttons'>
-  <app-tab-button icon='add' (clicked)='form.enable();' *ngIf='showAddOptionButton' [disabled]='disabled'></app-tab-button>
   <app-tab-button icon='save' (click)='save()' *ngIf='form.enabled' [disabled]='form.invalid || disabled'></app-tab-button>
   <br/>
   <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='disabled'></app-tab-button>
