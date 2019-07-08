@@ -1,9 +1,6 @@
 <!-- Display moment -->
 <div *ngIf='form.disabled && moment' @fade>
   <app-text-display [text]='moment.text'></app-text-display>
-  <div *ngIf='moment.end'>
-    <pre>Your fate is sealed.</pre>
-  </div>
 </div>
 
 <!-- Edit moment -->

@@ -16,8 +16,13 @@ export class TextDisplayComponent {
   _cachedRead: TextDisplayPart[] = [];
 
   @Input() set text(value: string) {
-    // tslint:disable-next-line: no-floating-promises
-    this.read(value);
+    if (!value) {
+      // tslint:disable-next-line: no-floating-promises
+      this.read('There is nothing here.');
+    } else {
+      // tslint:disable-next-line: no-floating-promises
+      this.read(value);
+    }
   }
 
   constructor(private encyclopedia: EncyclopediaService) { }

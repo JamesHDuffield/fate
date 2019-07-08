@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { EncyclopediaService } from '../../service/encyclopedia';
 import { fade } from '../../animations/fade';
+import { AuthService } from '../../service/auth';
 
 const FADE_IN = 300;
 
@@ -29,7 +30,11 @@ export class MomentComponent implements OnInit {
 
   @Input() set moment(value: Moment) {
     this._moment = value;
-    this.form.disable();
+    if (value.text === '' && value.owner && value.owner.id === this.auth.uid) {
+      this.form.enable();
+    } else {
+      this.form.disable();
+    }
   }
 
   get moment(): Moment {
@@ -47,10 +52,9 @@ export class MomentComponent implements OnInit {
     return Object.keys(group.controls);
   }
 
-  constructor(public story: StoryService, private encyclopedia: EncyclopediaService) { }
+  constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.form.disable();
     this.form.get('text').valueChanges
       .subscribe(() => this.updateEncyclopedias());
   }
