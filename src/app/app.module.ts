@@ -35,7 +35,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MomentComponent } from './moment/moment.component';
 import { OptionsComponent } from './options/options.component';
 import { LocationComponent } from './location/location.component';
-import { MarkdownModule } from 'ngx-markdown';
 import { TextDisplayComponent } from './text-display/text-display.component';
 import { SplashComponent } from './splash/splash.component';
 import { HeaderComponent } from './header/header.component';
@@ -78,7 +77,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,
-    MarkdownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],

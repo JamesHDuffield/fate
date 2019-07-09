@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { EncyclopediaService } from '../../service/encyclopedia';
+import * as markdown from 'markdown-it';
 
 interface TextDisplayPart {
   text?: string;
@@ -14,6 +15,7 @@ interface TextDisplayPart {
 export class TextDisplayComponent {
 
   _cachedRead: TextDisplayPart[] = [];
+  private renderer: markdown;
 
   @Input() set text(value: string) {
     if (!value) {
@@ -25,10 +27,13 @@ export class TextDisplayComponent {
     }
   }
 
-  constructor(private encyclopedia: EncyclopediaService) { }
+  constructor(private encyclopedia: EncyclopediaService) {
+    this.renderer = markdown('zero', { breaks: true, typographer: true });
+    this.renderer.enable([ 'newline', 'strikethrough', 'emphasis', 'replacements' ]);
+  }
 
   async read(text: string): Promise<void> {
-    text = text.replace('\n', '<br/><br/>');
+    text = this.renderer.renderInline(text);
     if (!this._cachedRead.length) {
       this._cachedRead = [{ text: text.replace(/`/g, '') }]; // load immediately
     }
