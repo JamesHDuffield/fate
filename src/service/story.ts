@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import { LocationService } from './location';
 import { Observable, combineLatest, NEVER } from 'rxjs';
 import { filter, switchMap, map, first, catchError, tap } from 'rxjs/operators';

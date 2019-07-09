@@ -1,7 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
-import * as firebase from 'firebase';
-import { Observable, BehaviorSubject, empty } from 'rxjs';
-import { switchMap, map, tap, withLatestFrom } from 'rxjs/operators';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import { Observable, BehaviorSubject, EMPTY } from 'rxjs';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../models/user';
 
@@ -24,7 +25,7 @@ export class AuthService {
   user$: Observable<User> = this.userDoc$
     .pipe(
       switchMap((userDoc) => userDoc ? userDoc
-        .valueChanges() : empty(null)),
+        .valueChanges() : EMPTY),
     );
 
   constructor(private db: AngularFirestore, private zone: NgZone) {
