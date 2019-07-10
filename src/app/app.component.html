@@ -4,7 +4,7 @@
 </div>
 
 <div [@fader]="!(auth.firebaseUser$ | async) ? 'in' : 'out'" (@fader.start)='isAnimatingSplash=true;' (@fader.done)='isAnimatingSplash=false;' [style.height]='0'>
-  <app-splash *ngIf="!(auth.firebaseUser$ | async) || isAnimatingSplash" [loaded]='(auth.firebaseUser$ | async) !== undefined'></app-splash>
+  <app-splash *ngIf="!(auth.firebaseUser$ | async) || isAnimatingSplash"></app-splash>
 </div>
 
 

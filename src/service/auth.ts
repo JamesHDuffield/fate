@@ -36,6 +36,9 @@ export class AuthService {
         (user) => {
           console.log('User', user);
           this.zone.run(() => this.firebaseUser$.next(user));
+          if (!user) {
+            return this.loginAnonymously();
+          }
         },
         (error) => {
           console.error(error);
@@ -44,6 +47,7 @@ export class AuthService {
   }
 
   async loginAnonymously() {
+    console.log('Logging in anonymously');
     return firebase.auth()
       .signInAnonymously();
   }
