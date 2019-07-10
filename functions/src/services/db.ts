@@ -35,10 +35,14 @@ export class DatabaseService {
       .set({ moment: location.data().moment}, { merge: true });
   }
 
-  async userToZone(userRef: DocumentReference, zoneRef: DocumentReference): Promise<void> {
+  async getDefaultMomentRefFromZoneRef(zoneRef: DocumentReference): Promise<DocumentReference> {
     const zone = await zoneRef.get();
     const location: FirebaseFirestore.DocumentSnapshot = await zone.data().location.get();
-    const momentRef: DocumentReference = location.data().moment;
+    return location.data().moment;
+  }
+
+  async userToZone(userRef: DocumentReference, zoneRef: DocumentReference): Promise<void> {
+    const momentRef = this.getDefaultMomentRefFromZoneRef(zoneRef);
     await userRef
       .set({ moment: momentRef }, { merge: true });
   }
@@ -51,12 +55,13 @@ export class DatabaseService {
     if (doc.exists) {
       return;
     }
+    const momentRef = await this.getDefaultMomentRefFromZoneRef(this.respawnPoint);
     const user: User = {
       admin: false,
       username,
+      moment: momentRef,
     };
     await ref.set(user);
-    await this.userToZone(ref, this.respawnPoint);
   }
 
   async createMoment(locationRef: DocumentReference, moment: Moment): Promise<DocumentReference> {
