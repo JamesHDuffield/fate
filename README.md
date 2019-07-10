@@ -1,5 +1,5 @@
 # Fate
-[![CircleCI](https://circleci.com/gh/JamesHDuffield/fate.svg?style=svg)](https://circleci.com/gh/JamesHDuffield/fate)
+[![CircleCI](https://circleci.com/gh/JamesHDuffield/fate.svg?style=svg&circle-token=58ecb76c47ce8f1841dfa88f5114a0f3897c7772)]
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.
 
