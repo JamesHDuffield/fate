@@ -1,7 +1,10 @@
 <mat-toolbar>
   <mat-grid-list cols="2" rowHeight="28px">
     <mat-grid-tile [colspan]='1' [rowspan]='1' class='left-align'>
-      <span class='clickable' *ngIf='auth.user$ | async; let user;' (click)='openAccountDialog(user)'>{{ user.username }}</span>
+      <span *ngIf='auth.user$ | async; let user;'>
+        <button class='login-button' mat-button *ngIf='auth.anonymous' (click)='auth.login()'>Log in</button>
+        <span class='clickable' *ngIf='!auth.anonymous' (click)='openAccountDialog(user)'>{{ user.username }}</span>
+      </span>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='right-align'>
       <span class='clickable' *ngIf='location.currentLocation$ | async; let location' (click)='openLocationDialog(location)'>{{ location.name || 'Road' }}</span>

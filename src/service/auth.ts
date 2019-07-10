@@ -14,11 +14,13 @@ export class AuthService {
   loaded: boolean = false;
   admin: boolean = false;
   uid: string = null;
+  anonymous: boolean = true;
   provider = new firebase.auth.GoogleAuthProvider();
   firebaseUser$ = new BehaviorSubject<firebase.User>(undefined);
   userDoc$: Observable<AngularFirestoreDocument<User>> = this.firebaseUser$
     .pipe(
       tap((firebaseUser) => this.uid = firebaseUser ? firebaseUser.uid : null),
+      tap((firebaseUser) => this.anonymous = firebaseUser ? firebaseUser.isAnonymous : true),
       map((firebaseUser) => firebaseUser ? this.db.collection('users')
         .doc<User>(firebaseUser.uid) : null),
     );
@@ -41,9 +43,16 @@ export class AuthService {
       );
   }
 
-  async login() {
+  async loginAnonymously() {
     return firebase.auth()
-      .signInWithRedirect(this.provider);
+      .signInAnonymously();
+  }
+
+  async login() {
+    const previousUser = firebase.auth().currentUser;
+    return firebase.auth()
+      .signInWithRedirect(this.provider)
+      .then(() => previousUser.isAnonymous ? previousUser.delete() : null);
   }
 
   async logout() {

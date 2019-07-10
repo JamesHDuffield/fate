@@ -1,12 +1,13 @@
 @import '../../theme.scss';
 
+:host { display: block; }
+
 .splash-container {
     margin-left: auto;
     margin-right: auto;
     width: 200px;
     
-    &.highlight:hover {
-        cursor: pointer;
+    &.highlight {
         .title-text {
             text-shadow: 1px 1px 3px mat-color($fate-app-primary);
         }
@@ -32,9 +33,10 @@
     }
 
     .title-text {
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, .7);
+        margin-top: 10px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, .7);
         font-family: "Lucida Grande", "Lucida Sans Unicode", "GNU Unifont", Verdana, Helvetica, sans-serif;
-        font-size: 4em;
+        font-size: 1em;
     }
     
 }

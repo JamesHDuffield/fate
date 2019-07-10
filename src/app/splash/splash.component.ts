@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { fade } from '../../animations/fade';
 import { AuthService } from '../../service/auth';
 
 const FADE_IN = 1000;
-const FADE_DELAY = 300;
+const FADE_DELAY = 3000;
 
 @Component({
   selector: 'app-splash',
@@ -11,15 +11,20 @@ const FADE_DELAY = 300;
   styleUrls: [ './splash.component.scss' ],
   animations: [ fade(FADE_IN, FADE_DELAY) ],
 })
-export class SplashComponent {
+export class SplashComponent implements AfterViewInit {
   @Input()
   loaded: boolean;
   hide: boolean;
   constructor(private auth: AuthService) {}
 
-  async click() {
+  ngAfterViewInit() {
+    // tslint:disable-next-line: no-floating-promises
+    this.start();
+  }
+
+  async start() {
     if (this.loaded) {
-      await this.auth.login();
+      await this.auth.loginAnonymously();
       this.hide = true;
     }
   }

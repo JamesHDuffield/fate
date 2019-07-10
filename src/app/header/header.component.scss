@@ -1,5 +1,6 @@
 @import '../../theme.scss';
 
+:host { display: block; }
 
 small {
     font-size: xx-small;
@@ -40,5 +41,11 @@ mat-toolbar.mat-toolbar {
 .clickable:hover {
     color: mat-color($fate-app-primary);
     cursor: pointer;
+}
+
+.login-button {
+    position: relative;
+    top: 4px;
+    z-index: 1;
 }
 
