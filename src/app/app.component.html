@@ -1,6 +1,11 @@
-<app-header @fade *ngIf='auth.firebaseUser$ | async'></app-header>
+<div [@fader]="(auth.firebaseUser$ | async) ? 'in' : 'out'" (@fader.start)='isAnimatingContent=true;' (@fader.done)='isAnimatingContent=false;' [style.height]='0'>
+  <app-header *ngIf="(auth.firebaseUser$ | async) || isAnimatingContent"></app-header>
+  <app-story *ngIf="(auth.firebaseUser$ | async) || isAnimatingContent"></app-story>
+</div>
 
-<app-story @fade *ngIf='auth.firebaseUser$ | async'></app-story>
+<div [@fader]="!(auth.firebaseUser$ | async) ? 'in' : 'out'" (@fader.start)='isAnimatingSplash=true;' (@fader.done)='isAnimatingSplash=false;' [style.height]='0'>
+  <app-splash *ngIf="!(auth.firebaseUser$ | async) || isAnimatingSplash" [loaded]='(auth.firebaseUser$ | async) !== undefined'></app-splash>
+</div>
 
-<app-splash *ngIf='!(auth.firebaseUser$ | async)' [loaded]='(auth.firebaseUser$ | async) !== undefined'></app-splash>
+
 

@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../service/auth';
-import { fade } from '../animations/fade';
-
-const FADE_DURATION = 1000;
+import { fader } from '../animations/fade';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.scss' ],
-  animations: [ fade(FADE_DURATION, FADE_DURATION) ],
+  animations: [ fader ],
 })
 export class AppComponent {
 

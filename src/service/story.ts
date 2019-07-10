@@ -41,7 +41,7 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([ user, firebaseUser, current ]) => user.admin || (current.owner && firebaseUser.uid === current.owner.id) ),
+      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id) ),
     );
 
   cursor: DocumentReference;
