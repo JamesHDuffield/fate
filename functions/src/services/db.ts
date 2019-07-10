@@ -52,10 +52,11 @@ export class DatabaseService {
       return;
     }
     const user: User = {
+      admin: false,
       username,
     };
     await ref.set(user);
-    await this.userToLocation(ref, this.respawnPoint);
+    await this.userToZone(ref, this.respawnPoint);
   }
 
   async createMoment(locationRef: DocumentReference, moment: Moment): Promise<DocumentReference> {
