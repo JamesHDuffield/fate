@@ -10,6 +10,9 @@ import { fader } from '../animations/fade';
 })
 export class AppComponent {
 
+  isAnimatingContent = false;
+  isAnimatingSplash = false;
+
   constructor(public auth: AuthService) {}
 
 }
