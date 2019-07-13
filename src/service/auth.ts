@@ -28,6 +28,7 @@ export class AuthService {
     .pipe(
       switchMap((userDoc) => userDoc ? userDoc
         .valueChanges() : EMPTY),
+      tap((user) => this.admin = user ? user.admin : false),
     );
 
   constructor(private db: AngularFirestore, private zone: NgZone) {
