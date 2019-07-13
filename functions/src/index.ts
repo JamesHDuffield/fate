@@ -30,7 +30,7 @@ app.locals.db = new DatabaseService(admin.firestore());
 
 app.post('/choose/:momentId', choose);
 app.post('/create', create);
-app.post('/respawn', respawn)
+app.post('/respawn', respawn);
 
 export const api = functions.https.onRequest(app);
 

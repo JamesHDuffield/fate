@@ -40,6 +40,7 @@ import { SplashComponent } from './splash/splash.component';
 import { HeaderComponent } from './header/header.component';
 import { AccountComponent } from './account/account.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     SplashComponent,
     HeaderComponent,
     AccountComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +83,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
-  entryComponents: [ LocationComponent, AccountComponent ],
+  entryComponents: [ LocationComponent, AccountComponent, AdminComponent ],
 })
 export class AppModule { }

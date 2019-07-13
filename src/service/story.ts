@@ -80,8 +80,8 @@ export class StoryService {
     return this.request('/create', body);
   }
 
-  async respawn(): Promise<void> {
-    return this.request('/respawn');
+  async respawn(body: { locationRef?: string } = {}): Promise<void> {
+    return this.request('/respawn', body);
   }
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {

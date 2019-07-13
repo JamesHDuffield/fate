@@ -1,0 +1,11 @@
+<form [formGroup]="form" class='container'>
+  <mat-form-field>
+    <mat-label>Choose a location to go to</mat-label>
+    <mat-select matNativeControl formControlName='locationRef'>
+      <mat-option *ngFor="let location of locations$ | async" [value]="location.ref">{{ location.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
+<button mat-button color='accent' (click)='respawn()' [disabled]='form.invalid || form.disabled'>
+  Go to location
+</button>

@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { LocationComponent } from '../location/location.component';
 import { User } from '../../models/user';
 import { AccountComponent } from '../account/account.component';
+import { AdminComponent } from '../admin/admin.component';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,13 @@ export class HeaderComponent {
       width: '80vw',
       maxWidth: 800,
       data: user,
+    });
+  }
+
+  openAdminDialog() {
+    this.dialog.open(AdminComponent, {
+      width: '80vw',
+      maxWidth: 800,
     });
   }
 
