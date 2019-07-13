@@ -42,7 +42,7 @@ export class DatabaseService {
   }
 
   async userToZone(userRef: DocumentReference, zoneRef: DocumentReference): Promise<void> {
-    const momentRef = this.getDefaultMomentRefFromZoneRef(zoneRef);
+    const momentRef = await this.getDefaultMomentRefFromZoneRef(zoneRef);
     await userRef
       .set({ moment: momentRef }, { merge: true });
   }
