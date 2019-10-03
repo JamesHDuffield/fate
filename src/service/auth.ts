@@ -35,7 +35,7 @@ export class AuthService {
     firebase.auth()
       .onAuthStateChanged(
         (user) => {
-          console.log('User', user);
+          console.log('Logged in as:', user ? user.displayName : 'none');
           this.zone.run(() => this.firebaseUser$.next(user));
           if (!user) {
             return this.loginAnonymously();

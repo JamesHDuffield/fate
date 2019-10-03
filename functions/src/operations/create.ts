@@ -12,6 +12,7 @@ interface CreateRequest extends AuthorisedRequest {
     type: string;
     location?: string,
     name?: string,
+    zone?: string,
   };
 }
 
@@ -23,33 +24,39 @@ export const create = async (request: CreateRequest, response: Response) => {
 
   // Invalid if no text
   if (!text) {
-    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Text is required'});
+    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Text is required' });
   }
 
   // Check if too many options
   const moment = await db.getRef<Moment>(request.user.moment);
   if (!moment || moment.options.length >= 3) {
-    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Too many options exist for this moment.'});
+    return response.status(HttpStatus.BAD_REQUEST).send({ message: 'Too many options exist for this moment.' });
   }
 
   const locationRef = request.user.moment.parent.parent;
   const defaultMoment = { owner: request.userRef, text: '', options: [] };
 
-  switch(type) {
+  switch (type) {
     case 'zone':
-      return response.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+      if (!request.body.zone) {
+        return response.sendStatus(HttpStatus.BAD_REQUEST);
+      }
+      const existingZoneRef = db.firestore.doc(request.body.zone);
+      await db.addOption(request.user.moment, { text, zone: existingZoneRef });
+      await db.userToZone(request.userRef, existingZoneRef);
+      break;
     case 'location':
-        if (!request.body.location) {
-          return response.sendStatus(HttpStatus.BAD_REQUEST);
-        }
-        const existingLocationRef = db.firestore.doc(request.body.location);
-        await db.addOption(request.user.moment, { text, location: existingLocationRef });
-        await db.userToLocation(request.userRef, existingLocationRef);
-        break;
+      if (!request.body.location) {
+        return response.sendStatus(HttpStatus.BAD_REQUEST);
+      }
+      const existingLocationRef = db.firestore.doc(request.body.location);
+      await db.addOption(request.user.moment, { text, location: existingLocationRef });
+      await db.userToLocation(request.userRef, existingLocationRef);
+      break;
     case 'newlocation':
-        if (!request.body.name) {
-          return response.sendStatus(HttpStatus.BAD_REQUEST);
-        }
+      if (!request.body.name) {
+        return response.sendStatus(HttpStatus.BAD_REQUEST);
+      }
       const zoneRef = locationRef.parent.parent;
       const [newLocationRef, newLocationMomentRef] = await db.createLocation(zoneRef, { name: request.body.name, owner: request.userRef }, defaultMoment);
       await db.addOption(request.user.moment, { text, location: newLocationRef });

@@ -3,11 +3,24 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth';
 import { filter, switchMap, map, first } from 'rxjs/operators';
 import { Location } from '../models/location';
+import { Zone } from '../models/zone';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
+
+  zones$ = this.auth.user$
+    .pipe(
+      filter((user) => !!user),
+      switchMap(() => this.db.collection<Zone>('zones')
+        .get(),
+      ),
+      map((query) => query.docs
+        .map((doc) => ({ ref: doc.ref.path, name: doc.data().name }))
+        .filter((doc) => doc.name),
+      ),
+    );
 
   zone$ = this.auth.user$
     .pipe(

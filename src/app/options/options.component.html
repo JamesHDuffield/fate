@@ -17,7 +17,7 @@
       <mat-button-toggle value='newlocation' aria-label="Go to a new location" matTooltip="Go to a new location">
         <mat-icon>add_location</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='zone' aria-label="Go to a zone" matTooltip="Go to a zone" disabled='true'>
+      <mat-button-toggle value='zone' aria-label="Go to a zone" matTooltip="Go to a new zone">
         <mat-icon>public</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
@@ -29,6 +29,12 @@
     </mat-form-field>
     <mat-form-field class="full-width" *ngIf="form.get('type').value === 'newlocation'">
       <input matInput placeholder="Name the new location" formControlName='name' [disabled]='disabled'>
+    </mat-form-field>
+    <mat-form-field *ngIf="form.get('type').value === 'zone'">
+      <mat-label>Choose a zone to go to</mat-label>
+      <mat-select matNativeControl formControlName='zone' [disabled]='disabled'>
+        <mat-option *ngFor="let zone of zones$ | async" [value]="zone.ref">{{ zone.name }}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
 </form>

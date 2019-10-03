@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { LocationService } from './location';
 import { Observable, combineLatest, NEVER } from 'rxjs';
-import { filter, switchMap, map, first, catchError, tap } from 'rxjs/operators';
+import { filter, switchMap, map, first, catchError } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';

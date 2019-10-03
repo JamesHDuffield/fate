@@ -17,6 +17,7 @@ export class OptionsComponent implements OnInit {
   disabled = false;
   _moment: Moment = null;
   locations$ = this.location.locations$;
+  zones$ = this.location.zones$;
 
   @Input() set moment(value: Moment) {
     this._moment = value;
@@ -28,6 +29,7 @@ export class OptionsComponent implements OnInit {
     type: new FormControl('moment', [ Validators.required ]),
     location: new FormControl(null, []),
     name: new FormControl(null, []),
+    zone: new FormControl(null, []),
   });
 
   constructor(private story: StoryService, private location: LocationService) { }
