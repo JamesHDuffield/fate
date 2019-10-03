@@ -41,12 +41,12 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id) ),
+      map(([user, firebaseUser, current]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
 
   cursor: DocumentReference;
 
-  constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) {}
+  constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
@@ -71,7 +71,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
+        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
       )
       .toPromise();
   }
@@ -114,5 +114,22 @@ export class StoryService {
       this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
       throw e;
     }
+  }
+
+  async deleteOption(option: Option) {
+    return this.auth.user$
+      .pipe(
+        map((user) => this.db.doc<Moment>(user.moment)),
+        first(),
+        switchMap((momentDoc) => momentDoc.update(<any>{
+          options: firebase.firestore.FieldValue.arrayRemove(option),
+        }),
+        ),
+      )
+      .toPromise()
+      .catch((e: Error) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        throw e;
+      });
   }
 }

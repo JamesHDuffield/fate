@@ -25,6 +25,7 @@ export class OptionsComponent implements OnInit {
   }
 
   form = new FormGroup({
+    id: new FormControl(null, []),
     text: new FormControl('', [ Validators.required ]),
     type: new FormControl('moment', [ Validators.required ]),
     location: new FormControl(null, []),
@@ -48,6 +49,18 @@ export class OptionsComponent implements OnInit {
       .catch((e) => this.disabled = false);
   }
 
+  async add() {
+    this.form = new FormGroup({
+      id: new FormControl(null, []),
+      text: new FormControl('', [ Validators.required ]),
+      type: new FormControl('moment', [ Validators.required ]),
+      location: new FormControl(null, []),
+      name: new FormControl(null, []),
+      zone: new FormControl(null, []),
+    });
+    this.form.enable();
+  }
+
   async save() {
     if (this.form.invalid) {
       return;
@@ -61,6 +74,24 @@ export class OptionsComponent implements OnInit {
     this.disabled = true;
     return this.story.respawn()
       .catch((e) => this.disabled = false);
+  }
+
+  async edit(event: MouseEvent, option: Option) {
+    event.preventDefault();
+    const type = option.zone ? 'zone' : (option.location ? 'location' : 'moment');
+    this.form = new FormGroup({
+      id: new FormControl(option.id, []),
+      text: new FormControl(option.text, [ Validators.required ]),
+      type: new FormControl(type, [ Validators.required ]),
+      location: new FormControl(option.location, []),
+      name: new FormControl(null, []),
+      zone: new FormControl(option.zone, []),
+    });
+    this.form.enable();
+  }
+
+  async delete() {
+    return this.story.deleteOption(this._moment.options[this.form.value.id]);
   }
 
 }
