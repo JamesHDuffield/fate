@@ -4,6 +4,7 @@ import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
 import { LocationService } from '../../service/location';
 import { tap } from 'rxjs/operators';
+import { AuthService } from 'src/service/auth';
 
 const MAXIMUM_OPTIONS = 3;
 
@@ -33,7 +34,7 @@ export class OptionsComponent implements OnInit {
     zone: new FormControl(null, []),
   });
 
-  constructor(private story: StoryService, private location: LocationService) { }
+  constructor(private story: StoryService, private location: LocationService, private auth: AuthService) { }
 
   ngOnInit() {
     this.form.disable();
@@ -78,6 +79,9 @@ export class OptionsComponent implements OnInit {
 
   async edit(event: MouseEvent, option: Option) {
     event.preventDefault();
+    if (!this.auth.admin) {
+      return;
+    }
     const type = option.zone ? 'zone' : (option.location ? 'location' : 'moment');
     this.form = new FormGroup({
       id: new FormControl(option.id, []),
