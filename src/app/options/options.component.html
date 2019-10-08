@@ -47,8 +47,9 @@
 </div>
 
 <div class='tab-buttons'>
-  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled && form.get('id').value === null" [disabled]='form.invalid || disabled'></app-tab-button>
+  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled" [disabled]='form.invalid || disabled'></app-tab-button>
   <div *ngIf="form.enabled && form.get('id').value !== null">
+    <br/>
     <app-tab-button icon='delete' (click)='delete()' [disabled]='disabled'></app-tab-button>
   </div>
   <br/>

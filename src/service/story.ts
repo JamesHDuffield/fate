@@ -21,6 +21,12 @@ export class StoryService {
       map((location) => this.db.doc<Moment>(location.moment)),
     );
 
+  currentDoc$: Observable<AngularFirestoreDocument<Moment>> = this.auth.user$
+    .pipe(
+      filter((user) => !!user),
+      map((user) => this.db.doc<Moment>(user.moment)),
+    );
+
   current$: Observable<Moment> = this.auth.user$
     .pipe(
       filter((user) => !!user),
@@ -71,7 +77,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
+        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
       )
       .toPromise();
   }
@@ -126,6 +132,30 @@ export class StoryService {
         }),
         ),
       )
+      .toPromise()
+      .catch((e: Error) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        throw e;
+      });
+  }
+
+  async updateOption(option: Option) {
+    return this.current$.pipe(
+      first(),
+      switchMap((moment) => {
+        const options = moment.options;
+        const found = options.find((opt) => opt.id === option.id);
+        if (!found) {
+          throw new Error('Option is missing');
+        }
+        console.log(`Changing text of ${option.id} from ${found.text} to ${option.text}`);
+        found.text = option.text;
+        return this.currentDoc$.pipe(
+          first(),
+          switchMap((doc) => doc.update({ options })),
+        );
+      }),
+    )
       .toPromise()
       .catch((e: Error) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });

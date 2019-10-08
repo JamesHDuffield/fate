@@ -67,8 +67,13 @@ export class OptionsComponent implements OnInit {
       return;
     }
     this.disabled = true;
-    await this.story.createMoment(this.form.value)
-      .catch((e) => this.disabled = false);
+    if (this.form.value.id !== null) {
+      await this.story.updateOption(this.form.value)
+        .catch((e) => this.disabled = false);
+    } else {
+      await this.story.createMoment(this.form.value)
+        .catch((e) => this.disabled = false);
+    }
   }
 
   async respawn() {
