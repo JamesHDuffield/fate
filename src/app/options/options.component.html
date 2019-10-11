@@ -4,7 +4,7 @@
       <input matInput placeholder="Describe the choice" formControlName='text' [disabled]='disabled'>
     </mat-form-field>
     <mat-hint><small>Choose an action to perform</small></mat-hint>
-    <mat-button-toggle-group formControlName='type' [disabled]='disabled'>
+    <mat-button-toggle-group formControlName='type' [disabled]="disabled || form.get('id').value !== null">
       <mat-button-toggle value='moment' aria-label="Go to a new moment" matTooltip="Go to a new moment">
         <mat-icon>add_comment</mat-icon>
       </mat-button-toggle>
@@ -36,6 +36,8 @@
         <mat-option *ngFor="let zone of zones$ | async" [value]="zone.ref">{{ zone.name }}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-hint><small>Choose required flags</small></mat-hint>
+    <small>None selected</small>
   </div>
 </form>
 
