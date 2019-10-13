@@ -3,8 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
 import { LocationService } from '../../service/location';
-import { tap } from 'rxjs/operators';
-import { AuthService } from 'src/service/auth';
+import { AuthService } from '../../service/auth';
 
 const MAXIMUM_OPTIONS = 3;
 
