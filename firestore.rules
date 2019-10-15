@@ -36,5 +36,10 @@ service cloud.firestore {
     	allow read, create: if request.auth.uid != null;
       allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
     }
+
+    match /flags/{flag} {
+    	allow read, create: if request.auth.uid != null;
+      allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
+    }
   }
 }
