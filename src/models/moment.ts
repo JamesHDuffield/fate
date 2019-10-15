@@ -7,6 +7,7 @@ export interface Option {
   location?: DocumentReference;
   zone?: DocumentReference;
   flags?: DocumentReference[];
+  notFlags?: DocumentReference[];
 }
 
 export interface Moment {

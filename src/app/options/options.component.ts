@@ -21,6 +21,7 @@ export class OptionsComponent implements OnInit {
 
   @Input() set moment(value: Moment) {
     this._moment = value;
+    console.log(this._moment);
     this.disabled = false;
   }
 

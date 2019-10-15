@@ -6,4 +6,5 @@ export interface User {
   zone?: DocumentReference;
   location?: DocumentReference;
   moment?: DocumentReference;
+  flags?: DocumentReference[];
 }
