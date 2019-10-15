@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { StoryService } from '../../service/story';
 import { LocationService } from '../../service/location';
 
@@ -17,18 +17,36 @@ export class AdminComponent {
     locationRef: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<AdminComponent>, private story: StoryService, private location: LocationService) { }
+  zoneForm = new FormGroup({
+    name: new FormControl(null, Validators.required),
+  });
+
+  constructor(public dialogRef: MatDialogRef<AdminComponent>, private story: StoryService, private location: LocationService, private snack: MatSnackBar) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  respawn() {
-    const body = this.form.value;
+  goToLocation() {
     this.form.disable();
-    return this.story.respawn(body)
+    console.log('Going to location');
+    return this.story.respawn(this.form.value)
       .then(() => this.dialogRef.close())
-      .catch(() => this.form.enable());
+      .catch((e) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        this.form.enable();
+      });
+  }
+
+  createZone() {
+    this.zoneForm.disable();
+    console.log('Creating zone');
+    return this.location.createZone({ name: this.zoneForm.value.name })
+      .then(() => this.dialogRef.close())
+      .catch((e) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
+        this.zoneForm.enable();
+      });
   }
 
 }

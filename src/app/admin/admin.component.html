@@ -6,6 +6,18 @@
     </mat-select>
   </mat-form-field>
 </form>
-<button mat-button color='accent' (click)='respawn()' [disabled]='form.invalid || form.disabled'>
+<button mat-button color='accent' (click)='goToLocation()' [disabled]='form.invalid || form.disabled'>
   Go to location
 </button>
+
+<hr>
+
+<form [formGroup]="zoneForm" class='container'>
+  <mat-form-field>
+    <input matInput formControlName='name' placeholder='Create a new zone'>
+  </mat-form-field>
+</form>
+<button mat-button color='accent' (click)='createZone()' [disabled]='zoneForm.invalid || zoneForm.disabled'>
+  Create Zone
+</button>
+

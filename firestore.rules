@@ -25,11 +25,13 @@ service cloud.firestore {
     match /zones/{zone} {
     	allow read: if true;
       allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
+      allow create: if isAdmin() == true;
     }
     
     match /zones/{zone}/locations/{location} {
     	allow read: if true;
       allow update: if isAdmin() == true || get(resource.data.owner).id == request.auth.uid;
+      allow create: if isAdmin() == true;
     }
 
     match /encyclopedia/{encyclopedia} {
