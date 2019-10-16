@@ -4,7 +4,7 @@ import { DatabaseService } from '../services/db';
 import { AuthorisedRequest } from '../services/auth';
 
 interface RespawnRequest extends AuthorisedRequest {
-  body: { locationRef?: string };
+  body: { locationRef?: string; zoneRef?: string };
 }
 
 export const respawn = async (request: RespawnRequest, response: Response) => {
@@ -13,6 +13,9 @@ export const respawn = async (request: RespawnRequest, response: Response) => {
   if (request.user.admin && request.body && request.body.locationRef) {
     const locationRef = db.firestore.doc(request.body.locationRef);
     await db.userToLocation(request.userRef, locationRef);
+  } else if (request.user.admin && request.body && request.body.zoneRef) {
+    const zoneRef = db.firestore.doc(request.body.zoneRef);
+    await db.userToZone(request.userRef, zoneRef);
   } else {
     // Update user to new moment
     await db.userToZone(request.userRef, db.respawnPoint);

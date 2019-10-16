@@ -1,23 +1,24 @@
-<form [formGroup]="form" class='container'>
-  <mat-form-field>
-    <mat-label>Choose a location to go to</mat-label>
-    <mat-select matNativeControl formControlName='locationRef'>
-      <mat-option *ngFor="let location of locations$ | async" [value]="location.ref">{{ location.name }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
-<button mat-button color='accent' (click)='goToLocation()' [disabled]='form.invalid || form.disabled'>
-  Go to location
-</button>
+<div>
+  <button mat-line mat-button (click)="menu = 'golocation';" *ngIf='!menu'>Go To Location</button>
+  <button mat-line mat-button (click)="menu = 'gozone';" *ngIf='!menu'>Go To Zone</button>
+  <button mat-line mat-button (click)="menu = 'createzone';" *ngIf='!menu'>Create Zone</button>
+</div>
 
-<hr>
+<div *ngIf="menu === 'golocation'">
+  <button mat-line mat-button (click)="goToLocation(location.ref)" *ngFor="let location of locations$ | async">{{ location.name }}</button>
+</div>
 
-<form [formGroup]="zoneForm" class='container'>
-  <mat-form-field>
-    <input matInput formControlName='name' placeholder='Create a new zone'>
-  </mat-form-field>
-</form>
-<button mat-button color='accent' (click)='createZone()' [disabled]='zoneForm.invalid || zoneForm.disabled'>
-  Create Zone
-</button>
+<div *ngIf="menu === 'gozone'">
+    <button mat-line mat-button (click)="goToZone(zone.ref)" *ngFor="let zone of zones$ | async">{{ zone.name }}</button>
+  </div>
 
+<div *ngIf="menu === 'createzone'">
+  <form [formGroup]="zoneForm" class='container'>
+    <mat-form-field>
+      <input matInput formControlName='name' placeholder='Name of new zone'>
+    </mat-form-field>
+  </form>
+  <button mat-button color='accent' (click)='createZone()' [disabled]='zoneForm.invalid || zoneForm.disabled'>
+    Create Zone
+  </button>
+</div>

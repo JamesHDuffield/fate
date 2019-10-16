@@ -10,12 +10,9 @@ import { LocationService } from '../../service/location';
   styleUrls: [ './admin.component.scss' ],
 })
 export class AdminComponent {
-
+  menu: string = null;
   locations$ = this.location.locations$;
-
-  form = new FormGroup({
-    locationRef: new FormControl(null, Validators.required),
-  });
+  zones$ = this.location.zones$;
 
   zoneForm = new FormGroup({
     name: new FormControl(null, Validators.required),
@@ -27,14 +24,21 @@ export class AdminComponent {
     this.dialogRef.close();
   }
 
-  goToLocation() {
-    this.form.disable();
+  goToLocation(locationRef: string) {
     console.log('Going to location');
-    return this.story.respawn(this.form.value)
+    return this.story.respawn({ locationRef })
       .then(() => this.dialogRef.close())
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
-        this.form.enable();
+      });
+  }
+
+  goToZone(zoneRef: string) {
+    console.log('Going to zone');
+    return this.story.respawn({ zoneRef })
+      .then(() => this.dialogRef.close())
+      .catch((e) => {
+        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
       });
   }
 

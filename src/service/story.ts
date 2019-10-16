@@ -86,7 +86,7 @@ export class StoryService {
     return this.request('/create', body);
   }
 
-  async respawn(body: { locationRef?: string } = {}): Promise<void> {
+  async respawn(body: { locationRef?: string; zoneRef?: string } = {}): Promise<void> {
     return this.request('/respawn', body);
   }
 
