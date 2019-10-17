@@ -30,7 +30,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## To do
 
 - Put stuff into transactions where possible
-- Confirm for delete option
 - Create a flag
 - Add flags to option
 - Remove all flags on respawn

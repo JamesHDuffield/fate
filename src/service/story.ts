@@ -11,6 +11,7 @@ import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
 import { Encyclopedia } from '../models/encyclopedia';
+import { Flag } from '../models/flag';
 
 @Injectable()
 export class StoryService {
@@ -161,5 +162,18 @@ export class StoryService {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
         throw e;
       });
+  }
+
+  async createFlag(flag: Flag) {
+    return this.auth.userDoc$
+      .pipe(
+        first(),
+        switchMap((userDoc) => {
+          flag.owner = userDoc.ref;
+          return this.db.collection<Flag>('flags')
+            .add(flag);
+        }),
+      )
+      .toPromise();
   }
 }

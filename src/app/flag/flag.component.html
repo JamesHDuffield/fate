@@ -1,0 +1,25 @@
+<mat-card>
+  <form [formGroup]="form" class='container'>
+    <mat-form-field>
+      <input matInput formControlName='name' placeholder='Name of flag'>
+    </mat-form-field>
+    <mat-hint><small>Icon</small></mat-hint>
+    <mat-button-toggle-group formControlName='icon'>
+      <mat-button-toggle [value]='icon' *ngFor='let icon of iconOptions'>
+        <mat-icon [style.color]="form.get('color').value">{{ icon }}</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-hint><small>Color</small></mat-hint>
+    <mat-button-toggle-group formControlName='color'>
+      <mat-button-toggle [value]='color' *ngFor='let color of colorOptions'>
+        <mat-icon [style.color]='color'>{{ form.get('icon').value }}</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-hint><small>Persist through death</small></mat-hint>
+    <mat-slide-toggle color="primary" formControlName='permanent'></mat-slide-toggle>
+  </form>
+
+</mat-card>
+
+<button mat-button (click)='close()' [disabled]='form.disabled'>Cancel</button>
+<button mat-button color='accent' (click)='create()' [disabled]='form.disabled'>Create Flag</button>

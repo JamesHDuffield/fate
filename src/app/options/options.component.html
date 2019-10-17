@@ -36,8 +36,9 @@
         <mat-option *ngFor="let zone of zones$ | async" [value]="zone.ref">{{ zone.name }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-hint><small>Choose required flags</small></mat-hint>
+    <mat-hint><small>Choose required flag</small></mat-hint>
     <small>None selected</small>
+    <button mat-button (click)='createFlag()'>+</button>
   </div>
 </form>
 

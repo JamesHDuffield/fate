@@ -1,0 +1,25 @@
+button {
+  width: 100%;
+}
+
+mat-card.mat-card {
+  box-shadow: none !important;
+}
+
+.container>* {
+  width: 100%;
+}
+
+mat-icon {
+  text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black;
+}
+
+mat-button-toggle-group {
+  flex-wrap: wrap;
+  border: none;
+  margin-bottom: 15px;
+  mat-button-toggle {
+    border: solid 1px rgba(255, 255, 255, 0.12);
+    margin: 2px;
+  }
+}

@@ -6,6 +6,7 @@ import { LocationService } from '../../service/location';
 import { AuthService } from '../../service/auth';
 import { MatDialog } from '@angular/material';
 import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
+import { FlagComponent } from '../flag/flag.component';
 
 const MAXIMUM_OPTIONS = 3;
 
@@ -113,6 +114,10 @@ export class OptionsComponent implements OnInit {
           return this.story.deleteOption(this._moment.options[this.form.value.id]);
         }
       });
+  }
+
+  async createFlag() {
+    return this.dialog.open(FlagComponent);
   }
 
 }

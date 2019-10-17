@@ -16,6 +16,7 @@ import {
   MatDialogModule,
   MatSelectModule,
   MatOptionModule,
+  MatSlideToggleModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -42,6 +43,7 @@ import { AccountComponent } from './account/account.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AdminComponent } from './admin/admin.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { FlagComponent } from './flag/flag.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
     AccountComponent,
     AdminComponent,
     ConfirmComponent,
+    FlagComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
     MatDialogModule,
     MatSelectModule,
     MatOptionModule,
+    MatSlideToggleModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,
@@ -85,6 +89,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
-  entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent ],
+  entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent, FlagComponent ],
 })
 export class AppModule { }
