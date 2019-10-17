@@ -44,6 +44,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AdminComponent } from './admin/admin.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { FlagComponent } from './flag/flag.component';
+import { ChooseComponent } from './flag/choose/choose.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { FlagComponent } from './flag/flag.component';
     AdminComponent,
     ConfirmComponent,
     FlagComponent,
+    ChooseComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +91,6 @@ import { FlagComponent } from './flag/flag.component';
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
-  entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent, FlagComponent ],
+  entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent, FlagComponent, ChooseComponent ],
 })
 export class AppModule { }
