@@ -4,6 +4,8 @@ import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
 import { LocationService } from '../../service/location';
 import { AuthService } from '../../service/auth';
+import { MatDialog } from '@angular/material';
+import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
 
 const MAXIMUM_OPTIONS = 3;
 
@@ -34,7 +36,7 @@ export class OptionsComponent implements OnInit {
     zone: new FormControl(null, []),
   });
 
-  constructor(private story: StoryService, private location: LocationService, private auth: AuthService) { }
+  constructor(private story: StoryService, private location: LocationService, private auth: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.form.disable();
@@ -100,7 +102,17 @@ export class OptionsComponent implements OnInit {
   }
 
   async delete() {
-    return this.story.deleteOption(this._moment.options[this.form.value.id]);
+    const data: ConfirmData = {
+      text: 'Are you sure you wish to delete this option?',
+      okButtonText: 'Delete',
+    };
+    return this.dialog.open(ConfirmComponent, { data })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          return this.story.deleteOption(this._moment.options[this.form.value.id]);
+        }
+      });
   }
 
 }

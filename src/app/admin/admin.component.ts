@@ -26,8 +26,8 @@ export class AdminComponent {
 
   goToLocation(locationRef: string) {
     console.log('Going to location');
+    this.dialogRef.close();
     return this.story.respawn({ locationRef })
-      .then(() => this.dialogRef.close())
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
       });
@@ -35,8 +35,8 @@ export class AdminComponent {
 
   goToZone(zoneRef: string) {
     console.log('Going to zone');
+    this.dialogRef.close();
     return this.story.respawn({ zoneRef })
-      .then(() => this.dialogRef.close())
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
       });
@@ -45,8 +45,9 @@ export class AdminComponent {
   createZone() {
     this.zoneForm.disable();
     console.log('Creating zone');
+    this.dialogRef.close();
     return this.location.createZone({ name: this.zoneForm.value.name })
-      .then(() => this.dialogRef.close())
+      .then(() => this.snack.open('Zone created', 'Dismiss'))
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
         this.zoneForm.enable();

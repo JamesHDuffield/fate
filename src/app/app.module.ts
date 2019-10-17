@@ -41,6 +41,7 @@ import { HeaderComponent } from './header/header.component';
 import { AccountComponent } from './account/account.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AdminComponent } from './admin/admin.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AdminComponent } from './admin/admin.component';
     HeaderComponent,
     AccountComponent,
     AdminComponent,
+    ConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +85,6 @@ import { AdminComponent } from './admin/admin.component';
   ],
   providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
-  entryComponents: [ LocationComponent, AccountComponent, AdminComponent ],
+  entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent ],
 })
 export class AppModule { }
