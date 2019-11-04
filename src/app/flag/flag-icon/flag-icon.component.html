@@ -1,0 +1,5 @@
+<mat-button-toggle-group *ngIf='_flags.length'>
+  <mat-button-toggle *ngFor='let flag of _flags'>
+    <mat-icon [style.color]='flag.color' (click)='choose.emit(flag)' [matTooltip]='flag.name'>{{ flag.icon }}</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>

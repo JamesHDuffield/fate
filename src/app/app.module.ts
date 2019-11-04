@@ -46,6 +46,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { FlagComponent } from './flag/flag.component';
 import { ChooseComponent } from './flag/choose/choose.component';
 import { DocPipe } from './doc.pipe';
+import { FlagIconComponent } from './flag/flag-icon/flag-icon.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { DocPipe } from './doc.pipe';
     FlagComponent,
     ChooseComponent,
     DocPipe,
+    FlagIconComponent,
   ],
   imports: [
     BrowserModule,

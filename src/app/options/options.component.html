@@ -37,7 +37,8 @@
       </mat-select>
     </mat-form-field>
     <mat-hint><small>Choose required flag</small></mat-hint>
-    <span>{{ (this.form.get('flag').value | doc | async)?.name || 'No flag is selected' }}</span>
+    <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
+    <small *ngIf="!this.form.get('flag').value">No flag is selected</small>
     <button mat-button (click)='chooseFlag()'>Existing flag</button>
     <button mat-button (click)='createFlag()'>Create flag</button>
   </div>

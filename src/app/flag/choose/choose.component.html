@@ -1,7 +1,3 @@
 <div class='container'>
-  <mat-button-toggle-group>
-    <mat-button-toggle *ngFor='let flag of flags$ | async'>
-      <mat-icon [style.color]='flag.color' (click)='choose(flag)' [matTooltip]='flag.name'>{{ flag.icon }}</mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  <flag-icon [flags]='flags$ | async' (choose)='choose($event)'></flag-icon>
 </div>
