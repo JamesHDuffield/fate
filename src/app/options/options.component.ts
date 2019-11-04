@@ -7,6 +7,7 @@ import { AuthService } from '../../service/auth';
 import { MatDialog } from '@angular/material';
 import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
 import { FlagComponent } from '../flag/flag.component';
+import { ChooseComponent } from '../flag/choose/choose.component';
 
 const MAXIMUM_OPTIONS = 3;
 
@@ -117,7 +118,11 @@ export class OptionsComponent implements OnInit {
   }
 
   async createFlag() {
-    return this.dialog.open(FlagComponent);
+    return this.dialog.open(FlagComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' });
+  }
+
+  async chooseFlag() {
+    return this.dialog.open(ChooseComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' });
   }
 
 }

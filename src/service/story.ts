@@ -51,6 +51,12 @@ export class StoryService {
       map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
 
+  flags$: Observable<Flag[]> = this.auth.userDoc$
+    .pipe(
+      switchMap(() => this.db.collection<Flag>('flags')
+        .valueChanges()),
+    );
+
   cursor: DocumentReference;
 
   constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) { }
