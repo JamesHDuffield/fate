@@ -1,13 +1,19 @@
 @import 'theme.scss';
 
 .primary-snackbar {
-    span.mat-button-wrapper {
-        color: mat-color($fate-app-primary);
-    }
+  span.mat-button-wrapper {
+    color: mat-color($fate-app-primary);
+  }
 }
 
 .error-snackbar {
-    span.mat-button-wrapper {
-        color: mat-color($fate-app-warn);
-    }
+  span.mat-button-wrapper {
+    color: mat-color($fate-app-warn);
+  }
+}
+
+.unclickable {
+  .mat-button-toggle-checked {
+    background-color: initial;
+  }
 }

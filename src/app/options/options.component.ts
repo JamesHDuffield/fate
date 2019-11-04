@@ -128,16 +128,24 @@ export class OptionsComponent implements OnInit {
       });
   }
 
-  async createFlag() {
+  async createFlag(key: string = 'flag') {
     return this.dialog.open(FlagComponent, { maxWidth: '100vw', width: '750px', maxHeight: '100vh' })
       .afterClosed()
-      .subscribe((result) => this.form.patchValue({ flag: result }));
+      .subscribe((result) => {
+        const patch = {};
+        patch[key] = result;
+        this.form.patchValue(patch);
+      });
   }
 
-  async chooseFlag() {
+  async chooseFlag(key: string = 'flag') {
     return this.dialog.open(ChooseComponent, { maxWidth: '100vw', width: '750px', maxHeight: '100vh' })
       .afterClosed()
-      .subscribe((result) => this.form.patchValue({ flag: result }));
+      .subscribe((result) => {
+        const patch = {};
+        patch[key] = result;
+        this.form.patchValue(patch);
+      });
   }
 
 }

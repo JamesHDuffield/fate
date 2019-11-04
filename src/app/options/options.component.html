@@ -8,10 +8,12 @@
       <mat-button-toggle value='moment' aria-label="Go to a new moment" matTooltip="Go to a new moment">
         <mat-icon>add_comment</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='reset' aria-label="Return to first moment of this location" matTooltip="Return to first moment of this location">
+      <mat-button-toggle value='reset' aria-label="Return to first moment of this location"
+        matTooltip="Return to first moment of this location">
         <mat-icon>refresh</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value='location' aria-label="Go to an existing location" matTooltip="Go to an existing location">
+      <mat-button-toggle value='location' aria-label="Go to an existing location"
+        matTooltip="Go to an existing location">
         <mat-icon>location_on</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle value='newlocation' aria-label="Go to a new location" matTooltip="Go to a new location">
@@ -37,26 +39,57 @@
       </mat-select>
     </mat-form-field>
     <mat-hint><small>Choose required flag</small></mat-hint>
-    <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
-    <small *ngIf="!this.form.get('flag').value">No flag is selected</small>
-    <button mat-button (click)='chooseFlag()' [disabled]='form.disabled'>Existing flag</button>
-    <button mat-button (click)='createFlag()' [disabled]='form.disabled'>Create flag</button>
+    <div>
+      <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
+      <mat-button-toggle-group [disabled]='form.disabled' class='unclickable'>
+        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected" *ngIf="!this.form.get('flag').value">
+          <mat-icon>close</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag" (click)='chooseFlag()'>
+          <mat-icon>search</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Create flag" matTooltip="Create flag" (click)='createFlag()'>
+          <mat-icon>emoji_flags</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <mat-hint><small>Choose required to be missing flag</small></mat-hint>
+    <div>
+      <flag-icon [flag]="(this.form.get('notFlag').value | doc | async)"></flag-icon>
+      <mat-button-toggle-group [disabled]='form.disabled' class='unclickable'>
+        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected" *ngIf="!this.form.get('notFlag').value">
+          <mat-icon>close</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag" (click)="chooseFlag('notFlag')">
+          <mat-icon>search</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Create flag" matTooltip="Create flag" (click)="createFlag('notFlag')">
+          <mat-icon>emoji_flags</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </div>
 </form>
 
 <div class='button-container' *ngIf='form.disabled'>
-  <button mat-line (click)='next(option)' (contextmenu)="edit($event, option)" mat-button class='button-option' *ngFor='let option of _moment.options'>{{ option.text }}</button>
-  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length && !_moment.end'>The story ends here. Start again?</button>
-  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end'>You fate is sealed. Start again?</button>
-  <button mat-line (click)='add();' mat-button class='button-option button-add' *ngIf='showAddOptionButton'>Add a new choice</button>
+  <button mat-line (click)='next(option)' (contextmenu)="edit($event, option)" mat-button class='button-option'
+    *ngFor='let option of _moment.options'>{{ option.text }}</button>
+  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option'
+    *ngIf='!_moment.options.length && !_moment.end'>The story ends here. Start again?</button>
+  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end'>You fate is
+    sealed. Start again?</button>
+  <button mat-line (click)='add();' mat-button class='button-option button-add' *ngIf='showAddOptionButton'>Add a new
+    choice</button>
 </div>
 
 <div class='tab-buttons'>
-  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled" [disabled]='form.invalid || form.disabled || form.pristine'></app-tab-button>
+  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled"
+    [disabled]='form.invalid || form.disabled || form.pristine'></app-tab-button>
   <div *ngIf="form.enabled && form.get('id').value !== null">
-    <br/>
+    <br />
     <app-tab-button icon='delete' (click)='delete()' [disabled]='form.disabled'></app-tab-button>
   </div>
-  <br/>
-  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='form.disabled'></app-tab-button>
+  <br />
+  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='form.disabled'>
+  </app-tab-button>
 </div>

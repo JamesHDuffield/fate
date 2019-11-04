@@ -166,6 +166,7 @@ export class StoryService {
         console.log(`Changing text of ${option.id} from ${found.text} to ${option.text}`);
         found.text = option.text;
         found.flag = option.flag;
+        found.notFlag = option.notFlag;
         return this.currentDoc$.pipe(
           first(),
           switchMap((doc) => doc.update({ options })),
