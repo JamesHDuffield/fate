@@ -99,7 +99,7 @@ export class FlagComponent {
     console.log('Creating flag', flag);
     this.form.disable();
     return this.story.createFlag(flag)
-      .then(() => this.dialogRef.close())
+      .then((ref) => this.dialogRef.close(ref))
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
         this.form.enable();

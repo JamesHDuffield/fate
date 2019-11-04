@@ -126,16 +126,13 @@ export class OptionsComponent implements OnInit {
   async createFlag() {
     return this.dialog.open(FlagComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' })
       .afterClosed()
-      .subscribe((result) => console.log(result));
+      .subscribe((result) => this.form.patchValue({ flag: result }));
   }
 
   async chooseFlag() {
     return this.dialog.open(ChooseComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' })
       .afterClosed()
-      .subscribe((result) => {
-        console.log(result);
-        this.form.patchValue({ flag: result });
-      });
+      .subscribe((result) => this.form.patchValue({ flag: result }));
   }
 
 }
