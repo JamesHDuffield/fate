@@ -45,6 +45,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { FlagComponent } from './flag/flag.component';
 import { ChooseComponent } from './flag/choose/choose.component';
+import { DocPipe } from './doc.pipe';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ChooseComponent } from './flag/choose/choose.component';
     ConfirmComponent,
     FlagComponent,
     ChooseComponent,
+    DocPipe,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentReference, AngularFirestoreDocument, DocumentChangeAction } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -48,18 +48,26 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
+      map(([user, firebaseUser, current]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
 
   flags$: Observable<Flag[]> = this.auth.userDoc$
     .pipe(
       switchMap(() => this.db.collection<Flag>('flags')
-        .valueChanges()),
+        .snapshotChanges()),
+      // tslint:disable-next-line: ter-arrow-body-style
+      map((actions: DocumentChangeAction<Flag>[]) => {
+        return actions.map((a: DocumentChangeAction<Flag>) => {
+          const data: Flag = a.payload.doc.data();
+          const ref = a.payload.doc.ref;
+          return { ref, ...data };
+        });
+      }),
     );
 
   cursor: DocumentReference;
 
-  constructor(private db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) { }
+  constructor(public db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
@@ -84,7 +92,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
+        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
       )
       .toPromise();
   }

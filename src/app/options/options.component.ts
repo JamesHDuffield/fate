@@ -8,13 +8,15 @@ import { MatDialog } from '@angular/material';
 import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
 import { FlagComponent } from '../flag/flag.component';
 import { ChooseComponent } from '../flag/choose/choose.component';
+import { tap, map, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 const MAXIMUM_OPTIONS = 3;
 
 @Component({
   selector: 'app-options',
   templateUrl: './options.component.html',
-  styleUrls: [ './options.component.scss' ],
+  styleUrls: ['./options.component.scss'],
 })
 export class OptionsComponent implements OnInit {
 
@@ -31,12 +33,14 @@ export class OptionsComponent implements OnInit {
 
   form = new FormGroup({
     id: new FormControl(null, []),
-    text: new FormControl('', [ Validators.required ]),
-    type: new FormControl('moment', [ Validators.required ]),
+    text: new FormControl('', [Validators.required]),
+    type: new FormControl('moment', [Validators.required]),
     location: new FormControl(null, []),
     name: new FormControl(null, []),
     zone: new FormControl(null, []),
   });
+
+  flag$: Observable<string>;
 
   constructor(private story: StoryService, private location: LocationService, private auth: AuthService, private dialog: MatDialog) { }
 
@@ -57,11 +61,12 @@ export class OptionsComponent implements OnInit {
   async add() {
     this.form = new FormGroup({
       id: new FormControl(null, []),
-      text: new FormControl('', [ Validators.required ]),
-      type: new FormControl('moment', [ Validators.required ]),
+      text: new FormControl('', [Validators.required]),
+      type: new FormControl('moment', [Validators.required]),
       location: new FormControl(null, []),
       name: new FormControl(null, []),
       zone: new FormControl(null, []),
+      flag: new FormControl(null, []),
     });
     this.form.enable();
   }
@@ -99,6 +104,7 @@ export class OptionsComponent implements OnInit {
       location: new FormControl(option.location, []),
       name: new FormControl(null, []),
       zone: new FormControl(option.zone, []),
+      flag: new FormControl(option.flag, []),
     });
     this.form.enable();
   }
@@ -118,11 +124,18 @@ export class OptionsComponent implements OnInit {
   }
 
   async createFlag() {
-    return this.dialog.open(FlagComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' });
+    return this.dialog.open(FlagComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' })
+      .afterClosed()
+      .subscribe((result) => console.log(result));
   }
 
   async chooseFlag() {
-    return this.dialog.open(ChooseComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' });
+    return this.dialog.open(ChooseComponent, { maxWidth: '95vw', width: '750px', maxHeight: '95vh' })
+      .afterClosed()
+      .subscribe((result) => {
+        console.log(result);
+        this.form.patchValue({ flag: result });
+      });
   }
 
 }
