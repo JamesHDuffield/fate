@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material';
 import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
 import { FlagComponent } from '../flag/flag.component';
 import { ChooseComponent } from '../flag/choose/choose.component';
-import { tap, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 const MAXIMUM_OPTIONS = 3;
@@ -20,15 +19,13 @@ const MAXIMUM_OPTIONS = 3;
 })
 export class OptionsComponent implements OnInit {
 
-  disabled = false;
   _moment: Moment = null;
   locations$ = this.location.locations$;
   zones$ = this.location.zones$;
 
   @Input() set moment(value: Moment) {
     this._moment = value;
-    console.log(this._moment);
-    this.disabled = false;
+    this.form.disable();
   }
 
   form = new FormGroup({
@@ -53,9 +50,9 @@ export class OptionsComponent implements OnInit {
   }
 
   async next(option: Option) {
-    this.disabled = true;
+    this.form.disable();
     await this.story.progressToOption(option)
-      .catch((e) => this.disabled = false);
+      .catch((e) => this.form.enable());
   }
 
   async add() {
@@ -67,6 +64,7 @@ export class OptionsComponent implements OnInit {
       name: new FormControl(null, []),
       zone: new FormControl(null, []),
       flag: new FormControl(null, []),
+      notFlag: new FormControl(null, []),
     });
     this.form.enable();
   }
@@ -75,20 +73,20 @@ export class OptionsComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.disabled = true;
+    this.form.disable();
     if (this.form.value.id !== null) {
       await this.story.updateOption(this.form.value)
-        .catch((e) => this.disabled = false);
+        .catch((e) => this.form.enable());
     } else {
       await this.story.createMoment(this.form.value)
-        .catch((e) => this.disabled = false);
+        .catch((e) => this.form.enable());
     }
   }
 
   async respawn() {
-    this.disabled = true;
+    this.form.disable();
     return this.story.respawn()
-      .catch((e) => this.disabled = false);
+      .catch((e) => this.form.enable());
   }
 
   async edit(event: MouseEvent, option: Option) {
@@ -99,14 +97,21 @@ export class OptionsComponent implements OnInit {
     const type = option.zone ? 'zone' : (option.location ? 'location' : 'moment');
     this.form = new FormGroup({
       id: new FormControl(option.id, []),
-      text: new FormControl(option.text, [ Validators.required ]),
-      type: new FormControl(type, [ Validators.required ]),
+      text: new FormControl(option.text, [Validators.required]),
+      type: new FormControl(type, [Validators.required]),
       location: new FormControl(option.location, []),
       name: new FormControl(null, []),
       zone: new FormControl(option.zone, []),
       flag: new FormControl(option.flag, []),
+      notFlag: new FormControl(option.notFlag, []),
     });
     this.form.enable();
+    this.form.get('type')
+      .disable();
+    this.form.get('location')
+      .disable();
+    this.form.get('zone')
+      .disable();
   }
 
   async delete() {

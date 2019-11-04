@@ -1,10 +1,10 @@
 <form [formGroup]="form" class='container' *ngIf='form.enabled'>
   <div class='container'>
     <mat-form-field class="full-width">
-      <input matInput placeholder="Describe the choice" formControlName='text' [disabled]='disabled'>
+      <input matInput placeholder="Describe the choice" formControlName='text'>
     </mat-form-field>
     <mat-hint><small>Choose an action to perform</small></mat-hint>
-    <mat-button-toggle-group formControlName='type' [disabled]="disabled || form.get('id').value !== null">
+    <mat-button-toggle-group formControlName='type'>
       <mat-button-toggle value='moment' aria-label="Go to a new moment" matTooltip="Go to a new moment">
         <mat-icon>add_comment</mat-icon>
       </mat-button-toggle>
@@ -23,40 +23,40 @@
     </mat-button-toggle-group>
     <mat-form-field *ngIf="form.get('type').value === 'location'">
       <mat-label>Choose a location to go to</mat-label>
-      <mat-select matNativeControl formControlName='location' [disabled]='disabled'>
+      <mat-select matNativeControl formControlName='location'>
         <mat-option *ngFor="let location of locations$ | async" [value]="location.ref">{{ location.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width" *ngIf="form.get('type').value === 'newlocation'">
-      <input matInput placeholder="Name the new location" formControlName='name' [disabled]='disabled'>
+      <input matInput placeholder="Name the new location" formControlName='name'>
     </mat-form-field>
     <mat-form-field *ngIf="form.get('type').value === 'zone'">
       <mat-label>Choose a zone to go to</mat-label>
-      <mat-select matNativeControl formControlName='zone' [disabled]='disabled'>
+      <mat-select matNativeControl formControlName='zone'>
         <mat-option *ngFor="let zone of zones$ | async" [value]="zone.ref">{{ zone.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-hint><small>Choose required flag</small></mat-hint>
     <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
     <small *ngIf="!this.form.get('flag').value">No flag is selected</small>
-    <button mat-button (click)='chooseFlag()'>Existing flag</button>
-    <button mat-button (click)='createFlag()'>Create flag</button>
+    <button mat-button (click)='chooseFlag()' [disabled]='form.disabled'>Existing flag</button>
+    <button mat-button (click)='createFlag()' [disabled]='form.disabled'>Create flag</button>
   </div>
 </form>
 
 <div class='button-container' *ngIf='form.disabled'>
-  <button mat-line (click)='next(option)' (contextmenu)="edit($event, option)" mat-button class='button-option' *ngFor='let option of _moment.options' [disabled]='disabled'>{{ option.text }}</button>
-  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length && !_moment.end' [disabled]='disabled'>The story ends here. Start again?</button>
-  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end' [disabled]='disabled'>You fate is sealed. Start again?</button>
-  <button mat-line (click)='add();' mat-button class='button-option button-add' *ngIf='showAddOptionButton && !disabled'>Add a new choice</button>
+  <button mat-line (click)='next(option)' (contextmenu)="edit($event, option)" mat-button class='button-option' *ngFor='let option of _moment.options'>{{ option.text }}</button>
+  <button mat-line (click)='respawn()' mat-button color='primary' class='button-option' *ngIf='!_moment.options.length && !_moment.end'>The story ends here. Start again?</button>
+  <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end'>You fate is sealed. Start again?</button>
+  <button mat-line (click)='add();' mat-button class='button-option button-add' *ngIf='showAddOptionButton'>Add a new choice</button>
 </div>
 
 <div class='tab-buttons'>
-  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled" [disabled]='form.invalid || disabled'></app-tab-button>
+  <app-tab-button icon='save' (click)='save()' *ngIf="form.enabled" [disabled]='form.invalid || form.disabled || form.pristine'></app-tab-button>
   <div *ngIf="form.enabled && form.get('id').value !== null">
     <br/>
-    <app-tab-button icon='delete' (click)='delete()' [disabled]='disabled'></app-tab-button>
+    <app-tab-button icon='delete' (click)='delete()' [disabled]='form.disabled'></app-tab-button>
   </div>
   <br/>
-  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='disabled'></app-tab-button>
+  <app-tab-button icon='cancel' (click)='form.disable()' *ngIf='form.enabled' [disabled]='form.disabled'></app-tab-button>
 </div>
