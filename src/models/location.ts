@@ -1,6 +1,8 @@
+import { BaseDocument } from './base';
+import { DocumentReference } from '@angular/fire/firestore';
 
-export interface Location {
-  moment: firebase.firestore.DocumentReference;
+export interface Location extends BaseDocument {
+  moment: DocumentReference;
   name?: string;
-  owner?: firebase.firestore.DocumentReference;
+  owner?: DocumentReference;
 }

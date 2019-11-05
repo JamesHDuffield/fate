@@ -1,6 +1,7 @@
 import { DocumentReference } from '@angular/fire/firestore';
+import { BaseDocument } from './base';
 
-export interface Option {
+export interface Option extends BaseDocument {
   text: string;
   id: number;
   moment?: DocumentReference;
@@ -10,7 +11,7 @@ export interface Option {
   notFlag?: DocumentReference;
 }
 
-export interface Moment {
+export interface Moment extends BaseDocument {
   text: string;
   options: Option[];
   end?: boolean;

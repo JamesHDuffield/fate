@@ -1,6 +1,7 @@
 import { DocumentReference } from '@angular/fire/firestore';
+import { BaseDocument } from './base';
 
-export interface User {
+export interface User extends BaseDocument {
   admin?: boolean;
   username?: string;
   zone?: DocumentReference;

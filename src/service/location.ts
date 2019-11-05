@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth';
 import { filter, switchMap, map, first, tap } from 'rxjs/operators';
 import { Location } from '../models/location';
@@ -63,7 +63,7 @@ export class LocationService {
   }
 
   async createZone(zone: Partial<Zone>): Promise<any> {
-    const moment: Moment = { text: '', options: [] };
+    const moment: Partial<Moment> = { text: '', options: [] };
     const location: Partial<Location> = { name: 'Outdoors' };
 
     return this.auth.userDoc$

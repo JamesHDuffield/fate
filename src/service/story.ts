@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFirestore, DocumentReference, AngularFirestoreDocument, DocumentChangeAction } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
 import { Encyclopedia } from '../models/encyclopedia';
 import { Flag } from '../models/flag';
+import { FirestoreService } from './firestore';
 
 @Injectable()
 export class StoryService {
@@ -19,21 +20,14 @@ export class StoryService {
   start$: Observable<AngularFirestoreDocument<Moment>> = this.location.currentLocation$
     .pipe(
       filter((location) => !!location && !!location.moment),
-      map((location) => this.db.doc<Moment>(location.moment)),
-    );
-
-  currentDoc$: Observable<AngularFirestoreDocument<Moment>> = this.auth.user$
-    .pipe(
-      filter((user) => !!user),
-      map((user) => this.db.doc<Moment>(user.moment)),
+      switchMap((location) => this.firestore.document<Moment>(location.moment)),
     );
 
   current$: Observable<Moment> = this.auth.user$
     .pipe(
       filter((user) => !!user),
       switchMap((user) =>
-        this.db.doc<Moment>(user.moment)
-          .valueChanges()
+        this.firestore.fetch<Moment>(user.moment)
           .pipe( // When user swaps moment is not accessible. Ignore those errors
             catchError((e: firebase.FirebaseError) => {
               if (e && e.code === 'permission-denied') {
@@ -48,26 +42,12 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([user, firebaseUser, current]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
+      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
 
-  flags$: Observable<Flag[]> = this.auth.userDoc$
-    .pipe(
-      switchMap(() => this.db.collection<Flag>('flags')
-        .snapshotChanges()),
-      // tslint:disable-next-line: ter-arrow-body-style
-      map((actions: DocumentChangeAction<Flag>[]) => {
-        return actions.map((a: DocumentChangeAction<Flag>) => {
-          const data: Flag = a.payload.doc.data();
-          const ref = a.payload.doc.ref;
-          return { ref, ...data };
-        });
-      }),
-    );
+  flags$: Observable<Flag[]> = this.firestore.collection('flags');
 
-  cursor: DocumentReference;
-
-  constructor(public db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar) { }
+  constructor(public db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
@@ -92,7 +72,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref }, { merge: true })),
+        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
       )
       .toPromise();
   }
@@ -127,7 +107,7 @@ export class StoryService {
         const doc = await ref.get()
           .toPromise();
         if (!doc.exists || this.auth.admin || (doc.data().owner && doc.data().owner.id === userDoc.ref.id)) {
-          const enc = { text: encyclopedias[name], owner: userDoc.ref };
+          const enc = { text: encyclopedias[name], owner: userDoc.ref, ref: null };
           await ref.set(enc, { merge: true });
         }
       }
@@ -167,8 +147,9 @@ export class StoryService {
         found.text = option.text;
         found.flag = option.flag;
         found.notFlag = option.notFlag;
-        return this.currentDoc$.pipe(
+        return this.current$.pipe(
           first(),
+          switchMap((m) => this.firestore.document(m.ref)),
           switchMap((doc) => doc.update({ options })),
         );
       }),
