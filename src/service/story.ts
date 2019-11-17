@@ -47,7 +47,7 @@ export class StoryService {
 
   flags$: Observable<Flag[]> = this.firestore.collection('flags');
 
-  constructor(public db: AngularFirestore, private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
+  constructor(private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
@@ -85,12 +85,11 @@ export class StoryService {
     return this.request('/respawn', body);
   }
 
-  async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
-    await this.auth.user$
+  async updateMoment(moment: Moment, encyclopedias: { [name: string]: string }): Promise<void> {
+    await this.firestore.document<Moment>(moment.ref)
       .pipe(
-        map((user) => this.db.doc<Moment>(user.moment)),
         first(),
-        switchMap((momentDoc) => momentDoc.set(<Moment>moment, { merge: true })),
+        switchMap((momentDoc) => momentDoc.set(moment, { merge: true })),
       )
       .toPromise()
       .catch((e: Error) => {

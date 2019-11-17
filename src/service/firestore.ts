@@ -3,6 +3,7 @@ import { AngularFirestore, DocumentReference, DocumentChangeAction, AngularFires
 import { AuthService } from './auth';
 import { Observable } from 'rxjs';
 import { switchMap, map, filter } from 'rxjs/operators';
+import { BaseDocument } from 'src/models/base';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,14 @@ export class FirestoreService {
           });
         }),
       );
+  }
+
+  createDocument() {
+    throw new Error('TODO');
+  }
+
+  async saveDocument(document: BaseDocument): Promise<void> {
+    document.ref.update(document);
   }
 
 }
