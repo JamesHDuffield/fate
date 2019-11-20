@@ -97,8 +97,8 @@ export class OptionsComponent implements OnInit {
     const type = option.zone ? 'zone' : (option.location ? 'location' : 'moment');
     this.form = new FormGroup({
       id: new FormControl(option.id, []),
-      text: new FormControl(option.text, [Validators.required]),
-      type: new FormControl(type, [Validators.required]),
+      text: new FormControl(option.text, [ Validators.required ]),
+      type: new FormControl(type, [ Validators.required ]),
       location: new FormControl(option.location, []),
       name: new FormControl(null, []),
       zone: new FormControl(option.zone, []),
@@ -133,7 +133,7 @@ export class OptionsComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         const patch = {};
-        patch[key] = result;
+        patch[key] = result || null;
         this.form.patchValue(patch);
       });
   }
@@ -143,7 +143,7 @@ export class OptionsComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         const patch = {};
-        patch[key] = result;
+        patch[key] = result || null;
         this.form.patchValue(patch);
       });
   }

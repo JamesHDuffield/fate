@@ -141,7 +141,7 @@ export class MomentComponent implements OnInit {
     const moment = this._moment;
     moment.text = value.text;
     moment.end = value.end;
-    moment.flag = value.flag || null;
+    moment.flag = value.flag;
     return this.story.updateMoment(moment, value.encyclopedias)
       .then(() => this.form.disable());
   }
@@ -151,7 +151,7 @@ export class MomentComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         const patch = {};
-        patch[key] = result;
+        patch[key] = result || null;
         this.form.patchValue(patch);
       });
   }
@@ -161,7 +161,7 @@ export class MomentComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         const patch = {};
-        patch[key] = result;
+        patch[key] = result || null;
         this.form.patchValue(patch);
       });
   }
