@@ -4,6 +4,7 @@ import { Location } from '../models/location';
 // tslint:disable-next-line: no-implicit-dependencies
 import { DocumentReference } from '@google-cloud/firestore';
 import { Zone } from '../models/zone';
+import { Flag } from '../models/flag';
 
 const RESPAWN_LOCATION = '/zones/lPtHuBdQJZ1DRONwtBIH'
 
@@ -45,6 +46,19 @@ export class DatabaseService {
     const momentRef = await this.getDefaultMomentRefFromZoneRef(zoneRef);
     await userRef
       .set({ moment: momentRef }, { merge: true });
+  }
+
+  async clearNonPermanentFlags(userRef: DocumentReference): Promise<void> {
+    const user = await userRef.get();
+    if (!user.exists) {
+      throw new Error('User does not exist');
+    }
+    const flags: Flag[] = user.data().flags;
+    if (!flags) {
+      return
+    }
+    const newFlags = flags.filter((flag) => flag.permanent);
+    await user.ref.update({flags: newFlags });
   }
 
   // Creation

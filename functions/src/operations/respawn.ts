@@ -17,6 +17,8 @@ export const respawn = async (request: RespawnRequest, response: Response) => {
     const zoneRef = db.firestore.doc(request.body.zoneRef);
     await db.userToZone(request.userRef, zoneRef);
   } else {
+    // Clear flags that are not permanent
+    await db.clearNonPermanentFlags(request.userRef);
     // Update user to new moment
     await db.userToZone(request.userRef, db.respawnPoint);
   }

@@ -34,7 +34,7 @@ export const create = async (request: CreateRequest, response: Response) => {
   }
 
   const locationRef = request.user.moment.parent.parent;
-  const defaultMoment = { owner: request.userRef, text: '', options: [] };
+  const defaultMoment = { owner: request.userRef, text: '', options: [], flag: null };
 
   switch (type) {
     case 'zone':
