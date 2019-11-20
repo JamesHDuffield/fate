@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { LocationService } from './location';
 import { Observable, combineLatest, NEVER } from 'rxjs';
-import { filter, switchMap, map, first, catchError } from 'rxjs/operators';
+import { filter, switchMap, map, first, catchError, tap, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
@@ -35,6 +35,15 @@ export class StoryService {
               }
               console.log(JSON.stringify(e));
               throw e;
+            }),
+            distinctUntilChanged(),
+            tap(async (moment) => {
+              if (moment && moment.flag) {
+                console.log('Granted a new flag');
+                await user.ref.update({
+                  flags: firebase.firestore.FieldValue.arrayUnion(moment.flag),
+                });
+              }
             }),
           ),
       ),

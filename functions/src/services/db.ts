@@ -60,6 +60,7 @@ export class DatabaseService {
       admin: false,
       username,
       moment: momentRef,
+      flags: [],
     };
     await ref.set(user);
   }

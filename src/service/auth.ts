@@ -27,7 +27,12 @@ export class AuthService {
   user$: Observable<User> = this.userDoc$
     .pipe(
       switchMap((userDoc) => userDoc ? userDoc
-        .valueChanges() : EMPTY),
+        .snapshotChanges() : EMPTY),
+      map((action) => {
+        const data: User = action.payload.data();
+        const ref = action.payload.ref;
+        return { ref, ...data };
+      }),
       tap((user) => this.admin = user ? user.admin : false),
     );
 
