@@ -16,4 +16,5 @@ export interface Moment extends BaseDocument {
   options: Option[];
   end?: boolean;
   owner?: DocumentReference;
+  flag?: DocumentReference;
 }

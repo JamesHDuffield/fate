@@ -9,23 +9,43 @@
     <textarea #editor matInput matTextareaAutosize placeholder="What happens?" formControlName="text"></textarea>
   </mat-form-field>
   <mat-button-toggle-group multiple>
-    <mat-button-toggle (click)="toggle('end')" [checked]="form.get('end').value" aria-label="Does the story ends here?" matTooltip="Does the story ends here?">
+    <mat-button-toggle (click)="toggle('end')" [checked]="form.get('end').value" aria-label="Does the story ends here?"
+      matTooltip="Does the story ends here?">
       <mat-icon>error</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle (click)="mark()" aria-label="Highlight selected text and provide encyclopedia entry." matTooltip="Highlight selected text and provide encyclopedia entry.">
+    <mat-button-toggle (click)="mark()" aria-label="Highlight selected text and provide encyclopedia entry."
+      matTooltip="Highlight selected text and provide encyclopedia entry.">
       <mat-icon>book</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <br/>
+  <br />
   <mat-form-field formGroupName="encyclopedias" *ngFor="let key of encyclopediaKeys" @fade>
     <input matInput [formControlName]='key' [placeholder]='key'>
   </mat-form-field>
+  <mat-hint><small>Choose flag to be granted when reaching this moment</small></mat-hint>
+  <div>
+    <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
+    <mat-button-toggle-group [disabled]='form.disabled' class='unclickable'>
+      <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected"
+        *ngIf="!this.form.get('flag').value">
+        <mat-icon>close</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag"
+        (click)="chooseFlag('flag')">
+        <mat-icon>search</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle aria-label="Create flag" matTooltip="Create flag" (click)="createFlag('flag')">
+        <mat-icon>emoji_flags</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 </form>
 
 <!-- Controls -->
 <div class='tab-buttons'>
-  <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'></app-tab-button>
+  <app-tab-button *ngIf='form.disabled && (story.canEditMoment$ | async)' icon='edit' (clicked)='edit()'>
+  </app-tab-button>
   <app-tab-button *ngIf='form.enabled' icon='save' [disabled]='form.invalid' (clicked)='save()'></app-tab-button>
-  <br/>
+  <br />
   <app-tab-button *ngIf='form.enabled' icon='cancel' (clicked)='form.disable();'></app-tab-button>
 </div>

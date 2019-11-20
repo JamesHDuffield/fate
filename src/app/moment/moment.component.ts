@@ -5,6 +5,9 @@ import { StoryService } from '../../service/story';
 import { EncyclopediaService } from '../../service/encyclopedia';
 import { fade } from '../../animations/fade';
 import { AuthService } from '../../service/auth';
+import { MatDialog } from '@angular/material';
+import { ChooseComponent } from '../flag/choose/choose.component';
+import { FlagComponent } from '../flag/flag.component';
 
 const FADE_IN = 300;
 
@@ -45,6 +48,7 @@ export class MomentComponent implements OnInit {
     text: new FormControl('', Validators.required),
     end: new FormControl(false),
     encyclopedias: new FormGroup({}),
+    flag: new FormControl(null),
   });
 
   get encyclopediaKeys() {
@@ -52,7 +56,7 @@ export class MomentComponent implements OnInit {
     return Object.keys(group.controls);
   }
 
-  constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private auth: AuthService) { }
+  constructor(public story: StoryService, private encyclopedia: EncyclopediaService, private auth: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.form.get('text').valueChanges
@@ -122,6 +126,8 @@ export class MomentComponent implements OnInit {
       .setValue(this._moment.text);
     this.form.get('end')
       .setValue(!!this._moment.end);
+    this.form.get('flag')
+      .setValue(this._moment.flag);
     this.form.enable();
   }
 
@@ -132,8 +138,32 @@ export class MomentComponent implements OnInit {
 
   async save() {
     const value = this.form.value;
-    return this.story.updateMoment({ text: value.text, end: value.end }, value.encyclopedias)
+    const moment = this._moment;
+    moment.text = value.text;
+    moment.end = value.end;
+    moment.flag = value.flag || null;
+    return this.story.updateMoment(moment, value.encyclopedias)
       .then(() => this.form.disable());
+  }
+
+  async createFlag(key: string = 'flag') {
+    return this.dialog.open(FlagComponent, { maxWidth: '100vw', width: '750px', maxHeight: '100vh' })
+      .afterClosed()
+      .subscribe((result) => {
+        const patch = {};
+        patch[key] = result;
+        this.form.patchValue(patch);
+      });
+  }
+
+  async chooseFlag(key: string = 'flag') {
+    return this.dialog.open(ChooseComponent, { maxWidth: '100vw', width: '750px', maxHeight: '100vh' })
+      .afterClosed()
+      .subscribe((result) => {
+        const patch = {};
+        patch[key] = result;
+        this.form.patchValue(patch);
+      });
   }
 
 }

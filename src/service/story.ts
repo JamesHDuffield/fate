@@ -86,12 +86,7 @@ export class StoryService {
   }
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
-    await this.firestore.document<Moment>(moment.ref)
-      .pipe(
-        first(),
-        switchMap((momentDoc) => momentDoc.update(moment)),
-      )
-      .toPromise()
+    await moment.ref.update(moment)
       .catch((e: Error) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
         throw e;
