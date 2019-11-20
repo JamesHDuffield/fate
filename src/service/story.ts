@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFirestore, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -85,11 +85,11 @@ export class StoryService {
     return this.request('/respawn', body);
   }
 
-  async updateMoment(moment: Moment, encyclopedias: { [name: string]: string }): Promise<void> {
+  async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
     await this.firestore.document<Moment>(moment.ref)
       .pipe(
         first(),
-        switchMap((momentDoc) => momentDoc.set(moment, { merge: true })),
+        switchMap((momentDoc) => momentDoc.update(moment)),
       )
       .toPromise()
       .catch((e: Error) => {
@@ -101,13 +101,11 @@ export class StoryService {
       const userDoc = await this.auth.userDoc$.pipe(first())
         .toPromise();
       for (const name of Object.keys(encyclopedias)) {
-        const ref = this.db.collection('encyclopedia')
-          .doc<Encyclopedia>(name.toLowerCase());
-        const doc = await ref.get()
+        const doc = await this.firestore.fetch<Encyclopedia>(`encyclopedia/${name.toLowerCase()}`)
           .toPromise();
-        if (!doc.exists || this.auth.admin || (doc.data().owner && doc.data().owner.id === userDoc.ref.id)) {
+        if (!doc || this.auth.admin || (doc.owner && doc.owner.id === userDoc.ref.id)) {
           const enc = { text: encyclopedias[name], owner: userDoc.ref, ref: null };
-          await ref.set(enc, { merge: true });
+          await doc.ref.set(enc, { merge: true });
         }
       }
     } catch (e) {
@@ -117,11 +115,10 @@ export class StoryService {
   }
 
   async deleteOption(option: Option) {
-    return this.auth.user$
+    return this.current$
       .pipe(
-        map((user) => this.db.doc<Moment>(user.moment)),
         first(),
-        switchMap((momentDoc) => momentDoc.update(<any>{
+        switchMap((moment) => moment.ref.update({
           options: firebase.firestore.FieldValue.arrayRemove(option),
         }),
         ),
@@ -161,15 +158,6 @@ export class StoryService {
   }
 
   async createFlag(flag: Flag) {
-    return this.auth.userDoc$
-      .pipe(
-        first(),
-        switchMap((userDoc) => {
-          flag.owner = userDoc.ref;
-          return this.db.collection<Flag>('flags')
-            .add(flag);
-        }),
-      )
-      .toPromise();
+    return this.firestore.createDocument<Flag>('flags', flag);
   }
 }

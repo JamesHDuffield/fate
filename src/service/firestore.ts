@@ -53,7 +53,7 @@ export class FirestoreService {
       );
   }
 
-  createDocument<T extends BaseDocument>(collection: string, entity: T) {
+  async createDocument<T extends BaseDocument>(collection: string, entity: T): Promise<DocumentReference> {
     return this.auth.userDoc$
       .pipe(
         first(),
@@ -62,7 +62,8 @@ export class FirestoreService {
           return this.db.collection<T>(collection)
             .add(entity);
         }),
-      );
+      )
+      .toPromise();
   }
 
   async saveDocument(document: BaseDocument): Promise<void> {
