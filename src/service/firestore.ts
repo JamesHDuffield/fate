@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference, DocumentChangeAction, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AuthService } from './auth';
 import { Observable } from 'rxjs';
-import { switchMap, map, filter } from 'rxjs/operators';
-import { BaseDocument } from 'src/models/base';
+import { switchMap, map, filter, first } from 'rxjs/operators';
+import { BaseDocument } from '../models/base';
 
 @Injectable({
   providedIn: 'root',
@@ -53,8 +53,16 @@ export class FirestoreService {
       );
   }
 
-  createDocument() {
-    throw new Error('TODO');
+  createDocument<T extends BaseDocument>(collection: string, entity: T) {
+    return this.auth.userDoc$
+      .pipe(
+        first(),
+        switchMap((userDoc) => {
+          entity.owner = userDoc.ref;
+          return this.db.collection<T>(collection)
+            .add(entity);
+        }),
+      );
   }
 
   async saveDocument(document: BaseDocument): Promise<void> {
