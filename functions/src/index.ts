@@ -16,6 +16,7 @@ import { choose } from './operations/choose';
 import { create } from './operations/create';
 import { respawn } from './operations/respawn';
 import { userCreate } from './operations/userCreate';
+import { userClean } from './operations/userClean';
 
 // Setup
 admin.initializeApp();
@@ -35,3 +36,7 @@ app.post('/respawn', respawn);
 export const api = functions.https.onRequest(app);
 
 export const newUser = functions.auth.user().onCreate((data) => userCreate(data, app.locals.db));
+
+export const cleanUsers = functions.pubsub.schedule('0 3 * * *')
+  .timeZone('Australia/Melbourne')
+  .onRun((data) => userClean(app.locals.db));

@@ -101,5 +101,16 @@ export class DatabaseService {
     await currentRef.set(<any>{ options: current.options }, { merge: true })
   }
 
+  // Find users
+  async cleanUsers(): Promise<void> {
+    const query = await this.firestore.collection('users')
+      .where('username', '==', 'Nameless')
+      .get();
+    console.log(`Cleaning ${query.size} user(s)`);
+    for (const data of query.docs) {
+      await data.ref.delete();
+    }
+  }
+
 }
 
