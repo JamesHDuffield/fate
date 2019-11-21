@@ -37,6 +37,6 @@ export const api = functions.https.onRequest(app);
 
 export const newUser = functions.auth.user().onCreate((data) => userCreate(data, app.locals.db));
 
-export const cleanUsers = functions.pubsub.schedule('0 3 * * *')
-  .timeZone('Australia/Melbourne')
-  .onRun((data) => userClean(app.locals.db));
+// export const cleanUsers = functions.pubsub.schedule('0 3 * * *')
+//   .timeZone('Australia/Melbourne')
+//   .onRun((data) => userClean(app.locals.db));
