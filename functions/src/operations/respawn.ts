@@ -20,7 +20,8 @@ export const respawn = async (request: RespawnRequest, response: Response) => {
     // Clear flags that are not permanent
     await db.clearNonPermanentFlags(request.userRef);
     // Update user to new moment
-    await db.userToZone(request.userRef, db.respawnPoint);
+    const zoneRef = request.user.moment.parent.parent.parent.parent;
+    await db.userToZone(request.userRef, zoneRef);
   }
 
   return response.sendStatus(HttpStatus.NO_CONTENT);
