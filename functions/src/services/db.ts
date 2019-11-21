@@ -53,12 +53,20 @@ export class DatabaseService {
     if (!user.exists) {
       throw new Error('User does not exist');
     }
-    const flags: Flag[] = user.data().flags;
+    const flags: DocumentReference[] = user.data().flags;
     if (!flags) {
       return
     }
-    const newFlags = flags.filter((flag) => flag.permanent);
-    await user.ref.update({flags: newFlags });
+
+    const newFlags = [];
+    for (const flag of flags) {
+      const result = await flag.get();
+      if (result.data().permanent) {
+        newFlags.push(flag);
+      }
+    }
+
+    await user.ref.update({ flags: newFlags });
   }
 
   // Creation
