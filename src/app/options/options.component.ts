@@ -51,8 +51,7 @@ export class OptionsComponent implements OnInit {
 
   async next(option: Option) {
     this.form.disable();
-    await this.story.progressToOption(option)
-      .catch((e) => this.form.enable());
+    await this.story.progressToOption(option);
   }
 
   async add() {
