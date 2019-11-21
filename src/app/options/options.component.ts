@@ -135,6 +135,7 @@ export class OptionsComponent implements OnInit {
         const patch = {};
         patch[key] = result || null;
         this.form.patchValue(patch);
+        this.form.markAsDirty();
       });
   }
 
@@ -145,6 +146,7 @@ export class OptionsComponent implements OnInit {
         const patch = {};
         patch[key] = result || null;
         this.form.patchValue(patch);
+        this.form.markAsDirty();
       });
   }
 
