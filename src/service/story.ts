@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -45,6 +45,13 @@ export class StoryService {
                 });
               }
             }),
+            tap((moment) => {
+              const flagIds = user.flags.map((flag) => flag.id);
+              for (const opt of moment.options) {
+                opt.passFlag = !opt.flag || flagIds.includes(opt.flag.id);
+                opt.passNotFlag = !opt.notFlag || !flagIds.includes(opt.notFlag.id);
+              }
+            }),
           ),
       ),
     );
@@ -55,6 +62,11 @@ export class StoryService {
     );
 
   flags$: Observable<Flag[]> = this.firestore.collection('flags');
+
+  userFlags$: Observable<DocumentReference[]> = this.auth.user$
+    .pipe(
+      map((user) => user.flags),
+    );
 
   constructor(private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
 

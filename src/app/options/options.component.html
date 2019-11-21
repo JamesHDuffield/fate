@@ -42,7 +42,8 @@
     <div>
       <flag-icon [flag]="(this.form.get('flag').value | doc | async)"></flag-icon>
       <mat-button-toggle-group [disabled]='form.disabled' class='unclickable'>
-        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected" *ngIf="!this.form.get('flag').value">
+        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected"
+          *ngIf="!this.form.get('flag').value">
           <mat-icon>close</mat-icon>
         </mat-button-toggle>
         <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag" (click)='chooseFlag()'>
@@ -57,10 +58,12 @@
     <div>
       <flag-icon [flag]="(this.form.get('notFlag').value | doc | async)"></flag-icon>
       <mat-button-toggle-group [disabled]='form.disabled' class='unclickable'>
-        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected" *ngIf="!this.form.get('notFlag').value">
+        <mat-button-toggle aria-label="No flag selected" matTooltip="No flag selected"
+          *ngIf="!this.form.get('notFlag').value">
           <mat-icon>close</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag" (click)="chooseFlag('notFlag')">
+        <mat-button-toggle aria-label="Choose existing flag" matTooltip="Choose existing flag"
+          (click)="chooseFlag('notFlag')">
           <mat-icon>search</mat-icon>
         </mat-button-toggle>
         <mat-button-toggle aria-label="Create flag" matTooltip="Create flag" (click)="createFlag('notFlag')">
@@ -73,7 +76,19 @@
 
 <div class='button-container' *ngIf='form.disabled'>
   <button mat-line (click)='next(option)' (contextmenu)="edit($event, option)" mat-button class='button-option'
-    *ngFor='let option of _moment.options'>{{ option.text }}</button>
+    *ngFor='let option of _moment.options' [disabled]='!option.passFlag || !option.passNotFlag'>
+    {{ option.text }}
+    <div class='flag-on-button'>
+      <flag-icon *ngIf='option.flag' [flag]="option.flag | doc | async"
+        [prepend]="option.passFlag ? 'Unlocked by: ' : 'Required: '"
+        [small]='true' [disabled]='!option.passFlag'>
+      </flag-icon>
+      <flag-icon *ngIf='option.notFlag' [flag]="option.notFlag | doc | async"
+        [prepend]="option.passNotFlag ? 'Unlocked by not having: ' : 'Locked by having: '"
+        [small]='true' [disabled]='!option.passNotFlag'>
+      </flag-icon>
+    </div>
+  </button>
   <button mat-line (click)='respawn()' mat-button color='primary' class='button-option'
     *ngIf='!_moment.options.length && !_moment.end'>The story ends here. Start again?</button>
   <button mat-line (click)='respawn()' mat-button color='warn' class='button-option' *ngIf='_moment.end'>You fate is

@@ -1,5 +1,5 @@
-<mat-button-toggle-group *ngIf='_flags.length'>
+<mat-button-toggle-group *ngIf='_flags.length' [class.small]='small' [style.opacity]="disabled ? '0.5' : '1'" [disabled]='disabled'>
   <mat-button-toggle *ngFor='let flag of _flags'>
-    <mat-icon [style.color]='flag.color' (click)='choose.emit(flag)' [matTooltip]='flag.name'>{{ flag.icon }}</mat-icon>
+    <mat-icon [style.color]='flag.color' (click)='choose.emit(flag)' [matTooltip]='prepend + flag.name'>{{ flag.icon }}</mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>

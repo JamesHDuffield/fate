@@ -1,6 +1,8 @@
 <!-- Display moment -->
 <div *ngIf='form.disabled && moment' @fade>
   <app-text-display [text]='moment.text'></app-text-display>
+  <div *ngIf='moment.flag'><br/><small><i>You gained an achievement </i></small><flag-icon [flag]="moment.flag | doc | async" [small]='true'></flag-icon>
+  </div>
 </div>
 
 <!-- Edit moment -->

@@ -9,6 +9,8 @@ export interface Option extends BaseDocument {
   zone?: DocumentReference;
   flag?: DocumentReference;
   notFlag?: DocumentReference;
+  passFlag?: boolean;
+  passNotFlag?: boolean;
 }
 
 export interface Moment extends BaseDocument {

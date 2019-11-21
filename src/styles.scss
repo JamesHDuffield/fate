@@ -17,3 +17,22 @@
     background-color: initial;
   }
 }
+
+.small.mat-button-toggle-group {
+  
+  margin: auto 0;
+  .mat-button-toggle {
+    border: none !important;
+    margin: 0 !important;
+    .mat-button-toggle-label-content {
+      line-height: initial !important;
+      padding: 3px !important;
+    }
+  }
+}
+.flag-on-button {
+  display: inline-block;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}

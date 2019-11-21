@@ -14,6 +14,15 @@ export class FlagIconComponent {
   @Input()
   flags: Flag[];
 
+  @Input()
+  small: boolean = false;
+
+  @Input()
+  prepend: string = '';
+
+  @Input()
+  disabled: boolean = false;
+
   @Output()
   choose: EventEmitter<Flag> = new EventEmitter<Flag>();
 
