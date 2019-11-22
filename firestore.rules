@@ -8,12 +8,21 @@ service cloud.firestore {
   	function isAdmin() {
     	return getUserData().admin;
     }
+    
+    function validFlag(input, original) {
+    	return input.flags.size() == original.flags.size() ||
+      	(
+        input.flags.size() == original.flags.size() + 1 &&
+        get(get(getUserData().moment).data.flag).id == get(input.flags[input.flags.size() - 1]).id
+        );
+    }
 
     match /users/{userId} {
       allow read: if request.auth.uid == userId;
       allow update: if request.auth.uid == userId &&
       	request.resource.data.moment == resource.data.moment &&
         request.resource.data.admin == resource.data.admin &&
+        validFlag(request.resource.data, resource.data) &&
         request.resource.data.size() == resource.data.size();
     }
     
