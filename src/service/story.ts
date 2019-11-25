@@ -88,7 +88,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
+        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
       )
       .toPromise();
   }
