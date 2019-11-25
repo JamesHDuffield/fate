@@ -13,6 +13,8 @@ import { MatSnackBar } from '@angular/material';
 import { Encyclopedia } from '../models/encyclopedia';
 import { Flag } from '../models/flag';
 import { FirestoreService } from './firestore';
+import { Zone } from '../models/zone';
+import { Location } from '../models/location';
 
 @Injectable()
 export class StoryService {
@@ -28,14 +30,7 @@ export class StoryService {
       filter((user) => !!user),
       switchMap((user) =>
         this.firestore.fetch<Moment>(user.moment)
-          .pipe( // When user swaps moment is not accessible. Ignore those errors
-            catchError((e: firebase.FirebaseError) => {
-              if (e && e.code === 'permission-denied') {
-                return NEVER;
-              }
-              console.log(JSON.stringify(e));
-              throw e;
-            }),
+          .pipe(
             distinctUntilChanged(),
             tap(async (moment) => {
               if (moment && moment.flag) {
@@ -58,7 +53,7 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
+      map(([user, firebaseUser, current]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
 
   flags$: Observable<Flag[]> = this.firestore.collection('flags');
@@ -93,7 +88,7 @@ export class StoryService {
     return combineLatest(this.start$, this.auth.userDoc$)
       .pipe(
         first(),
-        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
+        map(([momentDoc, userDoc]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
       )
       .toPromise();
   }
@@ -103,7 +98,33 @@ export class StoryService {
   }
 
   async respawn(body: { locationRef?: string; zoneRef?: string } = {}): Promise<void> {
-    return this.request('/respawn', body);
+    console.log('Respawning...');
+    const user = await this.auth.user$
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    if (body.locationRef) {
+      const loc = await this.firestore.fetch<Location>(body.locationRef)
+        .pipe(
+          first(),
+        )
+        .toPromise();
+      return user.ref.update({ moment: loc.moment });
+    }
+    const zoneRef = body.zoneRef || user.moment.parent.parent.parent.parent;
+    const zone = await this.firestore.fetch<Zone>(zoneRef)
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    const location = await this.firestore.fetch<Location>(zone.location)
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    return user.ref.update({ moment: location.moment })
+      .catch((e) => console.log('Error', e));
   }
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {

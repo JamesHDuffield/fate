@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { Observable, BehaviorSubject, EMPTY } from 'rxjs';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { switchMap, map, tap, shareReplay } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../models/user';
 
@@ -34,6 +34,7 @@ export class AuthService {
         return { ref, ...data };
       }),
       tap((user) => this.admin = user ? user.admin : false),
+      shareReplay(1),
     );
 
   constructor(private db: AngularFirestore, private zone: NgZone) {
