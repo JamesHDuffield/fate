@@ -84,8 +84,7 @@ export class OptionsComponent implements OnInit {
 
   async respawn() {
     this.form.disable();
-    return this.story.respawn()
-      .catch((e) => this.form.enable());
+    return this.story.respawn();
   }
 
   async edit(event: MouseEvent, option: Option) {
