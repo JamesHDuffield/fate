@@ -4,6 +4,7 @@ import { BaseDocument } from './base';
 
 export interface Zone extends BaseDocument {
   name: string;
+  location: DocumentReference;
   locations: Location[];
   owner?: DocumentReference;
 }
