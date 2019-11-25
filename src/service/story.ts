@@ -90,15 +90,6 @@ export class StoryService {
     return this.userToMoment(option.moment);
   }
 
-  async progressToLocation(): Promise<void> {
-    return combineLatest(this.start$, this.auth.userDoc$)
-      .pipe(
-        first(),
-        map(([ momentDoc, userDoc ]) => userDoc.set({ moment: momentDoc.ref, ref: null }, { merge: true })),
-      )
-      .toPromise();
-  }
-
   async createMoment(body: any): Promise<void> {
     return this.request('/create', body);
   }
@@ -141,7 +132,31 @@ export class StoryService {
       )
       .toPromise();
     const zoneRef = body.zoneRef || user.moment.parent.parent.parent.parent;
+    await this.deleteNonPermanentFlags();
     return this.userToZone(zoneRef);
+  }
+
+  async deleteNonPermanentFlags(): Promise<void> {
+    const userFlags = await this.userFlags$
+      .pipe(first())
+      .toPromise();
+    const newFlags = [];
+    for (const flagRef of userFlags) {
+      const flag = await this.firestore.fetch<Flag>(flagRef)
+      .pipe(
+        first(),
+      )
+      .toPromise();
+      if (flag.permanent) {
+        newFlags.push(flagRef);
+      }
+    }
+    const user = await this.auth.user$
+    .pipe(
+      first(),
+    )
+    .toPromise();
+    return user.ref.update({ flags: newFlags });
   }
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
