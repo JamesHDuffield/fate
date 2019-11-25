@@ -81,7 +81,13 @@ export class StoryService {
     if (!option || isNaN(option.id)) {
       return;
     }
-    await this.request(`/choose/${option.id}`);
+    if (option.zone) {
+      return this.userToZone(option.zone);
+    }
+    if (option.location) {
+      return this.userToLocation(option.location);
+    }
+    return this.userToMoment(option.moment);
   }
 
   async progressToLocation(): Promise<void> {
@@ -97,34 +103,45 @@ export class StoryService {
     return this.request('/create', body);
   }
 
-  async respawn(body: { locationRef?: string; zoneRef?: string } = {}): Promise<void> {
-    console.log('Respawning...');
-    const user = await this.auth.user$
-      .pipe(
-        first(),
-      )
-      .toPromise();
-    if (body.locationRef) {
-      const loc = await this.firestore.fetch<Location>(body.locationRef)
-        .pipe(
-          first(),
-        )
-        .toPromise();
-      return user.ref.update({ moment: loc.moment });
-    }
-    const zoneRef = body.zoneRef || user.moment.parent.parent.parent.parent;
+  async userToZone(zoneRef: DocumentReference | string) {
     const zone = await this.firestore.fetch<Zone>(zoneRef)
       .pipe(
         first(),
       )
       .toPromise();
-    const location = await this.firestore.fetch<Location>(zone.location)
+    return this.userToLocation(zone.location);
+  }
+
+  async userToLocation(locationRef: DocumentReference | string) {
+    const location = await this.firestore.fetch<Location>(locationRef)
       .pipe(
         first(),
       )
       .toPromise();
-    return user.ref.update({ moment: location.moment })
-      .catch((e) => console.log('Error', e));
+    return this.userToMoment(location.moment);
+  }
+
+  async userToMoment(momentRef: DocumentReference | string) {
+    const user = await this.auth.user$
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    return user.ref.update({ moment: momentRef });
+  }
+
+  async respawn(body: { locationRef?: string; zoneRef?: string } = {}): Promise<void> {
+    console.log('Respawning...');
+    if (body.locationRef) {
+      return this.userToLocation(body.locationRef);
+    }
+    const user = await this.auth.user$
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    const zoneRef = body.zoneRef || user.moment.parent.parent.parent.parent;
+    return this.userToZone(zoneRef);
   }
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
