@@ -1,5 +1,9 @@
 @import 'theme.scss';
 
+body {
+  background-image: url('/assets/bg.png');
+}
+
 .primary-snackbar {
   span.mat-button-wrapper {
     color: mat-color($fate-app-primary);

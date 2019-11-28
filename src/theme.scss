@@ -25,7 +25,7 @@ $fate-app-accent: mat-palette($mat-amber, A200, A100, A400);
 $fate-app-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$fate-app-theme: mat-dark-theme($fate-app-primary, $fate-app-accent, $fate-app-warn);
+$fate-app-theme: mat-light-theme($fate-app-primary, $fate-app-accent, $fate-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
