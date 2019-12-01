@@ -32,7 +32,7 @@ export class LocationComponent {
 
   async submit(): Promise<void> {
     this.form.disable();
-    await this.locationService.updateLocation(this.form.value);
+    await this.locationService.updateLocation(Object.assign(this.data, this.form.value));
     this.dialogRef.close();
   }
 

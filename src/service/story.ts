@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
+import { DocumentReference } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
-import { LocationService } from './location';
-import { Observable, combineLatest, NEVER } from 'rxjs';
-import { filter, switchMap, map, first, catchError, tap, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { filter, switchMap, map, first, tap, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from './auth';
 import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
@@ -19,11 +18,7 @@ import { Location } from '../models/location';
 @Injectable()
 export class StoryService {
 
-  start$: Observable<AngularFirestoreDocument<Moment>> = this.location.currentLocation$
-    .pipe(
-      filter((location) => !!location && !!location.moment),
-      switchMap((location) => this.firestore.document<Moment>(location.moment)),
-    );
+  // Moment
 
   current$: Observable<Moment> = this.auth.user$
     .pipe(
@@ -53,8 +48,10 @@ export class StoryService {
 
   canEditMoment$: Observable<boolean> = combineLatest(this.auth.user$, this.auth.firebaseUser$, this.current$)
     .pipe(
-      map(([user, firebaseUser, current]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
+      map(([ user, firebaseUser, current ]) => (user && user.admin) || (current.owner && firebaseUser.uid === current.owner.id)),
     );
+
+  // Flags
 
   flags$: Observable<Flag[]> = this.firestore.collection('flags');
 
@@ -63,7 +60,7 @@ export class StoryService {
       map((user) => user.flags),
     );
 
-  constructor(private location: LocationService, private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
+  constructor(private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
     console.log(path);
@@ -77,6 +74,12 @@ export class StoryService {
       });
   }
 
+  async createMoment(body: any): Promise<void> {
+    return this.request('/create', body);
+  }
+
+  // Movement
+
   async progressToOption(option: Option): Promise<void> {
     if (!option || isNaN(option.id)) {
       return;
@@ -88,10 +91,6 @@ export class StoryService {
       return this.userToLocation(option.location);
     }
     return this.userToMoment(option.moment);
-  }
-
-  async createMoment(body: any): Promise<void> {
-    return this.request('/create', body);
   }
 
   async userToZone(zoneRef: DocumentReference | string) {
@@ -158,6 +157,8 @@ export class StoryService {
     .toPromise();
     return user.ref.update({ flags: newFlags });
   }
+
+  // Creation and update
 
   async updateMoment(moment: Partial<Moment>, encyclopedias: { [name: string]: string }): Promise<void> {
     await moment.ref.update(moment)

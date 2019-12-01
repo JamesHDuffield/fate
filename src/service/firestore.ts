@@ -67,6 +67,9 @@ export class FirestoreService {
   }
 
   async saveDocument(document: BaseDocument): Promise<void> {
+    if (!document.ref) {
+      throw new Error('Documents is missing reference');
+    }
     document.ref.update(document);
   }
 
