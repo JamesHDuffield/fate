@@ -18,7 +18,7 @@
       <input matInput formControlName='name' placeholder='Name of new zone'>
     </mat-form-field>
   </form>
-  <button mat-button color='accent' (click)='createZone()' [disabled]='zoneForm.invalid || zoneForm.disabled'>
+  <button mat-button (click)='createZone()' [disabled]='zoneForm.invalid || zoneForm.disabled'>
     Create Zone
   </button>
 </div>
