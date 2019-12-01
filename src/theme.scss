@@ -1,16 +1,16 @@
 @import '~@angular/material/theming';
-@import url('https://fonts.googleapis.com/css?family=Oranienbaum&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oranienbaum|Source+Serif+Pro&display=swap');
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 $custom-typography: mat-typography-config(
-  $font-family: "Lucida Grande, Lucida Sans Unicode, GNU Unifont, Verdana, Helvetica, sans-serif",
+  $font-family: "'Source Serif Pro', serif",
 );
 
 pre {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", "GNU Unifont", Verdana, Helvetica, sans-serif;
+  font-family: 'Source Serif Pro', serif;
 }
 
 @include mat-core($custom-typography);

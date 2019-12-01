@@ -3,8 +3,10 @@
 :host { display: block; }
 
 small {
-    font-size: xx-small;
+    font-size: x-small;
     color: darkgrey;
+    font-family: sans-serif;
+
     mat-icon {
         width: 15px;
         font-size: small;
