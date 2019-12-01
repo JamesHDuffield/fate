@@ -7,13 +7,13 @@
       </span>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='right-align'>
-      <span class='fancy clickable' *ngIf='location.currentLocation$ | async; let location' (click)='openLocationDialog(location)'>{{ location.name || 'Road' }}</span>
+      <span class='fancy clickable' *ngIf='currentLocation$ | async; let location' (click)='openLocationDialog(location)'>{{ location.name || 'Road' }}</span>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='left-align'>
       <small *ngIf='(auth.user$ | async)?.admin; let user;' (click)='openAdminDialog()' class='clickable'>Administrator</small>
     </mat-grid-tile>
     <mat-grid-tile colspan='1' rowspan='1' class='right-align'>
-        <small *ngIf='location.zone$ | async; let zone'>{{ zone.name }}</small>
+        <small *ngIf='zone$ | async; let zone'>{{ zone.name }}</small>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-toolbar>

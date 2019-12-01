@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StoryService } from '../../service/story';
 import { Option, Moment } from '../../models/moment';
-import { LocationService } from '../../service/location';
 import { AuthService } from '../../service/auth';
 import { MatDialog } from '@angular/material';
 import { ConfirmComponent, ConfirmData } from '../confirm/confirm.component';
@@ -15,13 +14,13 @@ const MAXIMUM_OPTIONS = 3;
 @Component({
   selector: 'app-options',
   templateUrl: './options.component.html',
-  styleUrls: ['./options.component.scss'],
+  styleUrls: [ './options.component.scss' ],
 })
 export class OptionsComponent implements OnInit {
 
   _moment: Moment = null;
-  locations$ = this.location.locations$;
-  zones$ = this.location.zones$;
+  locations$ = this.story.locations$;
+  zones$ = this.story.zones$;
 
   @Input() set moment(value: Moment) {
     this._moment = value;
@@ -30,8 +29,8 @@ export class OptionsComponent implements OnInit {
 
   form = new FormGroup({
     id: new FormControl(null, []),
-    text: new FormControl('', [Validators.required]),
-    type: new FormControl('moment', [Validators.required]),
+    text: new FormControl('', [ Validators.required ]),
+    type: new FormControl('moment', [ Validators.required ]),
     location: new FormControl(null, []),
     name: new FormControl(null, []),
     zone: new FormControl(null, []),
@@ -39,7 +38,7 @@ export class OptionsComponent implements OnInit {
 
   flag$: Observable<string>;
 
-  constructor(private story: StoryService, private location: LocationService, private auth: AuthService, private dialog: MatDialog) { }
+  constructor(private story: StoryService, private auth: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.form.disable();
@@ -57,8 +56,8 @@ export class OptionsComponent implements OnInit {
   async add() {
     this.form = new FormGroup({
       id: new FormControl(null, []),
-      text: new FormControl('', [Validators.required]),
-      type: new FormControl('moment', [Validators.required]),
+      text: new FormControl('', [ Validators.required ]),
+      type: new FormControl('moment', [ Validators.required ]),
       location: new FormControl(null, []),
       name: new FormControl(null, []),
       zone: new FormControl(null, []),

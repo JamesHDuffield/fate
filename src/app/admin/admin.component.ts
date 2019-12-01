@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { StoryService } from '../../service/story';
-import { LocationService } from '../../service/location';
 
 @Component({
   selector: 'app-admin',
@@ -11,14 +10,14 @@ import { LocationService } from '../../service/location';
 })
 export class AdminComponent {
   menu: string = null;
-  locations$ = this.location.locations$;
-  zones$ = this.location.zones$;
+  locations$ = this.story.locations$;
+  zones$ = this.story.zones$;
 
   zoneForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<AdminComponent>, private story: StoryService, private location: LocationService, private snack: MatSnackBar) { }
+  constructor(public dialogRef: MatDialogRef<AdminComponent>, private story: StoryService, private snack: MatSnackBar) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -46,7 +45,7 @@ export class AdminComponent {
     this.zoneForm.disable();
     console.log('Creating zone');
     this.dialogRef.close();
-    return this.location.createZone({ name: this.zoneForm.value.name })
+    return this.story.createZone({ name: this.zoneForm.value.name, location: null, locations: [] })
       .then(() => this.snack.open('Zone created', 'Dismiss'))
       .catch((e) => {
         this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });

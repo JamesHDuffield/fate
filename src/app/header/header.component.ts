@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../service/auth';
-import { LocationService } from '../../service/location';
 import { StoryService } from '../../service/story';
 import { MatDialog } from '@angular/material';
 import { LocationComponent } from '../location/location.component';
@@ -15,7 +14,10 @@ import { AdminComponent } from '../admin/admin.component';
 })
 export class HeaderComponent {
 
-  constructor(public auth: AuthService, public location: LocationService, public story: StoryService, private dialog: MatDialog) {}
+  currentLocation$ = this.story.currentLocation$;
+  zone$ = this.story.zone$;
+
+  constructor(public auth: AuthService, private story: StoryService, private dialog: MatDialog) {}
 
   openLocationDialog(location: Location): void {
     this.dialog.open(LocationComponent, {

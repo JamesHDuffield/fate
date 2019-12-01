@@ -60,6 +60,25 @@ export class StoryService {
       map((user) => user.flags),
     );
 
+  // Location
+
+  zones$ = this.firestore.collection<Zone>('zones');
+
+  zone$ = this.current$
+    .pipe(
+      switchMap((moment) => this.firestore.fetch(moment.ref.parent.parent.parent.parent)),
+    );
+
+  locations$ = this.current$
+    .pipe(
+      switchMap((moment) => this.firestore.collection(moment.ref.parent.parent.parent.path)),
+    );
+
+  currentLocation$ = this.current$
+    .pipe(
+      switchMap((moment) => this.firestore.fetch<Location>(moment.ref.parent.parent)),
+    );
+
   constructor(private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
 
   async request<T>(path: string, body: Object = null): Promise<T> {
@@ -229,5 +248,28 @@ export class StoryService {
 
   async createFlag(flag: Flag) {
     return this.firestore.createDocument<Flag>('flags', flag);
+  }
+
+  async updateLocation(location: Location): Promise<void> {
+    return this.firestore.saveDocument(location);
+  }
+
+  async createZone(zone: Zone): Promise<void> {
+    const moment: Moment = { text: '', options: [] };
+    const location: Location = { name: 'Outdoors', moment: null };
+    // Get user
+    const user = await this.auth.user$
+      .pipe(
+        first(),
+      )
+      .toPromise();
+    zone.owner = user.ref;
+    location.owner = user.ref;
+    moment.owner = user.ref;
+    const zoneRef = await this.firestore.createDocument<Zone>('zones', zone);
+    const locationRef = await this.firestore.createDocument<Location>(zoneRef.collection('locations').path, location);
+    await zoneRef.update({ location: locationRef });
+    const momentRef = await this.firestore.createDocument<Moment>(locationRef.collection('moments').path, moment);
+    await locationRef.update({ moment: momentRef });
   }
 }

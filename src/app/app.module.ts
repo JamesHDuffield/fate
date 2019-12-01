@@ -30,7 +30,6 @@ import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabButtonComponent } from './tab-button/tab-button.component';
 import { AuthService } from '../service/auth';
-import { LocationService } from '../service/location';
 import { StoryComponent } from './story/story.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentComponent } from './moment/moment.component';
@@ -93,7 +92,7 @@ import { FlagIconComponent } from './flag/flag-icon/flag-icon.component';
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [ AngularFirestore, StoryService, AuthService, LocationService, EncyclopediaService ],
+  providers: [ AngularFirestore, StoryService, AuthService, EncyclopediaService ],
   bootstrap: [ AppComponent ],
   entryComponents: [ LocationComponent, AccountComponent, AdminComponent, ConfirmComponent, FlagComponent, ChooseComponent ],
 })
