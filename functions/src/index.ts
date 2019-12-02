@@ -12,9 +12,7 @@ import { json } from 'body-parser';
 import * as cors from 'cors';
 import * as bearerToken from 'express-bearer-token';
 import { DatabaseService } from './services/db';
-import { choose } from './operations/choose';
 import { create } from './operations/create';
-import { respawn } from './operations/respawn';
 import { userCreate } from './operations/userCreate';
 import { userClean } from './operations/userClean';
 
@@ -29,9 +27,7 @@ app.use(auth);
 
 app.locals.db = new DatabaseService(admin.firestore());
 
-app.post('/choose/:momentId', choose);
 app.post('/create', create);
-app.post('/respawn', respawn);
 
 export const api = functions.https.onRequest(app);
 
