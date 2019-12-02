@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Moment, Option } from '../models/moment';
 import * as firebase from 'firebase/app';
@@ -7,13 +6,20 @@ import 'firebase/auth';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, switchMap, map, first, tap, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from './auth';
-import { environment } from '../environments/environment';
 import { MatSnackBar } from '@angular/material';
 import { Encyclopedia } from '../models/encyclopedia';
 import { Flag } from '../models/flag';
 import { FirestoreService } from './firestore';
 import { Zone } from '../models/zone';
 import { Location } from '../models/location';
+
+interface NewMomentRequest {
+  text: string;
+  type: string;
+  location?: string;
+  name?: string;
+  zone?: string;
+}
 
 @Injectable()
 export class StoryService {
@@ -79,22 +85,52 @@ export class StoryService {
       switchMap((moment) => this.firestore.fetch<Location>(moment.ref.parent.parent)),
     );
 
-  constructor(private auth: AuthService, private http: HttpClient, private snack: MatSnackBar, private firestore: FirestoreService) { }
+  constructor(private auth: AuthService, private snack: MatSnackBar, private firestore: FirestoreService) { }
 
-  async request<T>(path: string, body: Object = null): Promise<T> {
-    console.log(path);
-    const token = await firebase.auth().currentUser
-      .getIdToken();
-    return this.http.post<T>(`${environment.url}${path}`, body, { headers: { Authorization: `Bearer ${token}` } })
-      .toPromise()
-      .catch((e: HttpErrorResponse) => {
-        this.snack.open(e.message, 'Dismiss', { panelClass: 'error-snackbar' });
-        throw e;
-      });
+  async addOption(current: Moment, option: any): Promise<void> {
+    option.id = Math.max(-1, ...current.options.map((opt) => opt.id)) + 1;
+    current.options.push(option as Option);
+    await current.ref.update({ options: current.options });
   }
 
-  async createMoment(body: any): Promise<void> {
-    return this.request('/create', body);
+  async createMoment(request: NewMomentRequest): Promise<void> {
+    const user = await this.auth.user$.pipe(first())
+      .toPromise();
+    const location = await this.currentLocation$.pipe(first())
+      .toPromise();
+    const moment = await this.current$.pipe(first())
+      .toPromise();
+    const defaultMoment = { owner: user.ref, text: '', options: [], flag: null };
+    switch (request.type) {
+      case 'zone':
+        await this.addOption(moment, { text: request.text, zone: request.zone });
+        await this.userToZone(request.zone);
+        break;
+      case 'location':
+        await this.addOption(moment, { text: request.text, location: request.location });
+        await this.userToLocation(request.location);
+        break;
+      case 'newlocation':
+        const zoneRef = location.ref.parent.parent;
+        const locationRef = await zoneRef.collection('locations')
+          .add({ name: request.name, owner: user.ref });
+        const momentRef = await locationRef.collection('moments')
+          .add(defaultMoment);
+        await locationRef.update({ moment: momentRef });
+        await this.addOption(moment, { text: request.text, location: locationRef });
+        await this.userToMoment(momentRef);
+        break;
+      case 'reset':
+        await this.addOption(moment, { text: request.text, moment: location.moment });
+        await this.userToLocation(location.ref);
+        break;
+      default:
+        const newMomentRef = await locationRef.collection('moments')
+          .add(defaultMoment);
+        await this.addOption(moment, { text: request.text, moment: newMomentRef });
+        await this.userToMoment(newMomentRef);
+        break;
+    }
   }
 
   // Movement
